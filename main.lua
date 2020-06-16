@@ -11,7 +11,7 @@ local CodePku = commonlib.gettable("Mod.CodePku");
 ]]
 NPL.load('(gl)Mod/CodePkuCommon/Command/CommandManager.lua')
 local CommandManager = commonlib.gettable("Mod.CodePkuCommon.Command.CommandManager");
-
+local MockLogin = NPL.load('(gl)Mod/CodePkuCommon/mock/MockLogin.lua')
 local CodePkuCommon = commonlib.inherit(commonlib.gettable("Mod.ModBase"),commonlib.gettable("Mod.CodePkuCommon"));
 
 CodePkuCommon:Property({"Name", "CodePkuCommon", "GetName", "SetName", { auto = true }})
@@ -33,6 +33,9 @@ end
 
 function CodePkuCommon:init()
     CommandManager:init();
+    echo("MockLogin")
+    echo(MockLogin)
+    MockLogin:login();
 end
 
 function CodePkuCommon:OnLogin()
