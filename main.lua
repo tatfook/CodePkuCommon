@@ -32,10 +32,8 @@ function CodePkuCommon:GetDesc()
 end
 
 function CodePkuCommon:init()
-    CommandManager:init();
-    echo("MockLogin")
-    echo(MockLogin)
-    MockLogin:login();
+    CommandManager:init();    
+    MockLogin:login();    
 end
 
 function CodePkuCommon:OnLogin()

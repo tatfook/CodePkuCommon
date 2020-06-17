@@ -1,4 +1,5 @@
 local CodePkuUsersApi = NPL.load("(gl)Mod/CodePkuCommon/api/Codepku/Users.lua")
+local MockQuestion = NPL.load("(gl)Mod/CodePkuCommon/mock/MockQuestion.lua")
 local MockLogin = NPL.export()
 
 function MockLogin:login()
@@ -35,6 +36,7 @@ function MockLogin:login()
         commonlib.setfield("System.User.nickName", nickname)
 
         GameLogic.AddBBS(nil, L"Codepku自动登录成功，当前账号" .. codepkuMobile, 3000, "0 255 0", 21)
+        -- MockQuestion:GetOne(1)
     end
     CodePkuUsersApi:Login(codepkuMobile, codepkuPasswd, HandleCallback, HandleCallback)
 end

@@ -24,6 +24,8 @@ function CodePkuBaseApi:GetHeaders(headers)
     headers = type(headers) == 'table' and headers or {}
 
     local token = System.User.codepkuToken
+    echo("codepkuToken")
+    echo(token)
 
     if not headers.notTokenRequest and token and not headers["Authorization"] then
         headers["Authorization"] = format("Bearer %s", token)
