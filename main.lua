@@ -10,9 +10,11 @@ local CodePku = commonlib.gettable("Mod.CodePku");
 ------------------------------------------------------------
 ]]
 NPL.load('(gl)Mod/CodePkuCommon/code/command/CommandManager.lua');
+NPL.load('(gl)Mod/CodePkuCommon/code/blockly/BlocklyManager.lua');
 
 -- local axios = NPL.load('(gl)Mod/CodePkuCommon/util/axios/Axios.lua');
 
+local BlocklyManager = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.BlocklyManager");
 local CommandManager = commonlib.gettable("Mod.CodePkuCommon.Code.Command.CommandManager");
 local MockLogin = NPL.load('(gl)Mod/CodePkuCommon/mock/MockLogin.lua')
 local CodePkuCommon = commonlib.inherit(commonlib.gettable("Mod.ModBase"),commonlib.gettable("Mod.CodePkuCommon"));
@@ -71,6 +73,7 @@ end
 -- called when a new world is loaded. 
 
 function CodePkuCommon:OnWorldLoad()
+    BlocklyManager:init();
 end
 
 function CodePkuCommon:OnLeaveWorld()
