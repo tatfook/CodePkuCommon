@@ -9,11 +9,15 @@ NPL.load("(gl)Mod/CodePku/main.lua");
 local CodePku = commonlib.gettable("Mod.CodePku");
 ------------------------------------------------------------
 ]]
-NPL.load('(gl)Mod/CodePkuCommon/Command/CommandManager.lua')
-local CommandManager = commonlib.gettable("Mod.CodePkuCommon.Command.CommandManager");
+NPL.load('(gl)Mod/CodePkuCommon/code/command/CommandManager.lua');
+
+-- local axios = NPL.load('(gl)Mod/CodePkuCommon/util/axios/Axios.lua');
+
+local CommandManager = commonlib.gettable("Mod.CodePkuCommon.Code.Command.CommandManager");
 local MockLogin = NPL.load('(gl)Mod/CodePkuCommon/mock/MockLogin.lua')
 local CodePkuCommon = commonlib.inherit(commonlib.gettable("Mod.ModBase"),commonlib.gettable("Mod.CodePkuCommon"));
-
+local Log = NPL.load("(gl)Mod/CodePkuCommon/util/Log.lua");
+local Table = NPL.load("(gl)Mod/CodePkuCommon/util/Table.lua");
 CodePkuCommon:Property({"Name", "CodePkuCommon", "GetName", "SetName", { auto = true }})
 
 function CodePkuCommon:ctor()
@@ -32,6 +36,32 @@ function CodePkuCommon:GetDesc()
 end
 
 function CodePkuCommon:init()
+
+    -- Log.debug("trace log info");
+
+    
+
+    -- local server = axios.create({baseUrl = "https://codepku.com"});
+
+    -- server:request("/course"):next(function(response)
+    --     Log.debug("codepku success");
+    --     -- echo(response);
+    -- end);
+
+    -- Log.debug(server)
+    -- Log.debug(axios)
+    -- local response = server:request("/course",{sync=true});
+
+    -- Log.debug(response);
+    -- Log.debug(response.code);
+    -- Log.debug(response.message);
+    -- Log.debug(response.data);
+
+    -- axios:request("https://baidu.com"):next(function(response)
+    --         Log.debug("success");
+    --         -- echo(response);
+    -- end);
+
     CommandManager:init();    
     MockLogin:login();    
 end

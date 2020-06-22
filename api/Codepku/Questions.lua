@@ -1,3 +1,14 @@
+--[[
+Title: 题目
+Author(s): John Mai
+Date: 2020-06-18 11:53:57
+Desc: 题目
+Example:
+------------------------------------------------------------
+    local QuestionsService = NPL.load("(gl)Mod/CodePkuCommon/api/Codepku/Questions.lua");
+-------------------------------------------------------
+]]
+
 local CodePkuBaseApi = NPL.load('./BaseApi.lua')
 
 local CodePkuQuestionsApi = NPL.export()
@@ -9,7 +20,7 @@ function CodePkuQuestionsApi:GetOne(questionId, success, error)
 
     questionId = tonumber(questionId)
 
-    CodePkuBaseApi:Get('/questions/' .. questionId, nil, { notTokenRequest = false }, success, error, { 500, 400 })
+    return CodePkuBaseApi:Get('/questions/' .. questionId, nil, { notTokenRequest = false }, success, error, { 500, 400 })
 end
 
 function CodePkuQuestionsApi:Get(questionIds, success, error)

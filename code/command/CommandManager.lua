@@ -1,4 +1,4 @@
-local CommandManager = commonlib.gettable("Mod.CodePkuCommon.Command.CommandManager");
+local CommandManager = commonlib.gettable("Mod.CodePkuCommon.Code.Command.CommandManager");
 local SlashCommand = commonlib.gettable("MyCompany.Aries.SlashCommand.SlashCommand");
 local CmdParser = commonlib.gettable("MyCompany.Aries.Game.CmdParser");	
 local BlockEngine = commonlib.gettable("MyCompany.Aries.Game.BlockEngine")
