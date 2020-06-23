@@ -6,24 +6,26 @@ place: Foshan
 Desc: 
 use the lib:
 ------------------------------------------------------------
-local Config = NPL.load("(gl)Mod/WorldShare/config/Config.lua")
+local Config = NPL.load("(gl)Mod/CodePkuCommon/config/Config.lua")
 ------------------------------------------------------------
 ]]
 
-local Config = NPL.export()
+local Config = NPL.export();
 
 Config.env = {
-  ONLINE = "ONLINE",
-  STAGE = "STAGE",
   RELEASE = "RELEASE",
+  STAGING = "STAGING",
+  DEV = "DEV",
   LOCAL = "LOCAL"
-}
+};
 
-Config.defaultEnv = (ParaEngine.GetAppCommandLineByParam("codepkuenv", nil) or Config.env.ONLINE)
+Config.defaultEnv = (ParaEngine.GetAppCommandLineByParam("codepkuenv", nil) or Config.env.RELEASE);
 
-Config.codepkuServerList = {
-  ONLINE = "https://game.codepku.com/api/game",
-  STAGE = "https://game.staging.codepku.com/api/game",
-  RELEASE = "https://game.dev.codepku.com/api/game",
+Config.codepkuServer = {
+  RELEASE = "https://game.codepku.com/api/game",
+  STAGING = "https://game.staging.codepku.com/api/game",
+  DEV = "https://game.dev.codepku.com/api/game",
   LOCAL = "http://game.local.codepku.com/api/game"
-}
+};
+
+Config.defaultCodepkuServer  = Config.codepkuServer[Config.defaultEnv];

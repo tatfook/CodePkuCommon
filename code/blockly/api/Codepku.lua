@@ -10,18 +10,14 @@ local api = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Api");
 -------------------------------------------------------
 ]]
 
-local api = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Api");
+local CodeApi = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.CodeApi");
 local Log = NPL.load("(gl)Mod/CodePkuCommon/util/Log.lua");
+local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 
 -- 加载显示指定id的题目. 
 -- @param id: 题目id
 -- @param duration: in seconds. if nil, it means forever
-function api:loadQuestion(id)
-    local QuestionsService = NPL.load("(gl)Mod/CodePkuCommon/api/Codepku/Questions.lua");
-    local Table = NPL.load("(gl)Mod/CodePkuCommon/util/Table.lua");
-
-    local err, msg, data = QuestionsService:GetOne(id);
-    Log.debug(err);
-    Log.debug(msg);
-    Log.debug(data);
+function CodeApi.loadQuestion(id)
+    local response = ApiService.getQuestions(id,true);
+    return response;
 end

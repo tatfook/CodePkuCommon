@@ -1,33 +1,28 @@
 --[[
-Title: 题目
+Title: Questions Api Service
 Author(s): John Mai
-Date: 2020-06-18 11:53:57
-Desc: 题目
+Date: 2020-06-22 17:57:10
+Desc: Questions Api Service
 Example:
 ------------------------------------------------------------
-    local QuestionsService = NPL.load("(gl)Mod/CodePkuCommon/api/Codepku/Questions.lua");
+NPL.load("(gl)Mod/CodePkuCommon/api/Questions.lua");
+local service = commonlib.gettable("Mod.CodePkuCommon.Service");
+service.getQuestions(1):next(funciton(response)
+    -- handle response
+end);
 -------------------------------------------------------
 ]]
 
-local CodePkuBaseApi = NPL.load('./BaseApi.lua')
+local request = NPL.load("../BaseRequest.lua");
+local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 
-local CodePkuQuestionsApi = NPL.export()
-
-function CodePkuQuestionsApi:GetOne(questionId, success, error)
-    if not questionId then
-        return false
+function ApiService.getQuestions(ids,sync)
+    if type(ids) == "table" then
+        ids = table.concat(ids, ',')
+        return request:get('/questions?id=' .. ids,nil,{sync = sync})
+    elseif type(ids) == "number" then
+        return request:get('/questions/' .. ids,nil,{sync = sync});
     end
 
-    questionId = tonumber(questionId)
-
-    return CodePkuBaseApi:Get('/questions/' .. questionId, nil, { notTokenRequest = false }, success, error, { 500, 400 })
-end
-
-function CodePkuQuestionsApi:Get(questionIds, success, error)
-    if (type(questionIds) ~= 'table') then
-        return false
-    end
-
-    local qids = table.concat(questionIds, ',')
-    CodePkuBaseApi:Get('/questions?id=' .. qids, nil, { notTokenRequest = false }, success, error, { 500, 400 })
+    return nil;
 end

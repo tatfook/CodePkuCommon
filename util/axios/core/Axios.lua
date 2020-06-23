@@ -15,7 +15,6 @@ local InterceptorManager = NPL.load("(gl)Mod/CodePkuCommon/util/Axios/core/Inter
 
 local os = commonlib.gettable("System.os");
 
--- local defaults = {};
 function Axios:ctor()
     self.defaults = {};
     self.interceptors = {
@@ -27,29 +26,6 @@ end
 function Axios:init(instanceConfig)
     self.defaults = instanceConfig or {};
     self.__index = self;
-    -- self.__call = function (mytable, newtable)
-    --     Log.debug(666);
-    --     Log.debug(mytable);
-    --     Log.debug(newtable);
-    -- end;
-    -- self = setmetatable(self, {
-    --     __index = function(self, method,...)
-    --         Log.debug(666);
-    --         Log.debug(self);
-    --         Log.debug(key);
-    --         Log.debug(...);
-    --         config.method = method;
-    --         if method then
-    --         end
-    --         -- return self:request();
-    --     end,
-    --     __call = function (cls, ...)
-    --         Log.debug(777);
-    --         Log.debug(cls);
-    --         Log.debug(newtable);
-    --         -- return cls:request(...);
-    --     end
-    -- });
     return self;
 end
 
@@ -70,10 +46,11 @@ function Axios.request(self, ...)
         config = arguments[2] or {};
         config.url = arguments[1];
     else
-        config = config or {};
+        config = ... or {};
     end
 
     config = self:mergeConfig(config);
+
 
     if config.baseUrl then
         config.url = string.format("%s%s", config.baseUrl, config.url);
@@ -100,44 +77,69 @@ function Axios.request(self, ...)
         config.data = nil;
     end
 
+    config.headers = {};
+
     self.interceptors.request:forEach(function(interceptor)
         config = interceptor.fulfilled(config);
     end);
 
+
+    Log.info('### request config ###',config);
+
     local request = nil;
 
+
     if config.sync then
-        local code, message, data = System.os.GetUrl(config);
+        local status, headers, data = System.os.GetUrl(config);
 
         request = {
-            code = code,
-            message = message,
-            data = data
+            status = status,
+            headers = headers,
+            data = data,
+            config = config
         };
+
+        Log.info('### sync request response ###',request);
     else
-        request = Promise:new();
+        request = Promise.new(function(resolve, reject)
+            System.os.GetUrl(config, function(status, headers, data)
+                local response = {
+                    status = status,
+                    headers = headers,
+                    data = data,
+                    config = config
+                };
 
-        System.os.GetUrl(config, function(code, message, data)
-            local response = {
-                code = code,
-                message = message,
-                data = data
-            };
+                Log.info('### async request response ###',response);
 
-            if code >= 200 and code < 300 then
-                request:resolve(response);
-            else
-                request:reject(response);
-            end
-        end, arguments[3]);
+                if status >= 200 and status < 300 then
+                    resolve(response);
+                else
+                    reject(response);
+                end
+            end);
+        end);
     end
 
-
     self.interceptors.response:forEach(function(interceptor)
-        if request.type and request.type == 'promise' then
-            request = request:next(interceptor.fulfilled,interceptor.rejected);
-        else
+        if config.sync then
             request = interceptor.fulfilled(request);
+        else
+            request = Promise.new(function(resolve, reject)
+                request:next(function(response)
+                    if interceptor.fulfilled then
+                        resolve(interceptor.fulfilled(response));
+                    else
+                        resolve(response);
+                    end
+                end):catch(function(error)
+                    if interceptor.rejected then
+                        reject(interceptor.rejected(error));
+                    else
+                        reject(error);
+                    end
+                end);
+            end);
         end
     end);
 
@@ -211,20 +213,6 @@ function Axios.reject(data)
     return promise;
 end
 
-function Axios.useRequestInterceptors(self, fulfilled, rejected)
-
-end
-
-function Axios.useResponseInterceptors(self, fulfilled, rejected)
-
-end
-
--- Axios.__index = function(self, method)
--- Log.debug(method);
--- if contains({'delete', 'get', 'head', 'options'},method) then
--- elseif contains({'post', 'put', 'patch'},method) then
--- end
--- end
 function contains(table, value)
     for i = 1, #table do
         if table[i] == value then

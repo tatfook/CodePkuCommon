@@ -1,6 +1,7 @@
-local CodePkuUsersApi = NPL.load("(gl)Mod/CodePkuCommon/api/Codepku/Users.lua")
-local MockQuestion = NPL.load("(gl)Mod/CodePkuCommon/mock/MockQuestion.lua")
 local MockLogin = NPL.export()
+
+local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
+
 
 function MockLogin:login()
     if System.User.codepkuToken then
@@ -12,12 +13,7 @@ function MockLogin:login()
         return true;
     end
 
-    local function HandleCallback(response, err)        
-        if err == 400 or err == 422 or err == 500 then
-            local errMsg = response.message or "用户名或密码错误"
-            GameLogic.AddBBS(nil, L"Codepku自动登录-" .. errMsg, 3000, "255 0 0", 21)
-            return false
-        end
+    ApiService.Login(codepkuMobile,codepkuPasswd):next(function (response)
 
         if type(response.data) ~= "table" then            
             GameLogic.AddBBS(nil, L"Codepku自动登录-服务器连接失败", 3000, "255 0 0", 21)
@@ -36,7 +32,8 @@ function MockLogin:login()
         commonlib.setfield("System.User.nickName", nickname)
 
         GameLogic.AddBBS(nil, L"Codepku自动登录成功，当前账号" .. codepkuMobile, 3000, "0 255 0", 21)
-        -- MockQuestion:GetOne(1)
-    end
-    CodePkuUsersApi:Login(codepkuMobile, codepkuPasswd, HandleCallback, HandleCallback)
+    end):catch(function (error)
+        local errMsg = error.message or "用户名或密码错误"
+        GameLogic.AddBBS(nil, L"Codepku自动登录-" .. errMsg, 3000, "255 0 0", 21)
+    end);
 end

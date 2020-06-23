@@ -1,53 +1,42 @@
 --[[
-Title: Keepwork Users API
-Author(s):  big
-Date:  2019.11.8
-Place: Foshan
-use the lib:
+Title: Users Api Service
+Author(s): John Mai
+Date: 2020-06-22 17:57:10
+Desc: Users Api Service
+Example:
 ------------------------------------------------------------
-local KeepworkUsersApi = NPL.load("(gl)Mod/WorldShare/api/Keepwork/Users.lua")
-------------------------------------------------------------
+
+NPL.load("(gl)Mod/CodePkuCommon/service/Users.lua");
+local service = commonlib.gettable("Mod.CodePkuCommon.Service");
+
+service.Login(mobile,password):next(funciton(response)
+    -- handle response
+end);
+
+-------------------------------------------------------
 ]]
+local request = NPL.load("../BaseRequest.lua");
+local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 
-local CodePkuBaseApi = NPL.load('./BaseApi.lua')
-
-local CodePkuUsersApi = NPL.export()
-
--- url: /users/authorizations
--- method: POST
--- params:
---[[
-    mobile	string 必须 用户名	
-    password string 必须 密码
-]]
--- return: object
-function CodePkuUsersApi:Login(mobile, password, success, error)
+function ApiService.Login(mobile,password)
     if type(mobile) ~= "string" or type(password) ~= "string" then
         return false
     end
 
-    local params = {
+    return request:post("/users/authorizations",{
         mobile = mobile,
         password = password
-    }
-
-    CodePkuBaseApi:Post("/users/authorizations", params, nil, success, error, { 503, 400 })
+    });
 end
 
--- url: /users/profile
--- method: POST
--- params:
---[[
-    token string 必须 token
-]]
--- return: object
-function CodePkuUsersApi:Profile(token, success, error)
+function ApiService.Profile(token)
     if type(token) ~= "string" and #token == 0 then
         return false
     end
 
     local headers = { Authorization = format("Bearer %s", token) }
 
-    CodePkuBaseApi:Get("/users/profile", nil, headers, success, error, 401)
+    return request:get("/users/profile",nil,{
+        headers = headers
+    });
 end
-

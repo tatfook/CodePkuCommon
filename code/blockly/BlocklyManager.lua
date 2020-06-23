@@ -15,12 +15,14 @@ NPL.load("(gl)Mod/CodePkuCommon/code/blockly/Codepku.lua");
 NPL.load("(gl)script/apps/Aries/Creator/Game/Code/CodeCoroutine.lua");
 local CodeCoroutine = commonlib.gettable("MyCompany.Aries.Game.Code.CodeCoroutine");
 local BlocklyManager = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.BlocklyManager");
-local api = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Api");
 local Log = NPL.load("(gl)Mod/CodePkuCommon/util/Log.lua");
 local Table = NPL.load("(gl)Mod/CodePkuCommon/util/Table.lua");
+local service = commonlib.gettable("Mod.CodePkuCommon.Service");
+
+NPL.load("(gl)Mod/CodePkuCommon/code/blockly/api/Codepku.lua");
+local CodeApi = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.CodeApi");
 
 function BlocklyManager:init()
-
     GameLogic.GetFilters():add_filter(
         "ParacraftCodeBlocklyAppendDefinitions",
         function(ParacraftCodeBlockly)
@@ -43,11 +45,10 @@ function BlocklyManager:init()
     GameLogic.GetFilters():add_filter(
 			"CodeAPIInstallMethods",
             function(CodeEnv)
-                for k,v in pairs(api) do
-                    local f = function(...)
-                        return api[k](CodeEnv, ...);
-                    end
-                    CodeEnv[k] = f;
+                for k,v in pairs(CodeApi) do
+                    CodeEnv[k] = function (...)
+                        return CodeApi[k](...);
+                    end;
                 end
 			end
     );
