@@ -38,6 +38,7 @@ end
 function CodePkuCommon:init()
     ApiRegister.init();
     CommandManager:init();
+    BlocklyManager:init();
     MockLogin:login();
 end
 
@@ -45,7 +46,7 @@ function CodePkuCommon:OnLogin()
 end
 -- called when a new world is loaded. 
 function CodePkuCommon:OnWorldLoad()
-    BlocklyManager:init();
+    
 end
 
 function CodePkuCommon:OnLeaveWorld()

@@ -12,8 +12,6 @@ BlocklyManager:init();
 ]]
 
 NPL.load("(gl)Mod/CodePkuCommon/code/blockly/Codepku.lua");
-NPL.load("(gl)script/apps/Aries/Creator/Game/Code/CodeCoroutine.lua");
-local CodeCoroutine = commonlib.gettable("MyCompany.Aries.Game.Code.CodeCoroutine");
 local BlocklyManager = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.BlocklyManager");
 local Log = NPL.load("(gl)Mod/CodePkuCommon/util/Log.lua");
 local Table = NPL.load("(gl)Mod/CodePkuCommon/util/Table.lua");
@@ -26,10 +24,13 @@ function BlocklyManager:init()
     GameLogic.GetFilters():add_filter(
         "ParacraftCodeBlocklyAppendDefinitions",
         function(ParacraftCodeBlockly)
-            NPL.load("(gl)Mod/CodePkuCommon/code/blockly/Codepku.lua");
-            local Codepku = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Codepku");
-            ParacraftCodeBlockly.AppendDefinitions(Codepku.GetCmds());
-
+            echo("ParacraftCodeBlockly")
+            echo(ParacraftCodeBlockly)
+            if (ParacraftCodeBlockly) then 
+                NPL.load("(gl)Mod/CodePkuCommon/code/blockly/Codepku.lua");
+                local Codepku = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Codepku");
+                ParacraftCodeBlockly.AppendDefinitions(Codepku.GetCmds());
+            end
         end
     );
 

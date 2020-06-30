@@ -7,6 +7,7 @@ Example:
 ------------------------------------------------------------
 NPL.load("(gl)Mod/CodePkuCommon/code/blockly/api/Codepku.lua");
 local api = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Api");
+/
 -------------------------------------------------------
 ]]
 
@@ -20,4 +21,8 @@ local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 function CodeApi.loadQuestion(id)
     local response = ApiService.getQuestions(id,true);
     return response;
+end
+
+function CodeApi.submitAnswer(text)
+    echo("submitAnswer")
 end
