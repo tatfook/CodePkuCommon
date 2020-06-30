@@ -15,7 +15,7 @@ Example:
 -------------------------------------------------------
 ]]
 
-local Log = NPL.export();
+local Log = commonlib.gettable("Mod.CodePkuCommon.Utils.Log");
 
 Log.usecolor = true
 Log.outfile = nil

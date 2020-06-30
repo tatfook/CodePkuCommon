@@ -8,6 +8,7 @@ NPL.load("(gl)Mod/CodePku/main.lua");
 local CodePku = commonlib.gettable("Mod.CodePku");
 ------------------------------------------------------------
 ]]
+NPL.load("(gl)Mod/CodePkuCommon/util/Utils.lua");
 NPL.load('(gl)Mod/CodePkuCommon/code/command/CommandManager.lua');
 NPL.load('(gl)Mod/CodePkuCommon/code/blockly/BlocklyManager.lua');
 
