@@ -15,7 +15,6 @@ NPL.load("(gl)Mod/CodePkuCommon/code/blockly/Codepku.lua");
 local BlocklyManager = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.BlocklyManager");
 local Log = NPL.load("(gl)Mod/CodePkuCommon/util/Log.lua");
 local Table = NPL.load("(gl)Mod/CodePkuCommon/util/Table.lua");
-local service = commonlib.gettable("Mod.CodePkuCommon.Service");
 
 NPL.load("(gl)Mod/CodePkuCommon/code/blockly/api/Codepku.lua");
 local CodeApi = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.CodeApi");
