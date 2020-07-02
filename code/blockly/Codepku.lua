@@ -79,33 +79,40 @@ local cmds = {
         },
     },
 
+    -- 进度类型
     {
-        type = "progressType", 
+        type = "progressType",
         message0 = "%1",
         arg0 = {
             {
                 name = "value",
                 type = "field_dropdown",
                 options = {
-                    { L"起始", "start" },
-                    { L"结束", "end" },
-                    { L"学习", "leaning" },
-                    { L"练习", "exercising" },
-                    { L"闯关", "passing" },
+                    { L "起始", "start" },
+                    { L "结束", "end" },
+                    { L "学习", "leaning" },
+                    { L "练习", "exercising" },
+                    { L "闯关", "passing" },
                 },
             },
         },
         hide_in_toolbox = true,
-        category = "Codepku", 
-        output = {type = "null",},
-        helpUrl = "", 
+        category = "Codepku",
+        output = { type = "null", },
+        helpUrl = "",
         canRun = false,
         func_description = '"%s"',
         ToNPL = function(self)
             return self:getFieldAsString('value');
         end,
-        examples = {{desc = "", canRun = true, code = [[
-    ]]}},
+        examples = {
+            {
+                desc = "",
+                canRun = true,
+                code = [[
+    ]]
+            }
+        },
     },
 
     --    进度设置
@@ -140,7 +147,7 @@ local cmds = {
         funcName = "setProgress",
         func_description = 'setProgress(%d,%d,%s)',
         ToNPL = function(self)
-            return string.format('setProgress(%d,%d,"%s")\n', self:getFieldValue('total'),self:getFieldValue('current'),self:getFieldAsString('type'));
+            return string.format('setProgress(%d,%d,"%s")\n', self:getFieldValue('total'), self:getFieldValue('current'), self:getFieldAsString('type'));
         end,
         examples = {
             {
@@ -181,6 +188,78 @@ local cmds = {
                 canRun = false,
                 code = [[
                     setProgress(4,2,"start")
+]]
+            }
+        },
+    },
+
+    -- 进度类型
+    {
+        type = "shareType",
+        message0 = "%1",
+        arg0 = {
+            {
+                name = "value",
+                type = "field_dropdown",
+                options = {
+                    { L "文本", "text" },
+                    { L "图片", "image" }
+                },
+            },
+        },
+        hide_in_toolbox = true,
+        category = "Codepku",
+        output = { type = "null", },
+        helpUrl = "",
+        canRun = false,
+        func_description = '"%s"',
+        ToNPL = function(self)
+            return self:getFieldAsString('value');
+        end,
+        examples = {
+            {
+                desc = "",
+                canRun = true,
+                code = [[
+    ]]
+            }
+        },
+    },
+
+    --    分享功能
+    {
+        type = "share",
+        message0 = L "分享 %1 %2",
+        arg0 = {
+            {
+                name = "shareType",
+                type = "input_value",
+                shadow = { type = "shareType", value = "text" },
+                text = "text",
+            },
+            {
+                name = "options",
+                type = "input_value",
+                shadow = { type = "text", value = "text" },
+                text = "text",
+            }
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "share",
+        func_description = 'share(%s,%s)',
+        ToNPL = function(self)
+            return string.format('share("%s","%s")\n', self:getFieldValue('shareType'), self:getFieldValue('options'));
+        end,
+        examples = {
+            {
+                desc = L "分享功能",
+                canRun = false,
+                code = [[
+                    share("text","分享内容")
 ]]
             }
         },

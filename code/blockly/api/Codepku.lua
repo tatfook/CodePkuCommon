@@ -21,7 +21,7 @@ local Log = commonlib.gettable("Mod.CodePkuCommon.Utils.Log");
 -- @param duration: in seconds. if nil, it means forever
 -- @return table
 function CodeApi.loadQuestion(id)
-    local response = ApiService.getQuestions(id,true);
+    local response = ApiService.getQuestions(id, true);
     return response;
 end
 
@@ -35,7 +35,7 @@ end
 -- @param current: 当前进度
 -- @param type: 进度类型
 -- @return boolean
-function CodeApi.setProgress(total,current,type)
+function CodeApi.setProgress(total, current, type)
     echo("setProgress")
     Log.debug('555555');
 end
@@ -48,8 +48,22 @@ function CodeApi.getCourseware(id)
 end
 
 -- 分享
--- @param type: 分享类型
+-- @param shareType: 分享类型
 -- @param options: 分享参数
-function CodeApi.share(type,options)
-    
+function CodeApi.share(shareType, options)
+    if LuaJavaBridge == nil then
+        NPL.call("LuaJavaBridge.cpp", {});
+    end
+
+    if LuaJavaBridge then
+        if shareType == "text" then
+            local args = {};
+            if type(options) == 'string' then
+                args = { text = options };
+            end
+            LuaJavaBridge.callJavaStaticMethod("plugin/UMeng/UMengShare", "text", "(Ljava/lang/String;)V", args);
+        elseif shareType == "url" then
+
+        end
+    end
 end
