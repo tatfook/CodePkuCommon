@@ -15,6 +15,7 @@ local CodeApi = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.CodeApi");
 local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 
 local Log = commonlib.gettable("Mod.CodePkuCommon.Utils.Log");
+local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
 -- 加载显示指定id的题目. 
 -- @param id: 题目id
@@ -50,20 +51,6 @@ end
 -- 分享
 -- @param shareType: 分享类型
 -- @param options: 分享参数
-function CodeApi.share(shareType, options)
-    if LuaJavaBridge == nil then
-        NPL.call("LuaJavaBridge.cpp", {});
-    end
-
-    if LuaJavaBridge then
-        if shareType == "text" then
-            local args = {};
-            if type(options) == 'string' then
-                args = { text = options };
-            end
-            LuaJavaBridge.callJavaStaticMethod("plugin/UMeng/UMengShare", "text", "(Ljava/lang/String;)V", args);
-        elseif shareType == "url" then
-
-        end
-    end
+function CodeApi.share(...)
+    Share:new():fire(...);
 end
