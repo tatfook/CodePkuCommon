@@ -28,4 +28,12 @@ Config.codepkuServer = {
   LOCAL = "http://game.local.codepku.com/api/game"
 };
 
+Config.codepkuHost = {
+  RELEASE = "https://game.codepku.com",
+  STAGING = "https://game.staging.codepku.com",
+  DEV = "https://game.dev.codepku.com",
+  LOCAL = "http://game.local.codepku.com"
+};
+
 Config.defaultCodepkuServer  = Config.codepkuServer[Config.defaultEnv];
+Config.defaultCodepkuHost = Config.codepkuHost[Config.defaultEnv];
