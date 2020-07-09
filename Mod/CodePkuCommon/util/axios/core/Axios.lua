@@ -79,6 +79,10 @@ function Axios.request(self, ...)
         config.data = nil;
     end
 
+    if config.json == nil then 
+        config.json = true;
+    end
+
     config.headers = {};
 
     self.interceptors.request:forEach(function(interceptor)
