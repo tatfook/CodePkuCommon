@@ -23,11 +23,23 @@ local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 -- @return table
 function CodeApi.loadQuestion(id)
     local response = ApiService.getQuestions(id, true);
-    return response;
+    if response.data.code == 404 then
+        return '該題目不存在'
+    end
+    return response.data.data;
 end
 
-function CodeApi.submitAnswer(text)
-    echo("submitAnswer")
+-- 提交指定id的题目. 
+-- @param id: 题目id
+-- @param duration: in seconds. if nil, it means forever
+-- @return table
+function CodeApi.submitAnswer(courseware_id,question_id,answer,answer_time)
+    local response = ApiService.submitAnswers(courseware_id,question_id,answer,answer_time)
+    if response.status == 200 then
+        return true
+    else
+        return false
+    end
 end
 
 
@@ -37,15 +49,15 @@ end
 -- @param type: 进度类型
 -- @return boolean
 function CodeApi.setProgress(total, current, type)
-    echo("setProgress")
-    Log.debug('555555');
+    return {total,current,type}
 end
 
 -- 获取课件信息
--- @param id: 课件id
+-- @param courseware_id: 课件id
 -- @return table
-function CodeApi.getCourseware(id)
-    echo("getCourseware");
+function CodeApi.getCourseware(courseware_id)
+    local response = ApiService.getCourseware(courseware_id,true)
+    return response.data.data
 end
 
 -- 分享
@@ -53,4 +65,31 @@ end
 -- @param options: 分享参数
 function CodeApi.share(...)
     Share:new():fire(...);
+end
+
+-- 获取用户上次学习信息
+-- @param courseware_id: 课件id
+-- @return table
+function CodeApi.getLearnRecords(courseware_id)
+    local response = ApiService.getLearnRecords(courseware_id,true)
+    return response
+end
+
+-- 上传上次学习进度
+-- @param courseware_id: 课件id
+-- @param category: 类别
+-- @param current_node: 当前节点
+-- @param total_node: 总结点
+-- @return table
+function CodeApi.setLearnRecords(courseware_id,category,current_node,total_node)
+    local response = ApiService.setLearnRecords(courseware_id,category,current_node,total_node,true)
+    return response
+end
+
+-- 上传用户行为
+-- @param courseware_id: 课件id
+-- @return table
+function CodeApi.setBehaviors(courseware_id,behavior_action,behavior_type)
+    local response = ApiService.setBehaviors(courseware_id,behavior_action,behavior_type,true)
+    return response
 end
