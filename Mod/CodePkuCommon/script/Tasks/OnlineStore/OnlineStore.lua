@@ -36,5 +36,5 @@ function CodePkuOnlineStore.CustomOnlineStoreUrl(name)
 end
 
 function CodePkuOnlineStore.getPageParamUrl(name)
-    return "Mod/CodePkuCommon/script/Tasks/OnlineStore/OnlineStore.html?name=" .. name;
+    return "Mod/CodePkuCommon/script/Tasks/OnlineStore/OnlineStore.html?name=" .. name .. "&rand=" .. os.time();
 end

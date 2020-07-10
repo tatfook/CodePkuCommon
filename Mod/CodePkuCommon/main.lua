@@ -58,16 +58,24 @@ function CodePkuCommon:init()
     );
 	GameLogic.GetFilters():add_filter(
 		"OnlineStore.CustomOnlineStoreUrl",
-		function (url, name)
-			local CodePkuOnlineStore = NPL.load("(gl)Mod/CodePkuCommon/script/Tasks/OnlineStore/OnlineStore.lua");
-			return CodePkuOnlineStore.CustomOnlineStoreUrl(name);
+        function (url, name)
+            if (name == "component" or name == "question") then 
+                local CodePkuOnlineStore = NPL.load("(gl)Mod/CodePkuCommon/script/Tasks/OnlineStore/OnlineStore.lua");
+                return CodePkuOnlineStore.CustomOnlineStoreUrl(name);
+            else
+                return url;
+            end
 		end
     );
 	GameLogic.GetFilters():add_filter(
 		"OnlineStore.getPageParamUrl",
-		function (defaultUrl, name)
-			local CodePkuOnlineStore = NPL.load("(gl)Mod/CodePkuCommon/script/Tasks/OnlineStore/OnlineStore.lua");
-            return CodePkuOnlineStore.getPageParamUrl(name);
+        function (defaultUrl, name)
+            if (name == "component" or name == "question") then 
+                local CodePkuOnlineStore = NPL.load("(gl)Mod/CodePkuCommon/script/Tasks/OnlineStore/OnlineStore.lua");
+                return CodePkuOnlineStore.getPageParamUrl(name);
+            else
+                return defaultUrl;
+            end
 		end
     );
 end
