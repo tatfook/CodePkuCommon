@@ -43,9 +43,9 @@ function CodePkuCommon:init()
         "desktop_menu",
         function (menuItems)
             local isCodepku = ParaEngine.GetAppCommandLineByParam("isCodepku", "false") == "true"
-            if (isCodepku) {
+            if (isCodepku) then
                 return {};
-            } else {
+            else
                 for _, menuItem in ipairs(menuItems) do
                     if (menuItem.name == 'window') then
                         table.insert(menuItem.children, 4, {text = L"玩学世界元件库...",name = "window.component", cmd="/open component"});
@@ -53,7 +53,7 @@ function CodePkuCommon:init()
                     end
                 end
                 return menuItems;
-            }
+            end
         end
     );
 	GameLogic.GetFilters():add_filter(
