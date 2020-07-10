@@ -40,7 +40,12 @@ local cmds = {
                 desc = L "加载显示指定id的题目",
                 canRun = false,
                 code = [[
-            loadQuestion(3)
+data = loadQuestion(12)
+question = data.question
+options= data.options
+answer_analysis =data.answer_analysis
+answer_tips = data.answer_tips
+knowledge = data.knowledge
 ]]
             }
         },
@@ -131,41 +136,41 @@ local cmds = {
         },
     },
 
---     -- 进度类型
---     {
---         type = "progressType",
---         message0 = "%1",
---         arg0 = {
---             {
---                 name = "value",
---                 type = "field_dropdown",
---                 options = {
---                     { L "起始", "start" },
---                     { L "结束", "end" },
---                     { L "学习", "leaning" },
---                     { L "练习", "exercising" },
---                     { L "闯关", "passing" },
---                 },
---             },
---         },
---         hide_in_toolbox = true,
---         category = "Codepku",
---         output = { type = "null", },
---         helpUrl = "",
---         canRun = false,
---         func_description = '"%s"',
---         ToNPL = function(self)
---             return self:getFieldAsString('value');
---         end,
---         examples = {
---             {
---                 desc = "",
---                 canRun = true,
---                 code = [[
---     ]]
---             }
---         },
---     },
+    -- 进度类型
+    {
+        type = "progressType",
+        message0 = "%1",
+        arg0 = {
+            {
+                name = "value",
+                type = "field_dropdown",
+                options = {
+                    { L "起始", 1 },
+                    { L "结束", 2 },
+                    { L "学习", 3 },
+                    { L "练习", 4 },
+                    { L "闯关", 5},
+                },
+            },
+        },
+        hide_in_toolbox = true,
+        category = "Codepku",
+        output = { type = "null", },
+        helpUrl = "",
+        canRun = false,
+        func_description = '"%s"',
+        ToNPL = function(self)
+            return self:getFieldAsString('value');
+        end,
+        examples = {
+            {
+                desc = "",
+                canRun = true,
+                code = [[
+    ]]
+            }
+        },
+    },
 
 --     --    进度设置
 --     {
@@ -239,7 +244,14 @@ local cmds = {
                 desc = L "获取对应id课件信息",
                 canRun = false,
                 code = [[
-                    setProgress(4)
+-- 如果课件id不存在 data = '课件不存在'
+data = getCourseware(4)
+description = data.description,
+name = data.name,
+course_unit = data.course_unit,
+course_id = data.course_id,
+course_unit_id = data.course_unit_id,
+
 ]]
             }
         },
@@ -340,10 +352,14 @@ local cmds = {
         end,
         examples = {
             {
-                desc = L "加载用户id上次学习情况",
+                desc = L "加载用户指定课件id的上次学习情况",
                 canRun = false,
                 code = [[
-            getLearnRecords(3)
+            data = getLearnRecords(4)
+            category = data.category
+            pos= data.world_position
+            current_node = data.current_node
+            total_node = data.total_node
 ]]
             }
         },
@@ -353,7 +369,7 @@ local cmds = {
      {
         -- courseware_id,category,current_node,total_node
         type = "setLearnRecords",
-        message0 = L " 课件 %1 种类 %2 当前节点 %3 总结点 %4",
+        message0 = L " 上传课件 %1 类别 %2 学习进度 当前节点 %3 总结点 %4",
         arg0 = {
             {
                 name = "courseware_id",
@@ -364,7 +380,7 @@ local cmds = {
             {
                 name = "category",
                 type = "input_value",
-                shadow = { type = "math_number",value = 1},
+                shadow = { type = "progressType",value = 1},
                 text = 1,
             },
             {
@@ -395,12 +411,79 @@ local cmds = {
                 desc = L "上传用户的学习进度",
                 canRun = false,
                 code = [[
-                    setLearnRecords(3,2,3,4)
+-- 返回是否提交成功
+data = setLearnRecords(4,1,3,4)
 ]]
             }
         },
     },
 
+    {
+        type = "behavior_action_type",
+        message0 = "%1",
+        arg0 = {
+            {
+                name = "value",
+                type = "field_dropdown",
+                options = {
+                    { L "开始", 1 },
+                    { L "结束", 2 },
+                    { L "分享", 3 },
+                },
+            },
+        },
+        hide_in_toolbox = true,
+        category = "Codepku",
+        output = { type = "null", },
+        helpUrl = "",
+        canRun = false,
+        func_description = '"%s"',
+        ToNPL = function(self)
+            return self:getFieldAsString('value');
+        end,
+        examples = {
+            {
+                desc = "",
+                canRun = true,
+                code = [[
+    ]]
+            }
+        },
+    },
+    {
+        type = "behavior_type1",
+        message0 = "%1",
+        arg0 = {
+            {
+                name = "value",
+                type = "field_dropdown",
+                options = {
+                    { L "动画", 1},
+                    { L "位置", 2},
+                    { L "答题", 3},
+                    { L "微信", 4},
+                    { L "QQ", 5},
+                },
+            },
+        },
+        hide_in_toolbox = true,
+        category = "Codepku",
+        output = { type = "null", },
+        helpUrl = "",
+        canRun = false,
+        func_description = '"%s"',
+        ToNPL = function(self)
+            return self:getFieldAsString('value');
+        end,
+        examples = {
+            {
+                desc = "",
+                canRun = true,
+                code = [[
+    ]]
+            }
+        },
+    },
      --    提交用户行为
      {
         -- courseware_id,category,current_node,total_node
@@ -416,13 +499,13 @@ local cmds = {
             {
                 name = "behavior_action",
                 type = "input_value",
-                shadow = { type = "math_number",value = 1},
+                shadow = { type = "behavior_action_type",value = 1},
                 text = 1,
             },
             {
                 name = "behavior_type",
                 type = "input_value",
-                shadow = { type = "math_number",value = 1},
+                shadow = { type = "behavior_type1",value = 1},
                 text = 1,
             },
 
@@ -439,7 +522,7 @@ local cmds = {
         end,
         examples = {
             {
-                desc = L "上传用户行为",
+                desc = L "上传用户行为返回是否上传成功",
                 canRun = false,
                 code = [[
                     setBehaviors(3,2,3)

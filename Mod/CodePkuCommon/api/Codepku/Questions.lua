@@ -47,15 +47,14 @@ function ApiService.getCourseware(courseware_id,sync)
     return request:get('/courewares/' .. courseware_id,nil,{sync = sync});
 end
 
-function ApiService.getLearnRecords(courseware_id)
+function ApiService.getLearnRecords(courseware_id,sync)
     return request:get('/learn-records/last/' .. courseware_id,nil,{sync = sync});
 end
 
 function ApiService.setLearnRecords(courseware_id,category,current_node,total_node)
     local pos_x, pos_y, pos_z = EntityManager.GetPlayer():GetPosition()
     data = {
-        -- world_position = {x=pos_x,y=pos_y,z=pos_z},
-        testarr = {1,2,3},
+        world_position = {x=pos_x,y=pos_y,z=pos_z},
         category = tonumber(category),
         courseware_id = tonumber(courseware_id),
         current_node = tonumber(current_node),
@@ -71,6 +70,7 @@ function ApiService.setBehaviors(courseware_id,behavior_action,behavior_type)
         behavior_type = tonumber(behavior_type),
         courseware_id = tonumber(courseware_id),
         behavior_action = tonumber(behavior_action),
+        ext_data= {}
     }
     return request:post('/behaviors' ,data,{sync = true});
 end
