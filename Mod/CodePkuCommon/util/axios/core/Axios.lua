@@ -32,7 +32,7 @@ function Axios:init(instanceConfig)
 end
 
 function Axios:mergeConfig(config)
-    local newConfig = self.defaults;
+    local newConfig = commonlib.clone(self.defaults);
 
     for k, v in pairs(config) do
         newConfig[k] = v
@@ -79,9 +79,9 @@ function Axios.request(self, ...)
         config.data = nil;
     end
 
-    -- if config.json == nil then 
-    --     config.json = true;
-    -- end
+    if config.json == nil then 
+        config.json = true;
+    end
 
     config.headers = {};
 
@@ -155,10 +155,6 @@ function Axios.get(self, url, query, config)
     config = config or {};
     config.url = url;
     config.query = query;
-    config.method = "GET";
-    config.data = nil;
-    config.form = nil;
-    config.json = nil;
     return self:request(config);
 end
 
