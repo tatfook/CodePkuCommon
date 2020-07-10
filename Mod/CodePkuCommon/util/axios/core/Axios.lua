@@ -79,9 +79,9 @@ function Axios.request(self, ...)
         config.data = nil;
     end
 
-    if config.json == nil then 
-        config.json = true;
-    end
+    -- if config.json == nil then 
+    --     config.json = true;
+    -- end
 
     config.headers = {};
 
@@ -155,6 +155,10 @@ function Axios.get(self, url, query, config)
     config = config or {};
     config.url = url;
     config.query = query;
+    config.method = "GET";
+    config.data = nil;
+    config.form = nil;
+    config.json = nil;
     return self:request(config);
 end
 
@@ -187,6 +191,7 @@ function Axios.post(self, url, data, config)
     config.url = url;
     config.data = data;
     config.method = 'POST';
+    config.json = true;
     return self:request(config);
 end
 
