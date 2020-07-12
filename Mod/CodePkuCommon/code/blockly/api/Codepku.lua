@@ -23,7 +23,7 @@ local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 -- @return table
 function CodeApi.loadQuestion(id)
     local response = ApiService.getQuestions(id, true);
-    if response.data.code == 404 then
+    if response.status == 404 then
         return_data = {
             question = '该题目不存在',
             options= '该题目不存在',
