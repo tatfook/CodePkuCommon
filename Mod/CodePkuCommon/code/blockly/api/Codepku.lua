@@ -24,20 +24,27 @@ local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 function CodeApi.loadQuestion(id)
     local response = ApiService.getQuestions(id, true);
     if response.data.code == 404 then
-        return {'该題目不存在'}
+        return_data = {
+            question = '该题目不存在',
+            options= '该题目不存在',
+            answer_analysis ='该题目不存在',
+            answer_tips = '该题目不存在',
+            knowledge = '该题目不存在',
+            }
+    else
+        local data = response.data.data
+        options_list = {}
+        for i = 1,#data.options do
+            table.insert(options_list,data.options[i].option_title)
+        end
+        local return_data = {
+            question = data.content,
+            options= options_list,
+            answer_analysis =data.answer_analysis,
+            answer_tips = data.answer_tips,
+            knowledge = data.knowledge,
+            }
     end
-    local data = response.data.data
-    options_list = {}
-    for i = 1,#data.options do
-        table.insert(options_list,data.options[i].option_title)
-    end
-    local return_data = {
-        question = data.content,
-        options= options_list,
-        answer_analysis =data.answer_analysis,
-        answer_tips = data.answer_tips,
-        knowledge = data.knowledge,
-        }
     return return_data;
 end
 
@@ -78,9 +85,17 @@ function CodeApi.getCourseware(courseware_id)
             course_id = data.course_id,
             course_unit_id = data.course_unit_id,
         }
-        return response_data
+    else
+        response_data = {
+            description = '课件不存在',
+            name = '课件不存在',
+            course_unit = '课件不存在',
+            course_id = '课件不存在',
+            course_unit_id = '课件不存在',
+        }
+     
     end
-    return '课件不存在'
+    return response_data
 end
 
 -- 分享
@@ -103,9 +118,15 @@ function CodeApi.getLearnRecords(courseware_id)
             current_node = data.current_node,
             total_node = data.total_node,
         }
-        return response_data
+    else
+        response_data = {
+            category = '课件不存在',
+            world_position ='课件不存在',
+            current_node = '课件不存在',
+            total_node = '课件不存在',
+        }
     end
-    return '课件不存在'
+    return response_data
 end
 
 -- 上传上次学习进度
