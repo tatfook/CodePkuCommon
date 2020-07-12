@@ -37,7 +37,7 @@ function CodeApi.loadQuestion(id)
         for i = 1,#data.options do
             table.insert(options_list,data.options[i].option_title)
         end
-        local return_data = {
+        return_data = {
             question = data.content,
             options= options_list,
             answer_analysis =data.answer_analysis,
