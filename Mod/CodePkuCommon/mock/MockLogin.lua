@@ -20,10 +20,10 @@ function MockLogin:login()
             return false
         end
 
-        local token = response.data.token or System.User.codepkuToken
-        local userId = response.data.id or 0
-        local nickname = response.data.nickname or ""
-        local mobile = response.data.mobile or ""
+        local token = response.data.data.token or System.User.codepkuToken
+        local userId = response.data.data.id or 0
+        local nickname = response.data.data.nickname or ""
+        local mobile = response.data.data.mobile or ""
 
         commonlib.setfield("System.User.codepkuToken", token)
         commonlib.setfield("System.User.mobile", mobile)
