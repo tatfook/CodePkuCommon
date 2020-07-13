@@ -25,20 +25,25 @@ function CodeApi.loadQuestion(id)
     local response = ApiService.getQuestions(id, true);
     if response.status == 404 then
         return_data = {
-            question = '该题目不存在',
-            options= '该题目不存在',
-            answer_analysis ='该题目不存在',
-            answer_tips = '该题目不存在',
-            knowledge = '该题目不存在',
+            type="404",
+            msg="找不到题号为" .. id .. "的问题"
             }
     else
         local data = response.data.data
+        local question_type = "choice"
+        if #data.options == 0 then
+            question_type = "essay"
+        end
+
         options_list = {}
         for i = 1,#data.options do
-            table.insert(options_list,data.options[i].option_title)
+            table.insert(options_list,{data.options[i].option_title,data.options[i].is_correct})
         end
+
         return_data = {
+            type = question_type,
             question = data.content,
+            answer = data.answer,
             options= options_list,
             answer_analysis =data.answer_analysis,
             answer_tips = data.answer_tips,
@@ -47,6 +52,7 @@ function CodeApi.loadQuestion(id)
     end
     return return_data;
 end
+
 
 -- 提交指定id的题目. 
 -- @param id: 题目id

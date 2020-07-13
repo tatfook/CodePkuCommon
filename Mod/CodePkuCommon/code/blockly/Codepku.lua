@@ -41,11 +41,17 @@ local cmds = {
                 canRun = false,
                 code = [[
 data = loadQuestion(12)
-question = data.question
-options= data.options
-answer_analysis =data.answer_analysis
-answer_tips = data.answer_tips
-knowledge = data.knowledge
+type = data.type -- 题目类型essay表示问答题，choice表示单选题或者多选题，404表示找不到题目
+question = data.question -- 题目描述
+answer = data.answer -- 问答题或者填空题的参考答案
+options= data.options -- 单选题或者多选题的所有选项，如果type为问答题，此处为一个空表{}
+if type == 'choice' then
+    annserA = options[1][1] -- 第一个选项的内容
+    isA = options[1][2] -- 第一个选项是否为正确答案，正确为true，错误为false
+end
+answer_analysis =data.answer_analysis -- 题目分析
+answer_tips = data.answer_tips -- 题目提示
+knowledge = data.knowledge -- 涉及的知识点
 ]]
             }
         },
