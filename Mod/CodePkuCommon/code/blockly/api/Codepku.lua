@@ -13,10 +13,20 @@ local api = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Api");
 
 local CodeApi = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.CodeApi");
 local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
+local WorldCommon = commonlib.gettable("MyCompany.Aries.Creator.WorldCommon")
 
 local Log = commonlib.gettable("Mod.CodePkuCommon.Utils.Log");
 local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
+
+function CodeApi.GetWorldTag()
+
+    local courewares = WorldCommon.GetWorldTag("courewares")
+
+    return 'courewares' .. courewares
+
+end
+    
 -- 加载显示指定id的题目. 
 -- @param id: 题目id
 -- @param duration: in seconds. if nil, it means forever
