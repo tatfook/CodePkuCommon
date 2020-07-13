@@ -16,6 +16,8 @@ end);
 local request = NPL.load("../BaseRequest.lua");
 local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 local EntityManager = commonlib.gettable("MyCompany.Aries.Game.EntityManager")
+
+
 function ApiService.getQuestions(ids,sync)
     if type(ids) == "table" then
         ids = table.concat(ids, ',')
