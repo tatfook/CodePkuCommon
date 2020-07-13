@@ -18,6 +18,36 @@ local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 local Log = commonlib.gettable("Mod.CodePkuCommon.Utils.Log");
 local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
+-- 加载显示指定id的题目. 
+-- @param id: 题目id
+-- @param duration: in seconds. if nil, it means forever
+-- @return table
+function CodeApi.myLoadQuestion(id)
+    local response = ApiService.getQuestions(id, true);
+    if response.status == 404 then
+        return_data = {
+            question = '该题目不存在',
+            options= '该题目不存在',
+            answer_analysis ='该题目不存在',
+            answer_tips = '该题目不存在',
+            knowledge = '该题目不存在',
+            }
+    else
+        local data = response.data.data
+        options_list = {}
+        for i = 1,#data.options do
+            table.insert(options_list,data.options[i].option_title)
+        end
+        return_data = {
+            question = data.content,
+            options= options_list,
+            answer_analysis =data.answer_analysis,
+            answer_tips = data.answer_tips,
+            knowledge = data.knowledge,
+            }
+    end
+    return return_data;
+end
 
 -- 加载显示指定id的题目. 
 -- @param id: 题目id

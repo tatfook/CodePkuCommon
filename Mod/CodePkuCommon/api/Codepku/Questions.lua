@@ -18,6 +18,10 @@ local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 local EntityManager = commonlib.gettable("MyCompany.Aries.Game.EntityManager")
 
 
+function ApiService.myGetQuestions(ids,sync)
+    return request:get('/questions?id=' .. ids,nil,{sync = sync})
+end
+
 function ApiService.getQuestions(ids,sync)
     if type(ids) == "table" then
         ids = table.concat(ids, ',')
