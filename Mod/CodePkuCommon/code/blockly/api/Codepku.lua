@@ -22,38 +22,9 @@ local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 -- @param id: 题目id
 -- @param duration: in seconds. if nil, it means forever
 -- @return table
-function CodeApi.myLoadQuestion(id)
-    local response = ApiService.getQuestions(id, true);
-    if response.status == 404 then
-        return_data = {
-            question = '该题目不存在',
-            options= '该题目不存在',
-            answer_analysis ='该题目不存在',
-            answer_tips = '该题目不存在',
-            knowledge = '该题目不存在',
-            }
-    else
-        local data = response.data.data
-        options_list = {}
-        for i = 1,#data.options do
-            table.insert(options_list,data.options[i].option_title)
-        end
-        return_data = {
-            question = data.content,
-            options= options_list,
-            answer_analysis =data.answer_analysis,
-            answer_tips = data.answer_tips,
-            knowledge = data.knowledge,
-            }
-    end
-    return return_data;
-end
-
--- 加载显示指定id的题目. 
--- @param id: 题目id
--- @param duration: in seconds. if nil, it means forever
--- @return table
 function CodeApi.loadQuestion(id)
+    log("ApiService: ")
+    log(ApiService)
     local response = ApiService.getQuestions(id, true);
     if response.status == 404 then
         return_data = {
@@ -65,12 +36,19 @@ function CodeApi.loadQuestion(id)
             }
     else
         local data = response.data.data
+        local question_type = "choice question"
+        if #data.options == 0 then
+            question_type = "essay question"
+        end
+
         options_list = {}
         for i = 1,#data.options do
-            table.insert(options_list,data.options[i].option_title)
+            table.insert(options_list,{data.options[i].option_title,data.options[i].is_correct})
         end
         return_data = {
+            type = question_type,
             question = data.content,
+            answer = data.answer,
             options= options_list,
             answer_analysis =data.answer_analysis,
             answer_tips = data.answer_tips,
