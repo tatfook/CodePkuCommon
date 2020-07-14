@@ -22,9 +22,11 @@ local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
 function CodeApi.getCoursewareID()
 
-    local courseware_id = (System.Codepku.Coursewares.id or ParaEngine.GetAppCommandLineByParam("courseware_id", nil));
-
-    return courseware_id
+    if System.Codepku and System.Codepku.Coursewares then 
+        return System.Codepku.Coursewares.id
+    else
+        return ParaEngine.GetAppCommandLineByParam("courseware_id", nil)
+    end
 end
     
 -- 加载显示指定id的题目. 
