@@ -13,6 +13,30 @@ local cmds = Codepku.GetCmds();
 local Codepku = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Codepku")
 
 local cmds = {
+    --    获取课件id
+    {
+        type = "getCoursewareID",
+        message0 = L "获取课件id",
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "getCoursewareID",
+        func_description = 'getCoursewareID()',
+        ToNPL = function(self)
+            return string.format('getCoursewareID()\n');
+        end,
+        examples = {
+            {
+                desc = L "获取课件id",
+                canRun = false,
+                code = [[
+local courseware_id = getCoursewareID()
+]]
+            }
+        },
+    },
     --    加载题目
     {
         type = "loadQuestion",
@@ -41,11 +65,17 @@ local cmds = {
                 canRun = false,
                 code = [[
 data = loadQuestion(12)
-question = data.question
-options= data.options
-answer_analysis =data.answer_analysis
-answer_tips = data.answer_tips
-knowledge = data.knowledge
+type = data.type -- 题目类型essay表示问答题，choice表示单选题或者多选题，404表示找不到题目
+question = data.question -- 题目描述
+answer = data.answer -- 问答题或者填空题的参考答案
+options= data.options -- 单选题或者多选题的所有选项，如果type为问答题，此处为一个空表{}
+if type == 'choice' then
+    annserA = options[1][1] -- 第一个选项的内容
+    isA = options[1][2] -- 第一个选项是否为正确答案，正确为true，错误为false
+end
+answer_analysis =data.answer_analysis -- 题目分析
+answer_tips = data.answer_tips -- 题目提示
+knowledge = data.knowledge -- 涉及的知识点
 ]]
             }
         },
@@ -85,15 +115,9 @@ knowledge = data.knowledge
     --    提交答案
     {
         type = "submitAnswer",
-        message0 = L "课件 %1 题目 %2 答案 %3 ",
+        message0 = L "题目 %1 答案 %2 ",
         message1 = L "时间 %1",
         arg0 = {
-            {
-                name = "courseware_id",
-                type = "input_value",
-                shadow = { type = "math_number", value = 1 },
-                text = 1,
-            },
             {
                 name = "question_id",
                 type = "input_value",
@@ -121,16 +145,16 @@ knowledge = data.knowledge
         previousStatement = true,
         nextStatement = true,
         funcName = "submitAnswer",
-        func_description = 'submitAnswer(%d,%d,%s,%d)',
+        func_description = 'submitAnswer(%d,%s,%d)',
         ToNPL = function(self)
-            return string.format('submitAnswer(%d,%d,%s,%d)\n', self:getFieldValue('courseware_id'), self:getFieldValue('question_id'), self:getFieldValue('answer'), self:getFieldValue('answer_time'));
+            return string.format('submitAnswer(%d,%s,%d)\n', self:getFieldValue('question_id'), self:getFieldValue('answer'), self:getFieldValue('answer_time'));
         end,
         examples = {
             {
                 desc = L "提交制定id的答题时间 返回上传是否成功",
                 canRun = true,
                 code = [[
-            submitAnswer(1,1,true,10)
+submitAnswer(1,true,10)
   ]]
             }
         },
@@ -220,37 +244,29 @@ knowledge = data.knowledge
     --    获取课件信息
     {
         type = "getCourseware",
-        message0 = L "获取课件 %1",
-        arg0 = {
-            {
-                name = "id",
-                type = "input_value",
-                shadow = { type = "math_number", value = 1 },
-                text = 1,
-            }
-        },    
+        message0 = L "获取课件",   
         category = "Codepku",
         helpUrl = "",
         canRun = false,
         previousStatement = true,
         nextStatement = true,
         funcName = "getCourseware",
-        func_description = 'getCourseware(%d)',
+        func_description = 'getCourseware()',
         ToNPL = function(self)
-            return string.format('getCourseware(%d)\n', self:getFieldValue('id'));
+            return string.format('getCourseware()\n');
         end,
         examples = {
             {
-                desc = L "获取对应id课件信息",
+                desc = L "获取课件信息",
                 canRun = false,
                 code = [[
--- 如果课件id不存在 data = '课件不存在'
-data = getCourseware(4)
-description = data.description,
-name = data.name,
-course_unit = data.course_unit,
-course_id = data.course_id,
-course_unit_id = data.course_unit_id,
+-- 如果课件不存在 data = '课件不存在'
+data = getCourseware()
+description = data.description
+name = data.name
+course_unit = data.course_unit
+course_id = data.course_id
+course_unit_id = data.course_unit_id
 
 ]]
             }
@@ -323,7 +339,7 @@ course_unit_id = data.course_unit_id,
                 desc = L "分享功能",
                 canRun = false,
                 code = [[
-            share("text","分享内容")
+share("text","分享内容")
 ]]
             }
         },
@@ -331,35 +347,27 @@ course_unit_id = data.course_unit_id,
     --    获取用户上一次学习
     {
         type = "getLearnRecords",
-        message0 = L "加载上次学习情况 %1",
-        arg0 = {
-            {
-                name = "id",
-                type = "input_value",
-                shadow = { type = "math_number",value = 1},
-                text = 1,
-            },
-        },
+        message0 = L "加载上次学习情况",
         category = "Codepku",
         helpUrl = "",
         canRun = false,
         previousStatement = true,
         nextStatement = true,
         funcName = "getLearnRecords",
-        func_description = 'getLearnRecords(%d)',
+        func_description = 'getLearnRecords()',
         ToNPL = function(self)
-            return string.format('getLearnRecords(%d)\n', self:getFieldValue('id'));
+            return string.format('getLearnRecords()\n');
         end,
         examples = {
             {
                 desc = L "加载用户指定课件id的上次学习情况",
                 canRun = false,
                 code = [[
-            data = getLearnRecords(4)
-            category = data.category
-            pos= data.world_position
-            current_node = data.current_node
-            total_node = data.total_node
+data = getLearnRecords()
+category = data.category
+pos= data.world_position
+current_node = data.current_node
+total_node = data.total_node
 ]]
             }
         },
@@ -369,14 +377,9 @@ course_unit_id = data.course_unit_id,
      {
         -- courseware_id,category,current_node,total_node
         type = "setLearnRecords",
-        message0 = L " 上传课件 %1 类别 %2 学习进度 当前节点 %3 总结点 %4",
+        message0 = L " 类别 %1 学习进度 当前节点 %2 总结点 %3",
         arg0 = {
-            {
-                name = "courseware_id",
-                type = "input_value",
-                shadow = { type = "math_number",value = 1},
-                text = 1,
-            },
+
             {
                 name = "category",
                 type = "input_value",
@@ -404,7 +407,7 @@ course_unit_id = data.course_unit_id,
         funcName = "setLearnRecords",
         func_description = 'setLearnRecords(%d)',
         ToNPL = function(self)
-            return string.format('setLearnRecords(%d,%d,%d,%d)\n', self:getFieldValue('courseware_id'), self:getFieldValue('category'), self:getFieldValue('current_node'), self:getFieldValue('total_node'));
+            return string.format('setLearnRecords(%d,%d,%d)\n', self:getFieldValue('category'), self:getFieldValue('current_node'), self:getFieldValue('total_node'));
         end,
         examples = {
             {
@@ -412,7 +415,7 @@ course_unit_id = data.course_unit_id,
                 canRun = false,
                 code = [[
 -- 返回是否提交成功
-data = setLearnRecords(4,1,3,4)
+data = setLearnRecords(1,3,4)
 ]]
             }
         },
@@ -525,7 +528,7 @@ data = setLearnRecords(4,1,3,4)
                 desc = L "上传用户行为返回是否上传成功",
                 canRun = false,
                 code = [[
-                    setBehaviors(3,2,3)
+setBehaviors(3,2,3)
 ]]
             }
         },

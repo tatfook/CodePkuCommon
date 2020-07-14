@@ -44,7 +44,7 @@ end
 
 
 function ApiService.getCourseware(courseware_id,sync)
-    return request:get('/courewares/' .. courseware_id,nil,{sync = sync});
+    return request:get('/coursewares/' .. courseware_id,nil,{sync = sync});
 end
 
 function ApiService.getLearnRecords(courseware_id,sync)

@@ -20,6 +20,7 @@ Config.env = {
 };
 
 Config.defaultEnv = (ParaEngine.GetAppCommandLineByParam("codepkuenv", nil) or Config.env.RELEASE);
+--Config.courseware_id = (ParaEngine.GetAppCommandLineByParam("courseware_id", nil));
 
 Config.codepkuServer = {
   RELEASE = "https://game.codepku.com/api/game",

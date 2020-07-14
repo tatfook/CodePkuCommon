@@ -13,10 +13,20 @@ local api = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Api");
 
 local CodeApi = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.CodeApi");
 local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
+local WorldCommon = commonlib.gettable("MyCompany.Aries.Creator.WorldCommon")
+local Config = NPL.load("(gl)Mod/WorldShare/config/Config.lua")
 
 local Log = commonlib.gettable("Mod.CodePkuCommon.Utils.Log");
 local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
+
+function CodeApi.getCoursewareID()
+
+    local courseware_id = (System.Codepku.Coursewares.id or ParaEngine.GetAppCommandLineByParam("courseware_id", nil));
+
+    return courseware_id
+end
+    
 -- 加载显示指定id的题目. 
 -- @param id: 题目id
 -- @param duration: in seconds. if nil, it means forever
@@ -25,20 +35,25 @@ function CodeApi.loadQuestion(id)
     local response = ApiService.getQuestions(id, true);
     if response.status == 404 then
         return_data = {
-            question = '该题目不存在',
-            options= '该题目不存在',
-            answer_analysis ='该题目不存在',
-            answer_tips = '该题目不存在',
-            knowledge = '该题目不存在',
+            type="404",
+            msg="找不到题号为" .. id .. "的问题"
             }
     else
         local data = response.data.data
+        local question_type = "choice"
+        if #data.options == 0 then
+            question_type = "essay"
+        end
+
         options_list = {}
         for i = 1,#data.options do
-            table.insert(options_list,data.options[i].option_title)
+            table.insert(options_list,{data.options[i].option_title,data.options[i].is_correct})
         end
+
         return_data = {
+            type = question_type,
             question = data.content,
+            answer = data.answer,
             options= options_list,
             answer_analysis =data.answer_analysis,
             answer_tips = data.answer_tips,
@@ -48,11 +63,14 @@ function CodeApi.loadQuestion(id)
     return return_data;
 end
 
+
 -- 提交指定id的题目. 
 -- @param id: 题目id
 -- @param duration: in seconds. if nil, it means forever
 -- @return table
-function CodeApi.submitAnswer(courseware_id,question_id,answer,answer_time)
+function CodeApi.submitAnswer(question_id,answer,answer_time)
+
+    local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.submitAnswers(courseware_id,question_id,answer,answer_time)
     if response.status == 200 then
         return true
@@ -74,7 +92,9 @@ end
 -- 获取课件信息
 -- @param courseware_id: 课件id
 -- @return table
-function CodeApi.getCourseware(courseware_id)
+function CodeApi.getCourseware()
+
+    local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.getCourseware(courseware_id,true)
     if response.status == 200 then 
         local data = response.data.data
@@ -108,7 +128,8 @@ end
 -- 获取用户上次学习信息
 -- @param courseware_id: 课件id
 -- @return table
-function CodeApi.getLearnRecords(courseware_id)
+function CodeApi.getLearnRecords()
+    local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.getLearnRecords(courseware_id,true)
     if response.status == 200 then 
         local data = response.data.data
@@ -135,7 +156,8 @@ end
 -- @param current_node: 当前节点
 -- @param total_node: 总结点
 -- @return table
-function CodeApi.setLearnRecords(courseware_id,category,current_node,total_node)
+function CodeApi.setLearnRecords(category,current_node,total_node)
+    local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.setLearnRecords(courseware_id,category,current_node,total_node,true)
     if response.status == 200 then
         return true
@@ -146,7 +168,8 @@ end
 -- 上传用户行为
 -- @param courseware_id: 课件id
 -- @return table
-function CodeApi.setBehaviors(courseware_id,behavior_action,behavior_type)
+function CodeApi.setBehaviors(behavior_action,behavior_type)
+    local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.setBehaviors(courseware_id,behavior_action,behavior_type,true)   
     return response.status == 200
 end
