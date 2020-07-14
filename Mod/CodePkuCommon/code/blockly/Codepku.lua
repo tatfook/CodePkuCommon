@@ -491,14 +491,8 @@ data = setLearnRecords(1,3,4)
      {
         -- courseware_id,category,current_node,total_node
         type = "setBehaviors",
-        message0 = L " 种类 %1 行为 %2 行为类别 %3",
+        message0 = L "行为 %1 行为类别 %2",
         arg0 = {
-            {
-                name = "courseware_id",
-                type = "input_value",
-                shadow = { type = "math_number",value = 1},
-                text = 1,
-            },
             {
                 name = "behavior_action",
                 type = "input_value",
@@ -521,14 +515,14 @@ data = setLearnRecords(1,3,4)
         funcName = "setBehaviors",
         func_description = 'setBehaviors(%d)',
         ToNPL = function(self)
-            return string.format('setBehaviors(%d,%d,%d)\n', self:getFieldValue('courseware_id'), self:getFieldValue('behavior_action'), self:getFieldValue('behavior_type'));
+            return string.format('setBehaviors(%d,%d)\n', self:getFieldValue('behavior_action'), self:getFieldValue('behavior_type'));
         end,
         examples = {
             {
                 desc = L "上传用户行为返回是否上传成功",
                 canRun = false,
                 code = [[
-setBehaviors(3,2,3)
+setBehaviors(2,3)
 ]]
             }
         },
