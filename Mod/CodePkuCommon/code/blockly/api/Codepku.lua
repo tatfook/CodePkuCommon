@@ -22,7 +22,11 @@ local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
 function CodeApi.getCoursewareID()
 
-    local courseware_id = (System.Codepku.Coursewares.id or ParaEngine.GetAppCommandLineByParam("courseware_id", nil));
+    if System.Codepku and System.Codepku.Coursewares then 
+        local corusewareId = System.Codepku.Coursewares.id
+    else
+        local corusewareId = ParaEngine.GetAppCommandLineByParam("courseware_id", nil)
+    end
 
     return courseware_id
 end
