@@ -154,7 +154,7 @@ knowledge = data.knowledge -- 涉及的知识点
                 desc = L "提交制定id的答题时间 返回上传是否成功",
                 canRun = true,
                 code = [[
-            submitAnswer(1,true,10)
+submitAnswer(1,true,10)
   ]]
             }
         },
@@ -339,7 +339,7 @@ course_unit_id = data.course_unit_id
                 desc = L "分享功能",
                 canRun = false,
                 code = [[
-            share("text","分享内容")
+share("text","分享内容")
 ]]
             }
         },
@@ -528,7 +528,7 @@ data = setLearnRecords(1,3,4)
                 desc = L "上传用户行为返回是否上传成功",
                 canRun = false,
                 code = [[
-                    setBehaviors(3,2,3)
+setBehaviors(3,2,3)
 ]]
             }
         },

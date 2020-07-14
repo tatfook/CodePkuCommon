@@ -14,6 +14,7 @@ local api = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Api");
 local CodeApi = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.CodeApi");
 local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 local WorldCommon = commonlib.gettable("MyCompany.Aries.Creator.WorldCommon")
+local Config = NPL.load("(gl)Mod/WorldShare/config/Config.lua")
 
 local Log = commonlib.gettable("Mod.CodePkuCommon.Utils.Log");
 local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
@@ -21,10 +22,9 @@ local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
 function CodeApi.getCoursewareID()
 
-    --local courewares = System.Codepku.Coursewares
+    local courseware_id = (System.Codepku.Coursewares.id or ParaEngine.GetAppCommandLineByParam("courseware_id", nil));
 
-    --return courewares['id']
-
+    return courseware_id
 end
     
 -- 加载显示指定id的题目. 
