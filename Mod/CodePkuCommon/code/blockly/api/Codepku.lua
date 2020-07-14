@@ -21,7 +21,7 @@ local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
 function CodeApi.GetWorldTag()
 
-    local courewares = WorldCommon.GetWorldTag("courewares")
+    local courewares = System.Codepku.Coursewares
 
     return 'courewares' .. courewares
 
