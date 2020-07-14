@@ -19,11 +19,11 @@ local Log = commonlib.gettable("Mod.CodePkuCommon.Utils.Log");
 local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
 
-function CodeApi.GetWorldTag()
+function CodeApi.getCoursewareID()
 
-    local courewares = System.Codepku.Coursewares
+    --local courewares = System.Codepku.Coursewares
 
-    return 'courewares' .. courewares
+    --return courewares['id']
 
 end
     
@@ -68,7 +68,9 @@ end
 -- @param id: 题目id
 -- @param duration: in seconds. if nil, it means forever
 -- @return table
-function CodeApi.submitAnswer(courseware_id,question_id,answer,answer_time)
+function CodeApi.submitAnswer(question_id,answer,answer_time)
+
+    local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.submitAnswers(courseware_id,question_id,answer,answer_time)
     if response.status == 200 then
         return true
@@ -90,7 +92,9 @@ end
 -- 获取课件信息
 -- @param courseware_id: 课件id
 -- @return table
-function CodeApi.getCourseware(courseware_id)
+function CodeApi.getCourseware()
+
+    local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.getCourseware(courseware_id,true)
     if response.status == 200 then 
         local data = response.data.data
@@ -124,7 +128,8 @@ end
 -- 获取用户上次学习信息
 -- @param courseware_id: 课件id
 -- @return table
-function CodeApi.getLearnRecords(courseware_id)
+function CodeApi.getLearnRecords()
+    local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.getLearnRecords(courseware_id,true)
     if response.status == 200 then 
         local data = response.data.data
@@ -151,7 +156,8 @@ end
 -- @param current_node: 当前节点
 -- @param total_node: 总结点
 -- @return table
-function CodeApi.setLearnRecords(courseware_id,category,current_node,total_node)
+function CodeApi.setLearnRecords(category,current_node,total_node)
+    local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.setLearnRecords(courseware_id,category,current_node,total_node,true)
     if response.status == 200 then
         return true
@@ -162,7 +168,8 @@ end
 -- 上传用户行为
 -- @param courseware_id: 课件id
 -- @return table
-function CodeApi.setBehaviors(courseware_id,behavior_action,behavior_type)
+function CodeApi.setBehaviors(behavior_action,behavior_type)
+    local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.setBehaviors(courseware_id,behavior_action,behavior_type,true)   
     return response.status == 200
 end
