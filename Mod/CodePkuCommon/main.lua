@@ -39,6 +39,45 @@ function CodePkuCommon:init()
     CommandManager:init();
     BlocklyManager:init();
     MockLogin:login();
+    GameLogic.GetFilters():add_filter(
+        "desktop_menu",
+        function (menuItems)
+            local isCodepku = ParaEngine.GetAppCommandLineByParam("isCodepku", "false") == "true"
+            if (isCodepku) then
+                return {};
+            else
+                for _, menuItem in ipairs(menuItems) do
+                    if (menuItem.name == 'window') then
+                        table.insert(menuItem.children, 4, {text = L"玩学世界元件库...",name = "window.component", cmd="/open component"});
+                        table.insert(menuItem.children, 5, {text = L"题库...",name = "window.question", cmd="/open question"});
+                    end
+                end
+                return menuItems;
+            end
+        end
+    );
+	GameLogic.GetFilters():add_filter(
+		"OnlineStore.CustomOnlineStoreUrl",
+        function (url, name)
+            if (name == "component" or name == "question") then 
+                local CodePkuOnlineStore = NPL.load("(gl)Mod/CodePkuCommon/script/Tasks/OnlineStore/OnlineStore.lua");
+                return CodePkuOnlineStore.CustomOnlineStoreUrl(name);
+            else
+                return url;
+            end
+		end
+    );
+	GameLogic.GetFilters():add_filter(
+		"OnlineStore.getPageParamUrl",
+        function (defaultUrl, name)
+            if (name == "component" or name == "question") then 
+                local CodePkuOnlineStore = NPL.load("(gl)Mod/CodePkuCommon/script/Tasks/OnlineStore/OnlineStore.lua");
+                return CodePkuOnlineStore.getPageParamUrl(name);
+            else
+                return defaultUrl;
+            end
+		end
+    );
 end
 
 function CodePkuCommon:OnLogin()
