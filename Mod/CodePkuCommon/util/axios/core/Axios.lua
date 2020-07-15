@@ -13,7 +13,7 @@ NPL.load("(gl)Mod/CodePkuCommon/util/Log.lua");
 local Log = commonlib.gettable("Mod.CodePkuCommon.Utils.Log");
 local Table = NPL.load("(gl)Mod/CodePkuCommon/util/Table.lua");
 local Promise = NPL.load("(gl)Mod/CodePkuCommon/util/axios/util/Promise.lua");
-local InterceptorManager = NPL.load("(gl)Mod/CodePkuCommon/util/Axios/core/InterceptorManager.lua");
+local InterceptorManager = NPL.load("(gl)Mod/CodePkuCommon/util/axios/core/InterceptorManager.lua");
 
 local os = commonlib.gettable("System.os");
 
