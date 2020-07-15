@@ -92,7 +92,6 @@ function CodeApi.setProgress(total, current, type)
 end
 
 -- 获取课件信息
--- @param courseware_id: 课件id
 -- @return table
 function CodeApi.getCourseware()
 
@@ -128,7 +127,6 @@ function CodeApi.share(...)
 end
 
 -- 获取用户上次学习信息
--- @param courseware_id: 课件id
 -- @return table
 function CodeApi.getLearnRecords()
     local courseware_id = CodeApi.getCoursewareID()
@@ -153,7 +151,6 @@ function CodeApi.getLearnRecords()
 end
 
 -- 上传上次学习进度
--- @param courseware_id: 课件id
 -- @param category: 类别
 -- @param current_node: 当前节点
 -- @param total_node: 总结点
@@ -173,5 +170,23 @@ end
 function CodeApi.setBehaviors(behavior_action,behavior_type)
     local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.setBehaviors(courseware_id,behavior_action,behavior_type,true)   
+    return response.status == 200
+end
+
+-- 给用户增加经验值
+-- @param experience: 经验值
+-- @return table
+function CodeApi.addExperience(experience)
+    local courseware_id = CodeApi.getCoursewareID()
+    local response = ApiService.addExperience(courseware_id,experience)
+    return response.status == 200
+end
+
+-- 保存游戏得分
+-- @param score: 游戏最终得分
+-- @return table
+function CodeApi.saveScore(score)
+    local courseware_id = CodeApi.getCoursewareID()
+    local response = ApiService.saveScore(courseware_id,score)
     return response.status == 200
 end
