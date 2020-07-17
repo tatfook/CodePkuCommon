@@ -15,7 +15,7 @@ function MockLogin:login()
 
     ApiService.Login(codepkuMobile,codepkuPasswd):next(function (response)
 
-        if type(response.data) ~= "table" then            
+        if type(response.data) ~= "table" or type(response.data.data) ~= "table" then            
             GameLogic.AddBBS(nil, L"Codepku自动登录-服务器连接失败", 3000, "255 0 0", 21)
             return false
         end
@@ -28,7 +28,7 @@ function MockLogin:login()
         commonlib.setfield("System.User.codepkuToken", token)
         commonlib.setfield("System.User.mobile", mobile)
         commonlib.setfield("System.User.username", mobile)
-        commonlib.setfield('system.User.id', userId)            
+        commonlib.setfield('System.User.id', userId)            
         commonlib.setfield("System.User.nickName", nickname)
 
         GameLogic.AddBBS(nil, L"Codepku自动登录成功，当前账号" .. codepkuMobile, 3000, "0 255 0", 21)

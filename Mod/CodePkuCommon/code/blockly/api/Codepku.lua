@@ -27,7 +27,6 @@ function CodeApi.getCoursewareID()
     else
         return ParaEngine.GetAppCommandLineByParam("courseware_id", nil)
     end
-
 end
     
 -- 加载显示指定id的题目. 
