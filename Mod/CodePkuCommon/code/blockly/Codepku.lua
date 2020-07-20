@@ -527,6 +527,71 @@ setBehaviors(2,3)
             }
         },
     },
+    -- 给用户增加经验值
+    {
+        type = "addExperience",
+        message0 = L "给用户增加经验值 %1",
+        arg0 = {
+            {
+                name = "exp",
+                type = "input_value",
+                shadow = { type = "math_number" },
+                text = 99,
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "addExperience",
+        func_description = 'addExperience(%d)',
+        ToNPL = function(self)
+            return string.format('addExperience(%d)\n', self:getFieldValue('exp'));
+        end,
+        examples = {
+            {
+                desc = L "给用户增加经验值",
+                canRun = false,
+                code = [[
+response = addExperience(99)
+]]
+            }
+        },
+    },
+
+    -- 保存游戏得分
+    {
+        type = "saveScore",
+        message0 = L "保存游戏得分 %1",
+        arg0 = {
+            {
+                name = "score",
+                type = "input_value",
+                shadow = { type = "math_number" },
+                text = 99,
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "saveScore",
+        func_description = 'saveScore(%d)',
+        ToNPL = function(self)
+            return string.format('saveScore(%d)\n', self:getFieldValue('score'));
+        end,
+        examples = {
+            {
+                desc = L "保存游戏得分",
+                canRun = false,
+                code = [[
+response = saveScore(99)
+]]
+            }
+        },
+    },
 }
 function Codepku.GetCmds()
     return cmds
