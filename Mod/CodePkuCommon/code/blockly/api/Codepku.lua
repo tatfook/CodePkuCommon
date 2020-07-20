@@ -178,7 +178,8 @@ end
 -- @return table
 function CodeApi.addExperience(experience)
     local courseware_id = CodeApi.getCoursewareID()
-    local response = ApiService.addExperience(courseware_id,experience)
+    local exp_type = 1
+    local response = ApiService.addExperience(courseware_id,experience,exp_type)
     return response.status == 200
 end
 

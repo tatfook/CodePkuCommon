@@ -18,10 +18,11 @@ local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 local EntityManager = commonlib.gettable("MyCompany.Aries.Game.EntityManager")
 
 
-function ApiService.addExperience(courseware_id,experience)
-    data = {
-        game_id = courseware_id,
-        exp=experience
+function ApiService.addExperience(courseware_id,experience,type)
+    data = {        
+        game_id = courseware_id,        
+        exp=experience,
+        exp_type = type
     }
     return request:post('/users/exps/' ,data,{sync = true});
 end
