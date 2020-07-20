@@ -175,3 +175,22 @@ function CodeApi.setBehaviors(behavior_action,behavior_type)
     local response = ApiService.setBehaviors(courseware_id,behavior_action,behavior_type,true)   
     return response.status == 200
 end
+
+-- 给用户增加经验值
+-- @param experience: 经验值
+-- @return table
+function CodeApi.addExperience(experience)
+    local courseware_id = CodeApi.getCoursewareID()
+    local exp_type = 1
+    local response = ApiService.addExperience(courseware_id,experience,exp_type)
+    return response.status == 200
+end
+
+-- 保存游戏得分
+-- @param score: 游戏最终得分
+-- @return table
+function CodeApi.saveScore(score)
+    local courseware_id = CodeApi.getCoursewareID()
+    local response = ApiService.saveScore(courseware_id,score)
+    return response.status == 200
+end
