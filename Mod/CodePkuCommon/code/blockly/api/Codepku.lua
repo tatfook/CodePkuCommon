@@ -19,6 +19,8 @@ local Config = NPL.load("(gl)Mod/WorldShare/config/Config.lua")
 local Log = commonlib.gettable("Mod.CodePkuCommon.Utils.Log");
 local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
+local BlockEngine = commonlib.gettable("MyCompany.Aries.Game.BlockEngine")
+
 
 function CodeApi.getCoursewareID()
 
@@ -135,9 +137,12 @@ function CodeApi.getLearnRecords()
     local response = ApiService.getLearnRecords(courseware_id,true)
     if response.status == 200 then 
         local data = response.data.data
+        world_position = data.world_position
+        local pos = {}
+        pos.x,pos.y,pos.z = BlockEngine:block_float(world_position.x,world_position.y,world_position.z)
         response_data = {
             category = data.category,
-            world_position = data.world_position,
+            world_position = pos,
             current_node = data.current_node,
             total_node = data.total_node,
         }
