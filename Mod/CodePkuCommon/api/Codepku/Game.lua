@@ -32,3 +32,17 @@ function ApiService.saveScore(courseware_id,gscore)
     }
     return request:post('/game-scores/' ,data,{sync = true});
 end
+
+function ApiService.awardUser(id,w,s)
+    data = {
+        courseware_id = id,
+        weight = w,
+        sort = s
+    }
+
+    return request:post('/user-awards/' ,data,{sync = true});
+end
+
+function ApiService.getMaxScore(courseware_id,syncs)
+    return request:get('/game-scores/max/' .. courseware_id,nil,{sync = syncs});
+end

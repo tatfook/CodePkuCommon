@@ -21,7 +21,8 @@ local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
 local BlockEngine = commonlib.gettable("MyCompany.Aries.Game.BlockEngine")
 
-
+-- 获取课件id
+-- @return table
 function CodeApi.getCoursewareID()
 
     if System.Codepku and System.Codepku.Coursewares then 
@@ -33,7 +34,6 @@ end
     
 -- 加载显示指定id的题目. 
 -- @param id: 题目id
--- @param duration: in seconds. if nil, it means forever
 -- @return table
 function CodeApi.loadQuestion(id)
     local response = ApiService.getQuestions(id, true);
@@ -69,8 +69,9 @@ end
 
 
 -- 提交指定id的题目. 
--- @param id: 题目id
--- @param duration: in seconds. if nil, it means forever
+-- @param question_id: 题目id
+-- @param answer: 答案
+-- @param answer: 回答时间
 -- @return table
 function CodeApi.submitAnswer(question_id,answer,answer_time)
 
@@ -94,7 +95,6 @@ function CodeApi.setProgress(total, current, type)
 end
 
 -- 获取课件信息
--- @param courseware_id: 课件id
 -- @return table
 function CodeApi.getCourseware()
 
@@ -130,7 +130,6 @@ function CodeApi.share(...)
 end
 
 -- 获取用户上次学习信息
--- @param courseware_id: 课件id
 -- @return table
 function CodeApi.getLearnRecords()
     local courseware_id = CodeApi.getCoursewareID()
@@ -140,6 +139,9 @@ function CodeApi.getLearnRecords()
         world_position = data.world_position
         local pos = {}
         pos.x,pos.y,pos.z = BlockEngine:block_float(world_position.x,world_position.y,world_position.z)
+        pos.x = math.floor(pos.x)
+        pos.y = math.floor(pos.y)
+        pos.z = math.floor(pos.z)
         response_data = {
             category = data.category,
             world_position = pos,
@@ -158,7 +160,6 @@ function CodeApi.getLearnRecords()
 end
 
 -- 上传上次学习进度
--- @param courseware_id: 课件id
 -- @param category: 类别
 -- @param current_node: 当前节点
 -- @param total_node: 总结点
@@ -173,7 +174,8 @@ function CodeApi.setLearnRecords(category,current_node,total_node)
 end
 
 -- 上传用户行为
--- @param courseware_id: 课件id
+-- @param behavior_action: 行为
+-- @param behavior_type: 行为类型
 -- @return table
 function CodeApi.setBehaviors(behavior_action,behavior_type)
     local courseware_id = CodeApi.getCoursewareID()
@@ -198,4 +200,61 @@ function CodeApi.saveScore(score)
     local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.saveScore(courseware_id,score)
     return response.status == 200
+end
+
+-- 创建角色
+-- @param nickname: 角色名
+-- @param gender: 角色性别
+-- @return table
+function CodeApi.createUser(nickname,gender)    
+    local response = ApiService.CreateUser(nickname,gender)
+    return response.status == 200
+end
+
+-- 奖励用户经验/学科经验/道具
+-- @param nickname: 角色名
+-- @param gender: 角色性别
+-- @return table
+function CodeApi.awardUser(weight,sort)    
+    local courseware_id = CodeApi.getCoursewareID()
+    local response = ApiService.awardUser(courseware_id,weight,sort)
+
+    if response.status == 200 then 
+        local data = response.data.data
+        
+        prop_list = {data.props[1].prop_id,data.props[1].prop_name,data.props[1].prop_num}     
+        exp = data.total_exp
+
+        response_data = {
+            total_exp = data.total_exp,
+            subject_exp = data.subject_exp or 0,
+            props = prop_list
+            
+        }
+    else
+
+        response_data = {           
+            total_exp = -1,
+            subject_exp = -1,
+            props = response.status
+        }
+    end    
+    
+    return response_data
+end
+
+-- 获得用户最大游戏得分
+-- @return 最大分数
+function CodeApi.getMaxScore()
+    local courseware_id = CodeApi.getCoursewareID()
+    local response = ApiService.getMaxScore(courseware_id,true)
+
+    if response.status == 200 then
+        local data = response.data.data
+        score = data.score
+    else
+        score = -1
+    end
+
+    return score
 end

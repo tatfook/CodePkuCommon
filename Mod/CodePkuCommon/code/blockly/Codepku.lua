@@ -592,6 +592,118 @@ response = saveScore(99)
             }
         },
     },
+    --    创建角色
+    {
+        type = "createUser",
+        message0 = L "创建角色%1，性别 %2",
+        arg0 = {
+            {
+                name = "nickname",
+                type = "input_value",
+                shadow = { type = "input_value", value = "9号机器人" },
+                text = "9号机器人",
+            },
+            {
+                name = "gender",
+                type = "input_value",
+                shadow = { type = "math_number", value = 1 },
+                text = 1,
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "createUser",
+        func_description = 'createUser(%s,%d)',
+        ToNPL = function(self)
+            return string.format('createUser("%s",%d)\n', self:getFieldValue('nickname'), self:getFieldValue('gender'));
+        end,
+        examples = {
+            {
+                desc = L "创建角色,0保密,1男,2女",
+                canRun = false,
+                code = [[
+response = createUser("9号机器人",1)
+]]
+            }
+        },
+    },
+    --    以权重w奖励用户经验/学科经验/道具
+    {
+        type = "awardUser",
+        message0 = L "以权重%1奖励用户，指令 %2",
+        arg0 = {
+            {
+                name = "weight",
+                type = "input_value",
+                shadow = { type = "math_number", value = 40 },
+                text = 40,
+            },
+            {
+                name = "order",
+                type = "input_value",
+                shadow = { type = "math_number", value = 1 },
+                text = 1,
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "awardUser",
+        func_description = 'awardUser(%d,%d)',
+        ToNPL = function(self)
+            return string.format('awardUser("%d",%d)\n', self:getFieldValue('weight'), self:getFieldValue('order'));
+        end,
+        examples = {
+            {
+                desc = L "以权重%1奖励用户，指令 %2",
+                canRun = false,
+                code = [[
+response_data = awardUser(40,1)
+total_exp = response_data.total_exp -- 所有经验值，-1表示请求出错
+subject_exp = response_data.subject_exp -- 学科经验值，-1表示请求出错
+
+print(total_exp,subject_exp)
+if exp ~= -1 then
+    prop_id = response_data.props[1] -- 道具id
+    prop_name = response_data.props[2] -- 道具名称
+    prop_num = response_data.props[3] -- 道具数量
+    print(prop_id, prop_name, prop_num)
+end
+
+
+]]
+            }
+        },
+    },
+    -- 获得用户最大游戏得分
+    {
+        type = "getMaxScore",
+        message0 = L "获得用户最大游戏得分",
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "getMaxScore",
+        func_description = 'getMaxScore()',
+        ToNPL = function(self)
+            return string.format('getMaxScore()\n');
+        end,
+        examples = {
+            {
+                desc = L "获得用户最大游戏得分",
+                canRun = false,
+                code = [[
+score = getMaxScore() -- score等于-1表示获取失败
+]]
+            }
+        },
+    },
 }
 function Codepku.GetCmds()
     return cmds
