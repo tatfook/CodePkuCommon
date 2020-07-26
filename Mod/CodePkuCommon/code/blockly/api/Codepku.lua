@@ -208,6 +208,8 @@ end
 -- @return table
 function CodeApi.createUser(nickname,gender)    
     local response = ApiService.CreateUser(nickname,gender)
+    echo(response)
+    echo(response.status) 
     return response.status == 200
 end
 
@@ -222,20 +224,22 @@ function CodeApi.awardUser(weight,sort)
     if response.status == 200 then 
         local data = response.data.data
         
-        prop_list = {}
+        -- prop_list = {}
         
-        for i = 1,#data.props do
-            table.insert(prop_list,{data.props[i].prop_id,data.props[i].prop_name,data.props[i].prop_num})
-        end
+        -- for i = 1,#data.props do
+        --     table.insert(prop_list,{data.props[i].prop_id,data.props[i].prop_name,data.props[i].prop_num})
+        -- end
 
-        exp = data.total_exp 
+        -- exp = data.total_exp 
 
-        response_data = {
-            total_exp = data.total_exp,
-            subject_exp = data.subject_exp or 0,
-            props = prop_list
+        -- response_data = {
+        --     total_exp = data.total_exp,
+        --     subject_exp = data.subject_exp or 0,
+        --     props = prop_list
             
-        }
+        -- }
+
+        return data
     else
 
         response_data = {           

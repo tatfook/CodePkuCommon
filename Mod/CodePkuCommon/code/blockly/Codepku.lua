@@ -663,6 +663,7 @@ response = createUser("9号机器人",1)
                 desc = L "奖励点1 以权重40 奖励用户",
                 canRun = false,
                 code = [[
+-- 例子1:奖励点1 以权重40 奖励用户
 response_data = awardUser(40,1)
 total_exp = response_data.total_exp -- 所有经验值，-1表示请求出错
 subject_exp = response_data.subject_exp -- 学科经验值，-1表示请求出错
@@ -671,10 +672,10 @@ print(total_exp,subject_exp)
 
 if exp ~= -1 then
     for i =1,#response_data.props do
-            prop_id = response_data.props[i][1] -- 道具id
-            prop_name = response_data.props[i][2] -- 道具名称
-            prop_num = response_data.props[i][3] -- 道具数量  
-            print(prop_id, prop_name, prop_num)        
+            prop_id = response_data.props[i]['prop_id'] -- 道具id
+            prop_num = response_data.props[i]['prop_num'] -- 道具名称
+            prop_name = response_data.props[i]['prop_name'] -- 道具数量  
+            print(prop_id, prop_num, prop_name)        
     end    
 end
 ]]

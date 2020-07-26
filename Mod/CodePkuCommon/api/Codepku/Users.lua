@@ -19,11 +19,11 @@ local request = NPL.load("../BaseRequest.lua");
 local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 
 
-function ApiService.CreateUser(tnickname,tgener)
+function ApiService.CreateUser(tnickname,tgender)
 
     data = {        
         nickname = tnickname,        
-        gener=tgener
+        gender=tgender
     }
     return request:put('/users/profile' ,data,{sync = true});
 end
