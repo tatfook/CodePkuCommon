@@ -633,7 +633,7 @@ response = createUser("9号机器人",1)
     --    以权重w奖励用户经验/学科经验/道具
     {
         type = "awardUser",
-        message0 = L "以权重%1奖励用户，指令 %2",
+        message0 = L "奖励点%1 以权重%2 奖励用户",
         arg0 = {
             {
                 name = "weight",
@@ -660,7 +660,7 @@ response = createUser("9号机器人",1)
         end,
         examples = {
             {
-                desc = L "以权重%1奖励用户，指令 %2",
+                desc = L "奖励点1 以权重40 奖励用户",
                 canRun = false,
                 code = [[
 response_data = awardUser(40,1)
@@ -668,14 +668,15 @@ total_exp = response_data.total_exp -- 所有经验值，-1表示请求出错
 subject_exp = response_data.subject_exp -- 学科经验值，-1表示请求出错
 
 print(total_exp,subject_exp)
+
 if exp ~= -1 then
-    prop_id = response_data.props[1] -- 道具id
-    prop_name = response_data.props[2] -- 道具名称
-    prop_num = response_data.props[3] -- 道具数量
-    print(prop_id, prop_name, prop_num)
+    for i =1,#response_data.props do
+            prop_id = response_data.props[i][1] -- 道具id
+            prop_name = response_data.props[i][2] -- 道具名称
+            prop_num = response_data.props[i][3] -- 道具数量  
+            print(prop_id, prop_name, prop_num)        
+    end    
 end
-
-
 ]]
             }
         },

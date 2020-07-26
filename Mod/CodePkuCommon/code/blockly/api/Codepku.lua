@@ -222,8 +222,13 @@ function CodeApi.awardUser(weight,sort)
     if response.status == 200 then 
         local data = response.data.data
         
-        prop_list = {data.props[1].prop_id,data.props[1].prop_name,data.props[1].prop_num}     
-        exp = data.total_exp
+        prop_list = {}
+        
+        for i = 1,#data.props do
+            table.insert(prop_list,{data.props[i].prop_id,data.props[i].prop_name,data.props[i].prop_num})
+        end
+
+        exp = data.total_exp 
 
         response_data = {
             total_exp = data.total_exp,
