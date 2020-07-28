@@ -636,17 +636,17 @@ response = createUser("9号机器人",1)
         message0 = L "奖励点%1 以权重%2 奖励用户",
         arg0 = {
             {
-                name = "weight",
-                type = "input_value",
-                shadow = { type = "math_number", value = 40 },
-                text = 40,
-            },
-            {
                 name = "order",
                 type = "input_value",
                 shadow = { type = "math_number", value = 1 },
                 text = 1,
             },
+            {
+                name = "weight",
+                type = "input_value",
+                shadow = { type = "math_number", value = 40 },
+                text = 40,
+            },            
         },
         category = "Codepku",
         helpUrl = "",
@@ -656,21 +656,20 @@ response = createUser("9号机器人",1)
         funcName = "awardUser",
         func_description = 'awardUser(%d,%d)',
         ToNPL = function(self)
-            return string.format('awardUser("%d",%d)\n', self:getFieldValue('weight'), self:getFieldValue('order'));
+            return string.format('awardUser(%d,%d)\n', self:getFieldValue('order'), self:getFieldValue('weight'));
         end,
         examples = {
             {
                 desc = L "奖励点1 以权重40 奖励用户",
                 canRun = false,
                 code = [[
--- 例子1:奖励点1 以权重40 奖励用户
-response_data = awardUser(40,1)
+response_data = awardUser(1,40)
 total_exp = response_data.total_exp -- 所有经验值，-1表示请求出错
 subject_exp = response_data.subject_exp -- 学科经验值，-1表示请求出错
 
 print(total_exp,subject_exp)
 
-if exp ~= -1 then
+if total_exp ~= -1 then
     for i =1,#response_data.props do
             prop_id = response_data.props[i]['prop_id'] -- 道具id
             prop_num = response_data.props[i]['prop_num'] -- 道具名称

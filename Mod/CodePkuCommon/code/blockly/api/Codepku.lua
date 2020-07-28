@@ -217,7 +217,7 @@ end
 -- @param nickname: 角色名
 -- @param gender: 角色性别
 -- @return table
-function CodeApi.awardUser(weight,sort)    
+function CodeApi.awardUser(sort,weight)    
     local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.awardUser(courseware_id,weight,sort)
 
