@@ -15,6 +15,7 @@ end);
 
 local request = NPL.load("../BaseRequest.lua");
 local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
+local Config = NPL.load("(gl)Mod/CodePkuCommon/config/Config.lua")
 
 function ApiService.addExperience(courseware_id,experience,type)
     data = {        
@@ -33,10 +34,12 @@ function ApiService.saveScore(courseware_id,gscore)
     return request:post('/game-scores/' ,data,{sync = true});
 end
 
-function ApiService.awardUser(id,w,s)
+function ApiService.awardUser(id,s)
+
+    config.headers['Accept'] = 'application/json'
+
     data = {
         courseware_id = id,
-        weight = w,
         sort = s
     }
 

@@ -115,7 +115,7 @@ knowledge = data.knowledge -- 涉及的知识点
     --    提交答案
     {
         type = "submitAnswer",
-        message0 = L "题目 %1 答案 %2 ",
+        message0 = L "提交题目 %1 答案 %2 ",
         message1 = L "时间 %1",
         arg0 = {
             {
@@ -151,7 +151,7 @@ knowledge = data.knowledge -- 涉及的知识点
         end,
         examples = {
             {
-                desc = L "提交制定id的答题时间 返回上传是否成功",
+                desc = L "提交题目1 答案true 时间10",
                 canRun = true,
                 code = [[
 submitAnswer(1,true,10)
@@ -244,7 +244,7 @@ submitAnswer(1,true,10)
     --    获取课件信息
     {
         type = "getCourseware",
-        message0 = L "获取课件",   
+        message0 = L "获取课件数据",   
         category = "Codepku",
         helpUrl = "",
         canRun = false,
@@ -257,7 +257,7 @@ submitAnswer(1,true,10)
         end,
         examples = {
             {
-                desc = L "获取课件信息",
+                desc = L "获取课件数据",
                 canRun = false,
                 code = [[
 -- 如果课件不存在 data = '课件不存在'
@@ -347,7 +347,7 @@ share("text","分享内容")
     --    获取用户上一次学习
     {
         type = "getLearnRecords",
-        message0 = L "加载上次学习情况",
+        message0 = L "加载上次学习进度",
         category = "Codepku",
         helpUrl = "",
         canRun = false,
@@ -360,7 +360,7 @@ share("text","分享内容")
         end,
         examples = {
             {
-                desc = L "加载用户指定课件id的上次学习情况",
+                desc = L "加载上次学习进度",
                 canRun = false,
                 code = [[
 data = getLearnRecords()
@@ -377,7 +377,7 @@ total_node = data.total_node
      {
         -- courseware_id,category,current_node,total_node
         type = "setLearnRecords",
-        message0 = L " 类别 %1 学习进度 当前节点 %2 总结点 %3",
+        message0 = L "上传学习进度 类别 %1 当前节点 %2/总结点 %3",
         arg0 = {
 
             {
@@ -411,7 +411,7 @@ total_node = data.total_node
         end,
         examples = {
             {
-                desc = L "上传用户的学习进度",
+                desc = L "上传学习进度",
                 canRun = false,
                 code = [[
 -- 返回是否提交成功
@@ -633,20 +633,14 @@ response = createUser("9号机器人",1)
     --    以权重w奖励用户经验/学科经验/道具
     {
         type = "awardUser",
-        message0 = L "奖励点%1 以权重%2 奖励用户",
+        message0 = L "设置奖励点%1",
         arg0 = {
             {
                 name = "order",
                 type = "input_value",
                 shadow = { type = "math_number", value = 1 },
                 text = 1,
-            },
-            {
-                name = "weight",
-                type = "input_value",
-                shadow = { type = "math_number", value = 40 },
-                text = 40,
-            },            
+            },          
         },
         category = "Codepku",
         helpUrl = "",
@@ -654,16 +648,16 @@ response = createUser("9号机器人",1)
         previousStatement = true,
         nextStatement = true,
         funcName = "awardUser",
-        func_description = 'awardUser(%d,%d)',
+        func_description = 'awardUser(%d)',
         ToNPL = function(self)
-            return string.format('awardUser(%d,%d)\n', self:getFieldValue('order'), self:getFieldValue('weight'));
+            return string.format('awardUser(%d)\n', self:getFieldValue('order'));
         end,
         examples = {
             {
-                desc = L "奖励点1 以权重40 奖励用户",
+                desc = L "设置奖励点1",
                 canRun = false,
                 code = [[
-response_data = awardUser(1,40)
+response_data = awardUser(1)
 total_exp = response_data.total_exp -- 所有经验值，-1表示请求出错
 subject_exp = response_data.subject_exp -- 学科经验值，-1表示请求出错
 
