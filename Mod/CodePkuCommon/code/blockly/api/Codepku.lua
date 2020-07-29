@@ -136,18 +136,29 @@ function CodeApi.getLearnRecords()
     local response = ApiService.getLearnRecords(courseware_id,true)
     if response.status == 200 then 
         local data = response.data.data
-        world_position = data.world_position
-        local pos = {}
-        pos.x,pos.y,pos.z = BlockEngine:block_float(world_position.x,world_position.y,world_position.z)
-        pos.x = math.floor(pos.x)
-        pos.y = math.floor(pos.y)
-        pos.z = math.floor(pos.z)
-        response_data = {
-            category = data.category,
-            world_position = pos,
-            current_node = data.current_node,
-            total_node = data.total_node,
-        }
+
+        if data then
+            world_position = data.world_position
+            local pos = {}
+            pos.x,pos.y,pos.z = BlockEngine:block_float(world_position.x,world_position.y,world_position.z)
+            pos.x = math.floor(pos.x)
+            pos.y = math.floor(pos.y)
+            pos.z = math.floor(pos.z)
+            response_data = {
+                category = data.category,
+                world_position = pos,
+                current_node = data.current_node,
+                total_node = data.total_node,
+            }
+        else
+            response_data = {
+                category = '课件不存在',
+                world_position ='课件不存在',
+                current_node = '课件不存在',
+                total_node = '课件不存在',
+            }
+        end
+
     else
         response_data = {
             category = '课件不存在',
@@ -260,7 +271,12 @@ function CodeApi.getMaxScore()
 
     if response.status == 200 then
         local data = response.data.data
-        score = data.score
+
+        if data then
+            score = data.score 
+        else
+            score = 0
+        end
     else
         score = -1
     end
