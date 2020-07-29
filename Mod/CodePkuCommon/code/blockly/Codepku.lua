@@ -530,13 +530,19 @@ setBehaviors(2,3)
     -- 给用户增加经验值
     {
         type = "addExperience",
-        message0 = L "给用户增加经验值 %1",
+        message0 = L "给用户增加经验值 %1,经验类型 %2",
         arg0 = {
             {
                 name = "exp",
                 type = "input_value",
                 shadow = { type = "math_number" },
                 text = 99,
+            },
+            {
+                name = "exp_type",
+                type = "input_value",
+                shadow = { type = "math_number" },
+                text = 11,
             },
         },
         category = "Codepku",
@@ -545,16 +551,16 @@ setBehaviors(2,3)
         previousStatement = true,
         nextStatement = true,
         funcName = "addExperience",
-        func_description = 'addExperience(%d)',
+        func_description = 'addExperience(%d,%d)',
         ToNPL = function(self)
-            return string.format('addExperience(%d)\n', self:getFieldValue('exp'));
+            return string.format('addExperience(%d,%d)\n', self:getFieldValue('exp'), self:getFieldValue('exp_type'));
         end,
         examples = {
             {
                 desc = L "给用户增加经验值",
                 canRun = false,
                 code = [[
-response = addExperience(99)
+response = addExperience(99,11)
 ]]
             }
         },
@@ -695,6 +701,44 @@ end
                 canRun = false,
                 code = [[
 score = getMaxScore() -- score等于-1表示获取失败
+]]
+            }
+        },
+    },
+    --    拾取道具
+    {
+        type = "pickProperty",
+        message0 = L "拾取道具%1,%2个",
+        arg0 = {
+            {
+                name = "prop_id",
+                type = "input_value",
+                shadow = { type = "math_number", value = 2001 },
+                text = 2001,
+            },
+            {
+                name = "prop_num",
+                type = "input_value",
+                shadow = { type = "math_number", value = 1 },
+                text = 1,
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "pickProperty",
+        func_description = 'pickProperty(%d,%d)',
+        ToNPL = function(self)
+            return string.format('pickProperty(%d,%d)\n', self:getFieldValue('prop_id'), self:getFieldValue('prop_num'));
+        end,
+        examples = {
+            {
+                desc = L "拾取道具2001,1个",
+                canRun = false,
+                code = [[
+response = createUser("9号机器人",1)
 ]]
             }
         },
