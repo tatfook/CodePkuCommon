@@ -46,3 +46,14 @@ end
 function ApiService.getMaxScore(courseware_id,syncs)
     return request:get('/game-scores/max/' .. courseware_id,nil,{sync = syncs});
 end
+
+function ApiService.pickProperty (id,num)
+
+    data = {
+        prop_id = id,
+        prop_num = num
+    }
+
+    return request:post('/user-props/pick/' ,data,{sync = true});
+end
+

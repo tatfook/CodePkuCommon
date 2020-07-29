@@ -267,3 +267,20 @@ function CodeApi.getMaxScore()
 
     return score
 end
+
+-- 拾取道具
+-- @return 最大分数
+function CodeApi.pickProperty(prop_id,prop_num)
+
+    local response = ApiService.pickProperty(courseware_id,true)
+
+    if response.status == 200 then
+
+        local data = response.data.data
+        
+        return data
+    else
+        return response
+    end
+
+end
