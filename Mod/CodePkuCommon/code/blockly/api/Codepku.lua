@@ -186,9 +186,8 @@ end
 -- 给用户增加经验值
 -- @param experience: 经验值
 -- @return table
-function CodeApi.addExperience(experience)
+function CodeApi.addExperience(experience,exp_type)
     local courseware_id = CodeApi.getCoursewareID()
-    local exp_type = 1
     local response = ApiService.addExperience(courseware_id,experience,exp_type)
     return response.status == 200
 end
@@ -272,7 +271,7 @@ end
 -- @return 最大分数
 function CodeApi.pickProperty(prop_id,prop_num)
 
-    local response = ApiService.pickProperty(courseware_id,true)
+    local response = ApiService.pickProperty(prop_id,prop_num)
 
     if response.status == 200 then
 
