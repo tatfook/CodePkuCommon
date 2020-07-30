@@ -285,7 +285,7 @@ end
 
 -- 拾取道具
 -- @return 最大分数
-function CodeApi.pickProperty(prop_id,prop_num)
+function CodeApi.pickProperty(prop_num,prop_id)
 
     local response = ApiService.pickProperty(prop_id,prop_num)
 

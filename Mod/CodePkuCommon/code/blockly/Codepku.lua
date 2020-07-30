@@ -708,20 +708,20 @@ score = getMaxScore() -- score等于-1表示获取失败
     --    拾取道具
     {
         type = "pickProperty",
-        message0 = L "拾取道具%1,%2个",
+        message0 = L "拾取%1个编号%2的道具",
         arg0 = {
-            {
-                name = "prop_id",
-                type = "input_value",
-                shadow = { type = "math_number", value = 2001 },
-                text = 2001,
-            },
             {
                 name = "prop_num",
                 type = "input_value",
                 shadow = { type = "math_number", value = 1 },
                 text = 1,
             },
+            {
+                name = "prop_id",
+                type = "input_value",
+                shadow = { type = "math_number", value = 2001 },
+                text = 2001,
+            },            
         },
         category = "Codepku",
         helpUrl = "",
@@ -731,14 +731,14 @@ score = getMaxScore() -- score等于-1表示获取失败
         funcName = "pickProperty",
         func_description = 'pickProperty(%d,%d)',
         ToNPL = function(self)
-            return string.format('pickProperty(%d,%d)\n', self:getFieldValue('prop_id'), self:getFieldValue('prop_num'));
+            return string.format('pickProperty(%d,%d)\n', self:getFieldValue('prop_num'),self:getFieldValue('prop_id'));
         end,
         examples = {
             {
-                desc = L "拾取道具2001,1个",
+                desc = L "拾取1个编号2001的道具",
                 canRun = false,
                 code = [[
-response = createUser("9号机器人",1)
+response = pickProperty(1,2001)
 ]]
             }
         },
