@@ -145,6 +145,7 @@ function CodeApi.getLearnRecords()
             pos.x = math.floor(pos.x)
             pos.y = math.floor(pos.y)
             pos.z = math.floor(pos.z)
+        end
 
         response_data = {
             category = data.category or '课件不存在',
