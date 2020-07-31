@@ -139,11 +139,13 @@ function CodeApi.getLearnRecords()
 
         local data = response.data.data
         world_position = data.world_position
-        local pos = {}
-        pos.x,pos.y,pos.z = BlockEngine:block_float(world_position.x,world_position.y,world_position.z)
-        pos.x = math.floor(pos.x)
-        pos.y = math.floor(pos.y)
-        pos.z = math.floor(pos.z)
+
+        if world_position then
+            pos.x,pos.y,pos.z = BlockEngine:block_float(world_position.x,world_position.y,world_position.z)
+            pos.x = math.floor(pos.x)
+            pos.y = math.floor(pos.y)
+            pos.z = math.floor(pos.z)
+
         response_data = {
             category = data.category or '课件不存在',
             world_position = pos or '课件不存在',
