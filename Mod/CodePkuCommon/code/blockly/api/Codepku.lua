@@ -141,6 +141,8 @@ function CodeApi.getLearnRecords()
         world_position = data.world_position
 
         if world_position then
+
+            pos = {}
             pos.x,pos.y,pos.z = BlockEngine:block_float(world_position.x,world_position.y,world_position.z)
             pos.x = math.floor(pos.x)
             pos.y = math.floor(pos.y)
