@@ -138,6 +138,7 @@ function CodeApi.getLearnRecords()
     if response.status == 200 then 
 
         local data = response.data.data
+        local pos = response_data = {};
         world_position = data.world_position
 
         if world_position then
