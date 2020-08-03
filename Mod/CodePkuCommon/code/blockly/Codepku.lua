@@ -115,7 +115,7 @@ knowledge = data.knowledge -- 涉及的知识点
     --    提交答案
     {
         type = "submitAnswer",
-        message0 = L "题目 %1 答案 %2 ",
+        message0 = L "提交题目 %1 答案 %2 ",
         message1 = L "时间 %1",
         arg0 = {
             {
@@ -151,7 +151,7 @@ knowledge = data.knowledge -- 涉及的知识点
         end,
         examples = {
             {
-                desc = L "提交制定id的答题时间 返回上传是否成功",
+                desc = L "提交题目1 答案true 时间10",
                 canRun = true,
                 code = [[
 submitAnswer(1,true,10)
@@ -244,7 +244,7 @@ submitAnswer(1,true,10)
     --    获取课件信息
     {
         type = "getCourseware",
-        message0 = L "获取课件",   
+        message0 = L "获取课件数据",   
         category = "Codepku",
         helpUrl = "",
         canRun = false,
@@ -257,7 +257,7 @@ submitAnswer(1,true,10)
         end,
         examples = {
             {
-                desc = L "获取课件信息",
+                desc = L "获取课件数据",
                 canRun = false,
                 code = [[
 -- 如果课件不存在 data = '课件不存在'
@@ -347,7 +347,7 @@ share("text","分享内容")
     --    获取用户上一次学习
     {
         type = "getLearnRecords",
-        message0 = L "加载上次学习情况",
+        message0 = L "加载上次学习进度",
         category = "Codepku",
         helpUrl = "",
         canRun = false,
@@ -360,7 +360,7 @@ share("text","分享内容")
         end,
         examples = {
             {
-                desc = L "加载用户指定课件id的上次学习情况",
+                desc = L "加载上次学习进度",
                 canRun = false,
                 code = [[
 data = getLearnRecords()
@@ -377,7 +377,7 @@ total_node = data.total_node
      {
         -- courseware_id,category,current_node,total_node
         type = "setLearnRecords",
-        message0 = L " 类别 %1 学习进度 当前节点 %2 总结点 %3",
+        message0 = L "上传学习进度 类别 %1 当前节点 %2/总结点 %3",
         arg0 = {
 
             {
@@ -411,7 +411,7 @@ total_node = data.total_node
         end,
         examples = {
             {
-                desc = L "上传用户的学习进度",
+                desc = L "上传学习进度",
                 canRun = false,
                 code = [[
 -- 返回是否提交成功
@@ -523,6 +523,222 @@ data = setLearnRecords(1,3,4)
                 canRun = false,
                 code = [[
 setBehaviors(2,3)
+]]
+            }
+        },
+    },
+    -- 给用户增加经验值
+    {
+        type = "addExperience",
+        message0 = L "给用户增加经验值 %1,经验类型 %2",
+        arg0 = {
+            {
+                name = "exp",
+                type = "input_value",
+                shadow = { type = "math_number" },
+                text = 99,
+            },
+            {
+                name = "exp_type",
+                type = "input_value",
+                shadow = { type = "math_number" },
+                text = 11,
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "addExperience",
+        func_description = 'addExperience(%d,%d)',
+        ToNPL = function(self)
+            return string.format('addExperience(%d,%d)\n', self:getFieldValue('exp'), self:getFieldValue('exp_type'));
+        end,
+        examples = {
+            {
+                desc = L "给用户增加经验值",
+                canRun = false,
+                code = [[
+response = addExperience(99,11)
+]]
+            }
+        },
+    },
+
+    -- 保存游戏得分
+    {
+        type = "saveScore",
+        message0 = L "保存游戏得分 %1",
+        arg0 = {
+            {
+                name = "score",
+                type = "input_value",
+                shadow = { type = "math_number" },
+                text = 99,
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "saveScore",
+        func_description = 'saveScore(%d)',
+        ToNPL = function(self)
+            return string.format('saveScore(%d)\n', self:getFieldValue('score'));
+        end,
+        examples = {
+            {
+                desc = L "保存游戏得分",
+                canRun = false,
+                code = [[
+response = saveScore(99)
+]]
+            }
+        },
+    },
+    --    创建角色
+    {
+        type = "createUser",
+        message0 = L "创建角色%1，性别 %2",
+        arg0 = {
+            {
+                name = "nickname",
+                type = "input_value",
+                shadow = { type = "input_value", value = "9号机器人" },
+                text = "9号机器人",
+            },
+            {
+                name = "gender",
+                type = "input_value",
+                shadow = { type = "math_number", value = 1 },
+                text = 1,
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "createUser",
+        func_description = 'createUser(%s,%d)',
+        ToNPL = function(self)
+            return string.format('createUser("%s",%d)\n', self:getFieldValue('nickname'), self:getFieldValue('gender'));
+        end,
+        examples = {
+            {
+                desc = L "创建角色,0保密,1男,2女",
+                canRun = false,
+                code = [[
+response = createUser("9号机器人",1)
+]]
+            }
+        },
+    },
+    --    以权重w奖励用户经验/学科经验/道具
+    {
+        type = "awardUser",
+        message0 = L "设置奖励点%1",
+        arg0 = {
+            {
+                name = "order",
+                type = "input_value",
+                shadow = { type = "math_number", value = 1 },
+                text = 1,
+            },          
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "awardUser",
+        func_description = 'awardUser(%d)',
+        ToNPL = function(self)
+            return string.format('awardUser(%d)\n', self:getFieldValue('order'));
+        end,
+        examples = {
+            {
+                desc = L "设置奖励点1",
+                canRun = false,
+                code = [[
+response_data = awardUser(1)
+total_exp = response_data.total_exp -- 所有经验值，-1表示请求出错
+subject_exp = response_data.subject_exp -- 学科经验值，-1表示请求出错
+
+print(total_exp,subject_exp)
+
+if total_exp ~= -1 then
+    for i =1,#response_data.props do
+            prop_id = response_data.props[i]['prop_id'] -- 道具id
+            prop_num = response_data.props[i]['prop_num'] -- 道具名称
+            prop_name = response_data.props[i]['prop_name'] -- 道具数量  
+            print(prop_id, prop_num, prop_name)        
+    end    
+end
+]]
+            }
+        },
+    },
+    -- 获得用户最大游戏得分
+    {
+        type = "getMaxScore",
+        message0 = L "获得用户最大游戏得分",
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "getMaxScore",
+        func_description = 'getMaxScore()',
+        ToNPL = function(self)
+            return string.format('getMaxScore()\n');
+        end,
+        examples = {
+            {
+                desc = L "获得用户最大游戏得分",
+                canRun = false,
+                code = [[
+score = getMaxScore() -- score等于-1表示获取失败
+]]
+            }
+        },
+    },
+    --    拾取道具
+    {
+        type = "pickProperty",
+        message0 = L "拾取%1个编号%2的道具",
+        arg0 = {
+            {
+                name = "prop_num",
+                type = "input_value",
+                shadow = { type = "math_number", value = 1 },
+                text = 1,
+            },
+            {
+                name = "prop_id",
+                type = "input_value",
+                shadow = { type = "math_number", value = 2001 },
+                text = 2001,
+            },            
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "pickProperty",
+        func_description = 'pickProperty(%d,%d)',
+        ToNPL = function(self)
+            return string.format('pickProperty(%d,%d)\n', self:getFieldValue('prop_num'),self:getFieldValue('prop_id'));
+        end,
+        examples = {
+            {
+                desc = L "拾取1个编号2001的道具",
+                canRun = false,
+                code = [[
+response = pickProperty(1,2001)
 ]]
             }
         },

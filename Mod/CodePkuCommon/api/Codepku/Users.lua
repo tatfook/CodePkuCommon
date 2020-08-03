@@ -18,6 +18,16 @@ end);
 local request = NPL.load("../BaseRequest.lua");
 local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 
+
+function ApiService.CreateUser(tnickname,tgender)
+
+    data = {        
+        nickname = tnickname,        
+        gender=tgender
+    }
+    return request:put('/users/profile' ,data,{sync = true});
+end
+
 function ApiService.Login(mobile,password)
     if type(mobile) ~= "string" or type(password) ~= "string" then
         return false
