@@ -23,9 +23,9 @@ local cmds = {
         previousStatement = true,
         nextStatement = true,
         funcName = "getCoursewareID",
-        func_description = 'getCoursewareID()',
+        func_description = "getCoursewareID()",
         ToNPL = function(self)
-            return string.format('getCoursewareID()\n');
+            return string.format("getCoursewareID()\n")
         end,
         examples = {
             {
@@ -35,7 +35,7 @@ local cmds = {
 local courseware_id = getCoursewareID()
 ]]
             }
-        },
+        }
     },
     --    加载题目
     {
@@ -45,9 +45,9 @@ local courseware_id = getCoursewareID()
             {
                 name = "id",
                 type = "input_value",
-                shadow = { type = "math_number" },
-                text = 1,
-            },
+                shadow = {type = "math_number"},
+                text = 1
+            }
         },
         category = "Codepku",
         helpUrl = "",
@@ -55,9 +55,9 @@ local courseware_id = getCoursewareID()
         previousStatement = true,
         nextStatement = true,
         funcName = "loadQuestion",
-        func_description = 'loadQuestion(%d)',
+        func_description = "loadQuestion(%d)",
         ToNPL = function(self)
-            return string.format('loadQuestion(%d)\n', self:getFieldValue('id'));
+            return string.format("loadQuestion(%d)\n", self:getFieldValue("id"))
         end,
         examples = {
             {
@@ -78,7 +78,7 @@ answer_tips = data.answer_tips -- 题目提示
 knowledge = data.knowledge -- 涉及的知识点
 ]]
             }
-        },
+        }
     },
     --      答案选项
     {
@@ -89,19 +89,19 @@ knowledge = data.knowledge -- 涉及的知识点
                 name = "value",
                 type = "field_dropdown",
                 options = {
-                    { L "正确", true },
-                    { L "错误", false},
-                },
-            },
+                    {L "正确", "true"},
+                    {L "错误", "false"}
+                }
+            }
         },
         hide_in_toolbox = true,
         category = "Codepku",
-        output = { type = "null", },
+        output = {type = "null"},
         helpUrl = "",
         canRun = false,
         func_description = '"%s"',
         ToNPL = function(self)
-            return self:getFieldAsString('value');
+            return self:getFieldAsString("value")
         end,
         examples = {
             {
@@ -110,7 +110,7 @@ knowledge = data.knowledge -- 涉及的知识点
                 code = [[
     ]]
             }
-        },
+        }
     },
     --    提交答案
     {
@@ -121,23 +121,23 @@ knowledge = data.knowledge -- 涉及的知识点
             {
                 name = "question_id",
                 type = "input_value",
-                shadow = { type = "math_number", value = 1 },
-                text = 1,
+                shadow = {type = "math_number", value = 1},
+                text = 1
             },
             {
                 name = "answer",
                 type = "input_value",
-                shadow = { type = "answerType", value = true },
-                text = true,
-            },
+                shadow = {type = "answerType", value = "true"},
+                text = "true"
+            }
         },
         arg1 = {
             {
                 name = "answer_time",
                 type = "input_value",
-                shadow = { type = "math_number", value = 10 },
-                text = 10,
-            },
+                shadow = {type = "math_number", value = 10},
+                text = 10
+            }
         },
         category = "Codepku",
         helpUrl = "",
@@ -145,9 +145,14 @@ knowledge = data.knowledge -- 涉及的知识点
         previousStatement = true,
         nextStatement = true,
         funcName = "submitAnswer",
-        func_description = 'submitAnswer(%d,%s,%d)',
+        func_description = "submitAnswer(%d,%s,%d)",
         ToNPL = function(self)
-            return string.format('submitAnswer(%d,%s,%d)\n', self:getFieldValue('question_id'), self:getFieldValue('answer'), self:getFieldValue('answer_time'));
+            return string.format(
+                "submitAnswer(%d,%s,%d)\n",
+                self:getFieldValue("question_id"),
+                self:getFieldValue("answer"),
+                self:getFieldValue("answer_time")
+            )
         end,
         examples = {
             {
@@ -157,9 +162,8 @@ knowledge = data.knowledge -- 涉及的知识点
 submitAnswer(1,true,10)
   ]]
             }
-        },
+        }
     },
-
     -- 进度类型
     {
         type = "progressType",
@@ -169,22 +173,22 @@ submitAnswer(1,true,10)
                 name = "value",
                 type = "field_dropdown",
                 options = {
-                    { L "起始", 1 },
-                    { L "结束", 2 },
-                    { L "学习", 3 },
-                    { L "练习", 4 },
-                    { L "闯关", 5},
-                },
-            },
+                    {L "起始", "1"},
+                    {L "结束", "2"},
+                    {L "学习", "3"},
+                    {L "练习", "4"},
+                    {L "闯关", "5"}
+                }
+            }
         },
         hide_in_toolbox = true,
         category = "Codepku",
-        output = { type = "null", },
+        output = {type = "null"},
         helpUrl = "",
         canRun = false,
         func_description = '"%s"',
         ToNPL = function(self)
-            return self:getFieldAsString('value');
+            return self:getFieldAsString("value")
         end,
         examples = {
             {
@@ -193,67 +197,66 @@ submitAnswer(1,true,10)
                 code = [[
     ]]
             }
-        },
+        }
     },
-
---     --    进度设置
---     {
---         type = "setProgress",
---         message0 = L "总进度%1 当前进度%2 类型%3",
---         arg0 = {
---             {
---                 name = "total",
---                 type = "input_value",
---                 shadow = { type = "math_number", value = 2 },
---                 text = 2,
---             },
---             {
---                 name = "current",
---                 type = "input_value",
---                 shadow = { type = "math_number", value = 1 },
---                 text = 1,
---             },
---             {
---                 name = "type",
---                 type = "input_value",
---                 shadow = { type = "progressType", value = 'start' },
---                 text = "start",
---             },
---         },
---         category = "Codepku",
---         helpUrl = "",
---         canRun = false,
---         previousStatement = true,
---         nextStatement = true,
---         funcName = "setProgress",
---         func_description = 'setProgress(%d,%d,%s)',
---         ToNPL = function(self)
---             return string.format('setProgress(%d,%d,"%s")\n', self:getFieldValue('total'), self:getFieldValue('current'), self:getFieldAsString('type'));
---         end,
---         examples = {
---             {
---                 desc = L "记录总进度，当前进度，进度类型",
---                 canRun = false,
---                 code = [[
---                     setProgress(4,2,"start")
--- ]]
---             }
---         },
---     },
+    --     --    进度设置
+    --     {
+    --         type = "setProgress",
+    --         message0 = L "总进度%1 当前进度%2 类型%3",
+    --         arg0 = {
+    --             {
+    --                 name = "total",
+    --                 type = "input_value",
+    --                 shadow = { type = "math_number", value = 2 },
+    --                 text = 2,
+    --             },
+    --             {
+    --                 name = "current",
+    --                 type = "input_value",
+    --                 shadow = { type = "math_number", value = 1 },
+    --                 text = 1,
+    --             },
+    --             {
+    --                 name = "type",
+    --                 type = "input_value",
+    --                 shadow = { type = "progressType", value = 'start' },
+    --                 text = "start",
+    --             },
+    --         },
+    --         category = "Codepku",
+    --         helpUrl = "",
+    --         canRun = false,
+    --         previousStatement = true,
+    --         nextStatement = true,
+    --         funcName = "setProgress",
+    --         func_description = 'setProgress(%d,%d,%s)',
+    --         ToNPL = function(self)
+    --             return string.format('setProgress(%d,%d,"%s")\n', self:getFieldValue('total'), self:getFieldValue('current'), self:getFieldAsString('type'));
+    --         end,
+    --         examples = {
+    --             {
+    --                 desc = L "记录总进度，当前进度，进度类型",
+    --                 canRun = false,
+    --                 code = [[
+    --                     setProgress(4,2,"start")
+    -- ]]
+    --             }
+    --         },
+    --     },
 
     --    获取课件信息
     {
         type = "getCourseware",
-        message0 = L "获取课件数据",   
+        message0 = L "获取课件数据",
         category = "Codepku",
         helpUrl = "",
         canRun = false,
         previousStatement = true,
         nextStatement = true,
         funcName = "getCourseware",
-        func_description = 'getCourseware()',
+        func_description = "getCourseware()",
         ToNPL = function(self)
-            return string.format('getCourseware()\n');
+            return string.format("getCourseware()\n")
         end,
         examples = {
             {
@@ -270,9 +273,8 @@ course_unit_id = data.course_unit_id
 
 ]]
             }
-        },
+        }
     },
-
     -- 进度类型
     {
         type = "shareType",
@@ -282,19 +284,19 @@ course_unit_id = data.course_unit_id
                 name = "value",
                 type = "field_dropdown",
                 options = {
-                    { L "文本", "text" },
-                    { L "图片", "image" }
-                },
-            },
+                    {L "文本", "text"},
+                    {L "图片", "image"}
+                }
+            }
         },
         hide_in_toolbox = true,
         category = "Codepku",
-        output = { type = "null", },
+        output = {type = "null"},
         helpUrl = "",
         canRun = false,
         func_description = '"%s"',
         ToNPL = function(self)
-            return self:getFieldAsString('value');
+            return self:getFieldAsString("value")
         end,
         examples = {
             {
@@ -303,9 +305,8 @@ course_unit_id = data.course_unit_id
                 code = [[
     ]]
             }
-        },
+        }
     },
-
     --    分享功能
     {
         type = "share",
@@ -314,14 +315,14 @@ course_unit_id = data.course_unit_id
             {
                 name = "shareType",
                 type = "input_value",
-                shadow = { type = "shareType", value = "text" },
-                text = "text",
+                shadow = {type = "shareType", value = "text"},
+                text = "text"
             },
             {
                 name = "options",
                 type = "input_value",
-                shadow = { type = "text", value = "text" },
-                text = "text",
+                shadow = {type = "text", value = "text"},
+                text = "text"
             }
         },
         category = "Codepku",
@@ -330,9 +331,9 @@ course_unit_id = data.course_unit_id
         previousStatement = true,
         nextStatement = true,
         funcName = "share",
-        func_description = 'share(%s,%s)',
+        func_description = "share(%s,%s)",
         ToNPL = function(self)
-            return string.format('share("%s","%s")\n', self:getFieldValue('shareType'), self:getFieldValue('options'));
+            return string.format('share("%s","%s")\n', self:getFieldValue("shareType"), self:getFieldValue("options"))
         end,
         examples = {
             {
@@ -342,7 +343,7 @@ course_unit_id = data.course_unit_id
 share("text","分享内容")
 ]]
             }
-        },
+        }
     },
     --    获取用户上一次学习
     {
@@ -354,9 +355,9 @@ share("text","分享内容")
         previousStatement = true,
         nextStatement = true,
         funcName = "getLearnRecords",
-        func_description = 'getLearnRecords()',
+        func_description = "getLearnRecords()",
         ToNPL = function(self)
-            return string.format('getLearnRecords()\n');
+            return string.format("getLearnRecords()\n")
         end,
         examples = {
             {
@@ -370,34 +371,32 @@ current_node = data.current_node
 total_node = data.total_node
 ]]
             }
-        },
+        }
     },
-
-     --    提交用户学习进度
-     {
+    --    提交用户学习进度
+    {
         -- courseware_id,category,current_node,total_node
         type = "setLearnRecords",
         message0 = L "上传学习进度 类别 %1 当前节点 %2/总结点 %3",
         arg0 = {
-
             {
                 name = "category",
                 type = "input_value",
-                shadow = { type = "progressType",value = 1},
-                text = 1,
+                shadow = {type = "progressType", value = 1},
+                text = 1
             },
             {
                 name = "current_node",
                 type = "input_value",
-                shadow = { type = "math_number",value = 1},
-                text = 1,
+                shadow = {type = "math_number", value = 1},
+                text = 1
             },
             {
                 name = "total_node",
                 type = "input_value",
-                shadow = { type = "math_number",value = 1},
-                text = 1,
-            },
+                shadow = {type = "math_number", value = 1},
+                text = 1
+            }
         },
         category = "Codepku",
         helpUrl = "",
@@ -405,9 +404,14 @@ total_node = data.total_node
         previousStatement = true,
         nextStatement = true,
         funcName = "setLearnRecords",
-        func_description = 'setLearnRecords(%d)',
+        func_description = "setLearnRecords(%d)",
         ToNPL = function(self)
-            return string.format('setLearnRecords(%d,%d,%d)\n', self:getFieldValue('category'), self:getFieldValue('current_node'), self:getFieldValue('total_node'));
+            return string.format(
+                "setLearnRecords(%d,%d,%d)\n",
+                self:getFieldValue("category"),
+                self:getFieldValue("current_node"),
+                self:getFieldValue("total_node")
+            )
         end,
         examples = {
             {
@@ -418,9 +422,8 @@ total_node = data.total_node
 data = setLearnRecords(1,3,4)
 ]]
             }
-        },
+        }
     },
-
     {
         type = "behavior_action_type",
         message0 = "%1",
@@ -429,20 +432,20 @@ data = setLearnRecords(1,3,4)
                 name = "value",
                 type = "field_dropdown",
                 options = {
-                    { L "开始", 1 },
-                    { L "结束", 2 },
-                    { L "分享", 3 },
-                },
-            },
+                    {L "开始", "1"},
+                    {L "结束", "2"},
+                    {L "分享", "3"}
+                }
+            }
         },
         hide_in_toolbox = true,
         category = "Codepku",
-        output = { type = "null", },
+        output = {type = "null"},
         helpUrl = "",
         canRun = false,
         func_description = '"%s"',
         ToNPL = function(self)
-            return self:getFieldAsString('value');
+            return self:getFieldAsString("value")
         end,
         examples = {
             {
@@ -451,7 +454,7 @@ data = setLearnRecords(1,3,4)
                 code = [[
     ]]
             }
-        },
+        }
     },
     {
         type = "behavior_type1",
@@ -461,22 +464,22 @@ data = setLearnRecords(1,3,4)
                 name = "value",
                 type = "field_dropdown",
                 options = {
-                    { L "动画", 1},
-                    { L "位置", 2},
-                    { L "答题", 3},
-                    { L "微信", 4},
-                    { L "QQ", 5},
-                },
-            },
+                    {L "动画", "1"},
+                    {L "位置", "2"},
+                    {L "答题", "3"},
+                    {L "微信", "4"},
+                    {L "QQ", "5"}
+                }
+            }
         },
         hide_in_toolbox = true,
         category = "Codepku",
-        output = { type = "null", },
+        output = {type = "null"},
         helpUrl = "",
         canRun = false,
         func_description = '"%s"',
         ToNPL = function(self)
-            return self:getFieldAsString('value');
+            return self:getFieldAsString("value")
         end,
         examples = {
             {
@@ -485,10 +488,10 @@ data = setLearnRecords(1,3,4)
                 code = [[
     ]]
             }
-        },
+        }
     },
-     --    提交用户行为
-     {
+    --    提交用户行为
+    {
         -- courseware_id,category,current_node,total_node
         type = "setBehaviors",
         message0 = L "行为 %1 行为类别 %2",
@@ -496,16 +499,15 @@ data = setLearnRecords(1,3,4)
             {
                 name = "behavior_action",
                 type = "input_value",
-                shadow = { type = "behavior_action_type",value = 1},
-                text = 1,
+                shadow = {type = "behavior_action_type", value = 1},
+                text = 1
             },
             {
                 name = "behavior_type",
                 type = "input_value",
-                shadow = { type = "behavior_type1",value = 1},
-                text = 1,
-            },
-
+                shadow = {type = "behavior_type1", value = 1},
+                text = 1
+            }
         },
         category = "Codepku",
         helpUrl = "",
@@ -513,9 +515,13 @@ data = setLearnRecords(1,3,4)
         previousStatement = true,
         nextStatement = true,
         funcName = "setBehaviors",
-        func_description = 'setBehaviors(%d)',
+        func_description = "setBehaviors(%d)",
         ToNPL = function(self)
-            return string.format('setBehaviors(%d,%d)\n', self:getFieldValue('behavior_action'), self:getFieldValue('behavior_type'));
+            return string.format(
+                "setBehaviors(%d,%d)\n",
+                self:getFieldValue("behavior_action"),
+                self:getFieldValue("behavior_type")
+            )
         end,
         examples = {
             {
@@ -525,7 +531,7 @@ data = setLearnRecords(1,3,4)
 setBehaviors(2,3)
 ]]
             }
-        },
+        }
     },
     -- 给用户增加经验值
     {
@@ -535,15 +541,15 @@ setBehaviors(2,3)
             {
                 name = "exp",
                 type = "input_value",
-                shadow = { type = "math_number" },
-                text = 99,
+                shadow = {type = "math_number"},
+                text = 99
             },
             {
                 name = "exp_type",
                 type = "input_value",
-                shadow = { type = "math_number" },
-                text = 11,
-            },
+                shadow = {type = "math_number"},
+                text = 11
+            }
         },
         category = "Codepku",
         helpUrl = "",
@@ -551,9 +557,9 @@ setBehaviors(2,3)
         previousStatement = true,
         nextStatement = true,
         funcName = "addExperience",
-        func_description = 'addExperience(%d,%d)',
+        func_description = "addExperience(%d,%d)",
         ToNPL = function(self)
-            return string.format('addExperience(%d,%d)\n', self:getFieldValue('exp'), self:getFieldValue('exp_type'));
+            return string.format("addExperience(%d,%d)\n", self:getFieldValue("exp"), self:getFieldValue("exp_type"))
         end,
         examples = {
             {
@@ -563,9 +569,8 @@ setBehaviors(2,3)
 response = addExperience(99,11)
 ]]
             }
-        },
+        }
     },
-
     -- 保存游戏得分
     {
         type = "saveScore",
@@ -574,9 +579,9 @@ response = addExperience(99,11)
             {
                 name = "score",
                 type = "input_value",
-                shadow = { type = "math_number" },
-                text = 99,
-            },
+                shadow = {type = "math_number"},
+                text = 99
+            }
         },
         category = "Codepku",
         helpUrl = "",
@@ -584,9 +589,9 @@ response = addExperience(99,11)
         previousStatement = true,
         nextStatement = true,
         funcName = "saveScore",
-        func_description = 'saveScore(%d)',
+        func_description = "saveScore(%d)",
         ToNPL = function(self)
-            return string.format('saveScore(%d)\n', self:getFieldValue('score'));
+            return string.format("saveScore(%d)\n", self:getFieldValue("score"))
         end,
         examples = {
             {
@@ -596,7 +601,7 @@ response = addExperience(99,11)
 response = saveScore(99)
 ]]
             }
-        },
+        }
     },
     --    创建角色
     {
@@ -606,15 +611,15 @@ response = saveScore(99)
             {
                 name = "nickname",
                 type = "input_value",
-                shadow = { type = "input_value", value = "9号机器人" },
-                text = "9号机器人",
+                shadow = {type = "input_value", value = "9号机器人"},
+                text = "9号机器人"
             },
             {
                 name = "gender",
                 type = "input_value",
-                shadow = { type = "math_number", value = 1 },
-                text = 1,
-            },
+                shadow = {type = "math_number", value = 1},
+                text = 1
+            }
         },
         category = "Codepku",
         helpUrl = "",
@@ -622,9 +627,9 @@ response = saveScore(99)
         previousStatement = true,
         nextStatement = true,
         funcName = "createUser",
-        func_description = 'createUser(%s,%d)',
+        func_description = "createUser(%s,%d)",
         ToNPL = function(self)
-            return string.format('createUser("%s",%d)\n', self:getFieldValue('nickname'), self:getFieldValue('gender'));
+            return string.format('createUser("%s",%d)\n', self:getFieldValue("nickname"), self:getFieldValue("gender"))
         end,
         examples = {
             {
@@ -634,7 +639,7 @@ response = saveScore(99)
 response = createUser("9号机器人",1)
 ]]
             }
-        },
+        }
     },
     --    以权重w奖励用户经验/学科经验/道具
     {
@@ -644,9 +649,9 @@ response = createUser("9号机器人",1)
             {
                 name = "order",
                 type = "input_value",
-                shadow = { type = "math_number", value = 1 },
-                text = 1,
-            },          
+                shadow = {type = "math_number", value = 1},
+                text = 1
+            }
         },
         category = "Codepku",
         helpUrl = "",
@@ -654,9 +659,9 @@ response = createUser("9号机器人",1)
         previousStatement = true,
         nextStatement = true,
         funcName = "awardUser",
-        func_description = 'awardUser(%d)',
+        func_description = "awardUser(%d)",
         ToNPL = function(self)
-            return string.format('awardUser(%d)\n', self:getFieldValue('order'));
+            return string.format("awardUser(%d)\n", self:getFieldValue("order"))
         end,
         examples = {
             {
@@ -679,7 +684,7 @@ if total_exp ~= -1 then
 end
 ]]
             }
-        },
+        }
     },
     -- 获得用户最大游戏得分
     {
@@ -691,9 +696,9 @@ end
         previousStatement = true,
         nextStatement = true,
         funcName = "getMaxScore",
-        func_description = 'getMaxScore()',
+        func_description = "getMaxScore()",
         ToNPL = function(self)
-            return string.format('getMaxScore()\n');
+            return string.format("getMaxScore()\n")
         end,
         examples = {
             {
@@ -703,7 +708,7 @@ end
 score = getMaxScore() -- score等于-1表示获取失败
 ]]
             }
-        },
+        }
     },
     --    拾取道具
     {
@@ -713,15 +718,15 @@ score = getMaxScore() -- score等于-1表示获取失败
             {
                 name = "prop_num",
                 type = "input_value",
-                shadow = { type = "math_number", value = 1 },
-                text = 1,
+                shadow = {type = "math_number", value = 1},
+                text = 1
             },
             {
                 name = "prop_id",
                 type = "input_value",
-                shadow = { type = "math_number", value = 2001 },
-                text = 2001,
-            },            
+                shadow = {type = "math_number", value = 2001},
+                text = 2001
+            }
         },
         category = "Codepku",
         helpUrl = "",
@@ -729,9 +734,9 @@ score = getMaxScore() -- score等于-1表示获取失败
         previousStatement = true,
         nextStatement = true,
         funcName = "pickProperty",
-        func_description = 'pickProperty(%d,%d)',
+        func_description = "pickProperty(%d,%d)",
         ToNPL = function(self)
-            return string.format('pickProperty(%d,%d)\n', self:getFieldValue('prop_num'),self:getFieldValue('prop_id'));
+            return string.format("pickProperty(%d,%d)\n", self:getFieldValue("prop_num"), self:getFieldValue("prop_id"))
         end,
         examples = {
             {
@@ -741,8 +746,8 @@ score = getMaxScore() -- score等于-1表示获取失败
 response = pickProperty(1,2001)
 ]]
             }
-        },
-    },
+        }
+    }
 }
 function Codepku.GetCmds()
     return cmds
