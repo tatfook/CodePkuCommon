@@ -245,6 +245,7 @@ function CodeApi.awardUser(sort)
         -- }
         local GameLogic = commonlib.gettable("MyCompany.Aries.Game.GameLogic")
         GameLogic.GetFilters():apply_filters("codepkuAwardUser", data);
+        GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data);
         return data
     else
 
