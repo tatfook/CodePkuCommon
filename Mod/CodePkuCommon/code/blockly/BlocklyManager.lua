@@ -35,6 +35,10 @@ function BlocklyManager:init()
     GameLogic.GetFilters():add_filter(
         "ParacraftCodeBlocklyCategories",
         function(categories)
+            local isEmployee = System.User and System.User.info and System.User.info.is_employee;
+			if not (isEmployee and tonumber(isEmployee) == 1) then
+				return categories
+			end
             if not BlocklyManager.categoriesinited then
                 BlocklyManager.categoriesinited = true
                 categories[#categories + 1] = {name = "Codepku", text = L "定制", colour = "#459197"}
