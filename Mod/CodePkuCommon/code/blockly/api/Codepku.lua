@@ -181,7 +181,7 @@ function CodeApi.setLearnRecords(category,current_node,total_node)
         -- category==2是结束, current_node==total_node是最后一个节点,or是因为可能可能有不规范的地方,满足任意一个都视为结束
         if category == 2 or current_node == total_node then 
             local GameLogic = commonlib.gettable("MyCompany.Aries.Game.GameLogic")
-            GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data);
+            GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data, true);
         end
         return true
     end
