@@ -31,8 +31,15 @@ end);
 -- @param string|table options 分享参数
 -- @param table<function>{onStart,onResult,onError,onCancel} callback 分享回调
 function Share:fire(shareType, options, callback)
-
     Share.callbacks = callback;
+    local refCall = Share.callbacks.onResult
+    
+    Share.callbacks.onResult = function (e)
+        if refCall then
+            refCall(e)
+        end
+        GameLogic.GetFilters():apply_filters("TaskSystemList", {type = "share"}); -- 分享后，触发任务系统计数
+    end
 
     if LuaJavaBridge == nil then
         NPL.call("LuaJavaBridge.cpp", {});

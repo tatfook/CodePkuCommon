@@ -52,6 +52,18 @@ function ApiService.getLearnRecords(courseware_id,sync)
 end
 
 function ApiService.setLearnRecords(courseware_id,category,current_node,total_node)
+    if (current_node == total_node) then
+        -- 触发任务系统计数
+        local updateTask = {
+            type = "course",
+            courseware_id = courseware_id,
+            category = System.Codepku.Coursewares and System.Codepku.Coursewares.course.category
+        }
+
+        local GameLogic = commonlib.gettable("MyCompany.Aries.Game.GameLogic")
+        GameLogic.GetFilters():apply_filters("TaskSystemList", updateTask);
+    end
+
     local pos_x, pos_y, pos_z = EntityManager.GetPlayer():GetPosition()
     data = {
         world_position = {x=pos_x,y=pos_y,z=pos_z},
