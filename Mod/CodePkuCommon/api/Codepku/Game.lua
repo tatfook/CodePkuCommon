@@ -28,13 +28,21 @@ function ApiService.addExperience(courseware_id,experience,type)
 end
 
 function ApiService.saveScore(courseware_id,gscore)
+    -- 触发任务系统计数
+    local updateTask = {
+        type = "game",
+        courseware_id = courseware_id
+    }
+    local GameLogic = commonlib.gettable("MyCompany.Aries.Game.GameLogic")
+    GameLogic.GetFilters():apply_filters("TaskSystemList", updateTask);
+
+    -- 加密
     local secret = CommonFunc.ConfigCodingKeys[1]  -- secretKey
     local data = {
         game_id = courseware_id,
         score = gscore,
         timestamp = os.time(),
     }
-
     --组合字符串
     local sortData = {}
     for k,v in pairs(data) do
