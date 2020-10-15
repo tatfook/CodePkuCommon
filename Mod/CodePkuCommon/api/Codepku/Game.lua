@@ -12,9 +12,11 @@ service.getQuestions(1):next(funciton(response)
 end);
 -------------------------------------------------------
 ]]
-
+NPL.load("(gl)script/ide/System/Encoding/md5.lua");
 local request = NPL.load("../BaseRequest.lua");
 local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
+local CommonFunc = commonlib.gettable("Mod.CodePku.Common.CommonFunc");
+local Encoding = commonlib.gettable("System.Encoding");
 
 function ApiService.addExperience(courseware_id,experience,type)
     data = {        
@@ -26,10 +28,30 @@ function ApiService.addExperience(courseware_id,experience,type)
 end
 
 function ApiService.saveScore(courseware_id,gscore)
-    data = {
+    local secret = CommonFunc.ConfigCodingKeys[1]  -- secretKey
+    local data = {
         game_id = courseware_id,
-        score=gscore
+        score = gscore,
+        timestamp = os.time(),
     }
+
+    --组合字符串
+    local sortData = {}
+    for k,v in pairs(data) do
+        table.insert(sortData, {key=k,val=v})
+    end
+    table.sort(sortData,function (a, b) return a.key < b.key end)
+    local signString = ''
+    for k,v in pairs(sortData) do
+        signString = signString..string.format('%s=%s&',v.key,v.val)
+    end
+    signString = signString..string.format('secret=%s',secret)
+
+    local sign = Encoding.md5(signString)
+    sign = sign:upper()
+
+    data['sign'] = sign
+
     return request:post('/game-scores/' ,data,{sync = true});
 end
 

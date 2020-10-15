@@ -213,7 +213,10 @@ end
 function CodeApi.saveScore(score)
     local courseware_id = CodeApi.getCoursewareID()
     local response = ApiService.saveScore(courseware_id,score)
-    return response.status == 200
+
+    if  response.status == 200 then
+        return response.data
+    end
 end
 
 -- 创建角色
