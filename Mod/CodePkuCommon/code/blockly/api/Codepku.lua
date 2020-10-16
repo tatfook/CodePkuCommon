@@ -21,6 +21,9 @@ local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
 
 local BlockEngine = commonlib.gettable("MyCompany.Aries.Game.BlockEngine")
 
+NPL.load("(gl)Mod/CodePku/cellar/Common/CommonFunc/CommonFunc.lua")
+local CommonFunc = commonlib.gettable("Mod.CodePku.Common.CommonFunc")
+
 -- 获取课件id
 -- @return table
 function CodeApi.getCoursewareID()
@@ -257,6 +260,21 @@ function CodeApi.awardUser(sort)
         GameLogic.GetFilters():apply_filters("codepkuAwardUser", data);
         -- 课程节点奖励消息tip提示
         GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data);
+
+        -- 刷新本地金币
+        if data.props and next(data.props) then
+            local wanxuebi = 0
+            local wanxuequan = 0
+            for _,prop in pairs(data.props) do
+                if prop.prop_id == 1 then
+                    wanxuebi = prop.prop_num
+                elseif prop.prop_id == 2 then
+                    wanxuequan = prop.prop_num
+                end
+            end
+            CommonFunc.RefreshLocalMoney({{amount=wanxuebi,currency_id=1,},{amount=wanxuequan,currency_id=2,},})
+        end
+
         return data
     else
 
