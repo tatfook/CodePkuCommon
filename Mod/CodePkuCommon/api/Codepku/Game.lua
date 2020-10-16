@@ -13,6 +13,7 @@ end);
 -------------------------------------------------------
 ]]
 NPL.load("(gl)script/ide/System/Encoding/md5.lua");
+NPL.load("(gl)Mod/CodePku/cellar/Common/CommonFunc/CommonFunc.lua")
 local request = NPL.load("../BaseRequest.lua");
 local ApiService = commonlib.gettable("Mod.CodePkuCommon.ApiService");
 local CommonFunc = commonlib.gettable("Mod.CodePku.Common.CommonFunc");
