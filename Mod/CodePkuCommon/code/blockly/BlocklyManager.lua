@@ -22,8 +22,10 @@ function BlocklyManager:init()
     GameLogic.GetFilters():add_filter(
         "ParacraftCodeBlocklyAppendDefinitions",
         function(ParacraftCodeBlockly)
-            echo("ParacraftCodeBlockly")
-            echo(ParacraftCodeBlockly)
+            local isEmployee = System.User and System.User.info and System.User.info.is_employee;
+			if not (isEmployee and tonumber(isEmployee) == 1) then
+				return
+			end
             if (ParacraftCodeBlockly) then
                 NPL.load("(gl)Mod/CodePkuCommon/code/blockly/Codepku.lua")
                 local Codepku = commonlib.gettable("Mod.CodePkuCommon.Code.Blockly.Codepku")
