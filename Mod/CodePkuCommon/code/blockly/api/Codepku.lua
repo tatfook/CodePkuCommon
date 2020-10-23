@@ -320,3 +320,33 @@ function CodeApi.pickProperty(prop_num,prop_id)
     end
 
 end
+
+-- 获取<站到最后>题目信息
+-- @return 题目信息
+function CodeApi.getSubjectsDataSTE()
+    local response = ApiService.getSubjectsDataSTE()
+
+    local data = nil
+    local offset = nil
+
+    if response.code == 200 then
+        data = response.data
+        offset = data.offset
+    end
+
+    return {data=data, offset=offset}
+end
+
+-- 获取<站到最后>最高关卡数
+-- @return 最高关卡数
+function CodeApi.getMaxRoundSTE()
+    local response = ApiService.getMaxRoundSTE()
+
+    local maxRoundSTE = 0
+
+    if response.code == 200 then
+        maxRoundSTE = response.data and response.data.rounds
+    end
+
+    return maxRoundSTE
+end

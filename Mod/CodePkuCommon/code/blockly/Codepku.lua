@@ -747,6 +747,86 @@ response = pickProperty(1,2001)
 ]]
             }
         }
+    },
+    -- 获取<站到最后>题目信息
+    {
+        type = "getSubjectsDataSTE",
+        message0 = L "获取<站到最后>题目信息",
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "getSubjectsDataSTE",
+        func_description = "getSubjectsDataSTE()",
+        ToNPL = function(self)
+            return string.format("getSubjectsDataSTE()\n")
+        end,
+        examples = {
+            {
+                desc = L "获取<站到最后>题目信息",
+                canRun = false,
+                code = [[
+subjectsDataSTE = getSubjectsDataSTE()
+]]
+            }
+        }
+    },
+    -- 获取<站到最后>最高关卡数
+    {
+        type = "getMaxRoundSTE",
+        message0 = L "获取<站到最后>最高关卡数",
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "getMaxRoundSTE",
+        func_description = "getMaxRoundSTE()",
+        ToNPL = function(self)
+            return string.format("getMaxRoundSTE()\n")
+        end,
+        examples = {
+            {
+                desc = L "获取<站到最后>最高关卡数",
+                canRun = false,
+                code = [[
+maxRoundSTE = getMaxRoundSTE()
+]]
+            }
+        }
+    },
+    -- 保存<站到最后>最高关卡数
+    {
+        type = "saveMaxRoundSTE",
+        message0 = L "保存<站到最后>最高关卡数%1",
+        arg0 = {
+            {
+                name = "max_level",
+                type = "input_value",
+                shadow = {type = "math_number", value = 0},
+                text = 0
+            }
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "saveMaxRoundSTE",
+        func_description = "saveMaxRoundSTE(%d)",
+        ToNPL = function(self)
+            return string.format("saveMaxRoundSTE(%d)\n", self:getFieldValue("max_level"))
+        end,
+        examples = {
+            {
+                desc = L "保存<站到最后>最高关卡数0",
+                canRun = false,
+                code = [[
+response = saveMaxRoundSTE(0)
+]]
+            }
+        }
     }
 }
 function Codepku.GetCmds()
