@@ -326,15 +326,11 @@ end
 function CodeApi.getSubjectsDataSTE()
     local response = ApiService.getSubjectsDataSTE()
 
-    local data = nil
-    local offset = nil
-
-    if response.code == 200 then
-        data = response.data
-        offset = data.offset
+    if response.status == 200 then
+        return response.data and response.data.data or nil
+    else
+        return nil
     end
-
-    return {data=data, offset=offset}
 end
 
 -- 获取<站到最后>最高关卡数
@@ -342,11 +338,21 @@ end
 function CodeApi.getMaxRoundSTE()
     local response = ApiService.getMaxRoundSTE()
 
-    local maxRoundSTE = 0
-
-    if response.code == 200 then
-        maxRoundSTE = response.data and response.data.rounds
+    if response.status == 200 then
+        return response.data and response.data.data and response.data .data.rounds or nil
+    else
+        return nil
     end
+end
 
-    return maxRoundSTE
+-- 保存<站到最后>最高关卡数
+-- @return response or nil
+function CodeApi.saveMaxRoundSTE(max_level)
+    local response = ApiService.saveMaxRoundSTE(max_level)
+
+    if response.status == 200 then
+        return response.data
+    else
+        return nil
+    end
 end
