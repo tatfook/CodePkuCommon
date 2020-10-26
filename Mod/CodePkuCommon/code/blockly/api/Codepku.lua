@@ -356,3 +356,9 @@ function CodeApi.saveMaxRoundSTE(max_level)
         return nil
     end
 end
+
+--获取<站到最后>相关函数
+--@return 相关函数
+function CodeApi.getFunsSTE()
+    return {getSubjectsDataSTE=CodeApi.getSubjectsDataSTE, getMaxRoundSTE=CodeApi.getMaxRoundSTE, saveMaxRoundSTE=CodeApi.saveMaxRoundSTE}
+end
