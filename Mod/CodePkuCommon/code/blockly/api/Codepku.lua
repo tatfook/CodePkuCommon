@@ -357,8 +357,20 @@ function CodeApi.saveMaxRoundSTE(max_level, callbackData)
     end)
 end
 
+-- <站到最后>报名
+-- @return response or nil
+function CodeApi.signUpSTE(callbackData)
+    ApiService.signUpSTE(function (response)
+        if response.status == 200 then
+            callbackData.data = response.data
+        else
+            callbackData.data = nil
+        end
+    end)
+end
+
 --获取<站到最后>相关函数
 --@return 相关函数
 function CodeApi.getFunsSTE()
-    return {getSubjectsDataSTE=CodeApi.getSubjectsDataSTE, getMaxRoundSTE=CodeApi.getMaxRoundSTE, saveMaxRoundSTE=CodeApi.saveMaxRoundSTE}
+    return {getSubjectsDataSTE=CodeApi.getSubjectsDataSTE, getMaxRoundSTE=CodeApi.getMaxRoundSTE, saveMaxRoundSTE=CodeApi.saveMaxRoundSTE, signUpSTE=CodeApi.signUpSTE}
 end

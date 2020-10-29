@@ -778,6 +778,9 @@ funsSTE.saveMaxRoundSTE(0, saveMaxRoundSTE)
 --获取<站到最后>最高关卡数
 maxRoundDataSTE = {}
 funsSTE.getMaxRoundSTE(maxRoundDataSTE)
+--<站到最后>报名
+signUpDataSTE = {}
+funsSTE.signUpSTE(signUpDataSTE)
 ]]
             }
         }

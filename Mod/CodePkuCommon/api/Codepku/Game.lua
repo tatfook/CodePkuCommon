@@ -105,3 +105,9 @@ function ApiService.saveMaxRoundSTE (max_round, callbackFunc)
         callbackFunc(response)
     end)
 end
+
+function ApiService.signUpSTE(callbackFunc)
+    request:get('/custom-questions/user-sign-up'):next(function(response)
+        callbackFunc(response)
+    end)
+end
