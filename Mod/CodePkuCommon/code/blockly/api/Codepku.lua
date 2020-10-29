@@ -323,38 +323,38 @@ end
 
 -- 获取<站到最后>题目信息
 -- @return 题目信息
-function CodeApi.getSubjectsDataSTE()
-    local response = ApiService.getSubjectsDataSTE()
-
-    if response.status == 200 then
-        return response.data and response.data.data or nil
-    else
-        return nil
-    end
+function CodeApi.getSubjectsDataSTE(callbackData)
+    ApiService.getSubjectsDataSTE(function (response)
+        if response.status == 200 then
+            callbackData.data = response.data and response.data.data or nil
+        else
+            callbackData.data = nil
+        end
+    end)
 end
 
 -- 获取<站到最后>最高关卡数
 -- @return 最高关卡数
-function CodeApi.getMaxRoundSTE()
-    local response = ApiService.getMaxRoundSTE()
-
-    if response.status == 200 then
-        return response.data and response.data.data and response.data .data.rounds or nil
-    else
-        return nil
-    end
+function CodeApi.getMaxRoundSTE(callbackData)
+    ApiService.getMaxRoundSTE(function (response)
+        if response.status == 200 then
+            callbackData.data =  response.data and response.data.data and response.data .data.rounds or nil
+        else
+            callbackData.data =  nil
+        end
+    end)
 end
 
 -- 保存<站到最后>最高关卡数
 -- @return response or nil
-function CodeApi.saveMaxRoundSTE(max_level)
-    local response = ApiService.saveMaxRoundSTE(max_level)
-
-    if response.status == 200 then
-        return response.data
-    else
-        return nil
-    end
+function CodeApi.saveMaxRoundSTE(max_level, callbackData)
+    ApiService.saveMaxRoundSTE(max_level, function (response)
+        if response.status == 200 then
+            callbackData.data = response.data
+        else
+            callbackData.data = nil
+        end
+    end)
 end
 
 --获取<站到最后>相关函数

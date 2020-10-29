@@ -768,12 +768,16 @@ response = pickProperty(1,2001)
                 canRun = false,
                 code = [[
 funsSTE = getFunsSTE()
+--都是异步获取,最终返回的数据为传入的接收table的key为data的值, 如subjectsDataSTE.data
 --获取<站到最后>题目信息
-subjectsDataSTE = funsSTE.getSubjectsDataSTE()
+subjectsDataSTE = {}
+funsSTE.getSubjectsDataSTE(subjectsDataSTE)
 --保存<站到最后>最高关卡数
-responseSTE = funsSTE.saveMaxRoundSTE(0)
+saveMaxRoundSTE = {}
+funsSTE.saveMaxRoundSTE(0, saveMaxRoundSTE)
 --获取<站到最后>最高关卡数
-maxRoundSTE = funsSTE.getMaxRoundSTE()
+maxRoundDataSTE = {}
+funsSTE.getMaxRoundSTE(maxRoundDataSTE)
 ]]
             }
         }

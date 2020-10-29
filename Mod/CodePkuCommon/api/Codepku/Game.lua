@@ -88,14 +88,20 @@ function ApiService.pickProperty (id,num)
     return request:post('/user-props/pick/' ,data,{sync = true});
 end
 
-function ApiService.getSubjectsDataSTE ()
-    return request:get('/custom-questions/show', nil, {sync = true});
+function ApiService.getSubjectsDataSTE(callbackFunc)
+    request:get('/custom-questions/show'):next(function(response)
+        callbackFunc(response)
+    end)
 end
 
-function ApiService.getMaxRoundSTE ()
-    return request:get('/custom-questions/get-user-rounds', nil, {sync = true});
+function ApiService.getMaxRoundSTE(callbackFunc)
+    request:get('/custom-questions/get-user-rounds'):next(function(response)
+        callbackFunc(response)
+    end)
 end
 
-function ApiService.saveMaxRoundSTE (max_level)
-    return request:get('/custom-questions/save-user-rounds/?rounds='..tostring(max_level), nil, {sync = true});
+function ApiService.saveMaxRoundSTE (max_round, callbackFunc)
+    request:get('/custom-questions/save-user-rounds/?rounds='..tostring(max_round)):next(function(response)
+        callbackFunc(response)
+    end)
 end
