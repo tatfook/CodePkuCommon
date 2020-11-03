@@ -36,6 +36,7 @@ function ApiService.saveScore(courseware_id,gscore)
     }
     local GameLogic = commonlib.gettable("MyCompany.Aries.Game.GameLogic")
     GameLogic.GetFilters():apply_filters("TaskSystemList", updateTask);
+    GameLogic.GetFilters():apply_filters("Schoolyard.IncreaseVitality", updateTask);    -- 保存游戏得分，触发活跃度系统
 
     -- 加密
     local secret = CommonFunc.ConfigCodingKeys[1]  -- secretKey

@@ -62,6 +62,7 @@ function ApiService.setLearnRecords(courseware_id,category,current_node,total_no
 
         local GameLogic = commonlib.gettable("MyCompany.Aries.Game.GameLogic")
         GameLogic.GetFilters():apply_filters("TaskSystemList", updateTask);
+        GameLogic.GetFilters():apply_filters("Schoolyard.IncreaseVitality", updateTask);        -- 上完课触发活跃度系统
     end
 
     local pos_x, pos_y, pos_z = EntityManager.GetPlayer():GetPosition()
