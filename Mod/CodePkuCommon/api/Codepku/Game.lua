@@ -101,6 +101,14 @@ function ApiService.getMaxRoundSTE(callbackFunc)
 end
 
 function ApiService.saveMaxRoundSTE (max_round, callbackFunc)
+    -- 站到最后，触发任务系统计数
+    if max_round < 10 then
+        local updateTask = {
+            type = "game",
+        }
+        local GameLogic = commonlib.gettable("MyCompany.Aries.Game.GameLogic")
+        GameLogic.GetFilters():apply_filters("TaskSystemList", updateTask);
+    end
     local data = {
         rounds = max_round
     }
