@@ -100,9 +100,11 @@ function ApiService.getMaxRoundSTE(callbackFunc)
     end)
 end
 
-function ApiService.saveMaxRoundSTE (max_round, callbackFunc)
+function ApiService.saveMaxRoundSTE(max_round, date, question_round, callbackFunc)
     local data = {
-        rounds = max_round
+        rounds = max_round,
+        date = date,
+        question_round = question_round
     }
     request:post('/custom-questions/save-user-rounds', data):next(function(response)
         callbackFunc(response)
