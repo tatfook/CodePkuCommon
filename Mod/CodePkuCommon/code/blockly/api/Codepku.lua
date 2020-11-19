@@ -347,8 +347,8 @@ end
 
 -- 保存<站到最后>最高关卡数
 -- @return response or nil
-function CodeApi.saveMaxRoundSTE(max_level, callbackData)
-    ApiService.saveMaxRoundSTE(max_level, function (response)
+function CodeApi.saveMaxRoundSTE(max_round, date, question_round, callbackData)
+    ApiService.saveMaxRoundSTE(max_round, date, question_round, function (response)
         if response.status == 200 then
             callbackData.data = response.data
         else

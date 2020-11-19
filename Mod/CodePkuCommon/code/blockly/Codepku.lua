@@ -772,9 +772,9 @@ funsSTE = getFunsSTE()
 --获取<站到最后>题目信息
 subjectsDataSTE = {}
 funsSTE.getSubjectsDataSTE(subjectsDataSTE)
---保存<站到最后>最高关卡数
+--保存<站到最后>最高关卡数(关卡数，日期，场次)
 saveMaxRoundSTE = {}
-funsSTE.saveMaxRoundSTE(0, saveMaxRoundSTE)
+funsSTE.saveMaxRoundSTE(0,"2020-11-16",65,saveMaxRoundSTE)
 --获取<站到最后>最高关卡数
 maxRoundDataSTE = {}
 funsSTE.getMaxRoundSTE(maxRoundDataSTE)
