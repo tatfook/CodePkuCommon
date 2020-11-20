@@ -2,7 +2,7 @@
 Title: 友盟社会化分享 sdk
 Author(s): John Mai
 Date: 2020-06-18 11:53:57
-Desc: 与Android层友盟sdk进行通讯
+Desc: 与Android或者iOS层友盟sdk进行通讯
 Example:
 ------------------------------------------------------------
     local Share = NPL.load("(gl)Mod/CodePkuCommon/util/Share.lua");
@@ -11,6 +11,9 @@ Example:
 ]]
 
 local Share = commonlib.inherit(nil, NPL.export());
+local platform = System.os.GetPlatform();
+local isAndroid = platform == "android";
+local isIOS = platform == "ios";
 
 Share.callbacks = {}
 function Share:ctor()
@@ -31,7 +34,9 @@ end);
 -- @param string|table options 分享参数
 -- @param table<function>{onStart,onResult,onError,onCancel} callback 分享回调
 function Share:fire(shareType, options, callback)
+    
     Share.callbacks = callback;
+
     local refCall = Share.callbacks.onResult
     
     Share.callbacks.onResult = function (e)
@@ -40,21 +45,45 @@ function Share:fire(shareType, options, callback)
         end
         GameLogic.GetFilters():apply_filters("TaskSystemList", {type = "share"}); -- 分享后，触发任务系统计数
     end
+    
+    if isAndroid then
+    
+        if LuaJavaBridge == nil then
+            NPL.call("LuaJavaBridge.cpp", {});
+        end
 
-    if LuaJavaBridge == nil then
-        NPL.call("LuaJavaBridge.cpp", {});
-    end
-
-    if LuaJavaBridge then
-        if shareType == "text" then
-            if type(options) == 'string' then
-                options = { text = options };
+        if LuaJavaBridge then
+            if shareType == "text" then
+                if type(options) == 'string' then
+                    options = { text = options };
+                end
+                LuaJavaBridge.callJavaStaticMethod("plugin/UMeng/UMengShare", "text", "(Ljava/lang/String;)V", options);
+            elseif shareType == "url" then
+                LuaJavaBridge.callJavaStaticMethod("plugin/UMeng/UMengShare", "url", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", options);
+            elseif shareType == "image" then
+                LuaJavaBridge.callJavaStaticMethod("plugin/UMeng/UMengShare", "image", "(Ljava/lang/String;Ljava/lang/String;)V", options);
             end
-            LuaJavaBridge.callJavaStaticMethod("plugin/UMeng/UMengShare", "text", "(Ljava/lang/String;)V", options);
-        elseif shareType == "url" then
-            LuaJavaBridge.callJavaStaticMethod("plugin/UMeng/UMengShare", "url", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", options);
-        elseif shareType == "image" then
-            LuaJavaBridge.callJavaStaticMethod("plugin/UMeng/UMengShare", "image", "(Ljava/lang/String;Ljava/lang/String;)V", options);
+        end
+
+    elseif isIOS then
+
+        if LuaObjcBridge == nil then
+            NPL.call("LuaObjcBridge.cpp", {});
+        end
+
+        if LuaObjcBridge then
+            local args = { luaPath = "(gl)Mod/CodePkuCommon/util/Share.lua" };
+            local ok, ret = LuaObjcBridge.callStaticMethod("UMengShare", "registerLuaCall", args);
+            if shareType == "text" then
+                if type(options) == 'string' then
+                    options = { text = options };
+                end
+                LuaObjcBridge.callStaticMethod("UMengShare", "text", options);
+            elseif shareType == "url" then
+                LuaObjcBridge.callStaticMethod("UMengShare", "url", options);
+            elseif shareType == "image" then
+                LuaObjcBridge.callStaticMethod("UMengShare", "image", options);
+            end
         end
     end
 end
@@ -77,7 +106,7 @@ end
 --share("url", {
 --    url = "https://www.codepku.com",
 --    title = "编玩边学",
---    desc = "描述",
+--    des = "描述",
 --    thumb = "https://www.codepku.com/image.jpg"
 --}, {
 --    onStart = function(e)
