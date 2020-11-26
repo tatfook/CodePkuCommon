@@ -9,51 +9,78 @@ local EntityManager = commonlib.gettable("MyCompany.Aries.Game.EntityManager");
 local Commands = commonlib.gettable("MyCompany.Aries.Game.Commands");
 local GameLogic = commonlib.gettable("MyCompany.Aries.Game.GameLogic")
 
-function CommandManager:init()
-    GameLogic.GetFilters():add_filter("register_command", function()
-        
-Commands["say2"] = {
-	name="say2", 
-	quick_ref="/say2 [@entityname] [-duration 10] [-2d] [any text here]", 
-	desc=[[let the given entity say something on top of its head. 
-@param entityname: name of the entity, if nil, it means the calling entity, such as inside the entity's inventory.  
-@param duration: how many seconds the head dialog last.
-@param 2d: whether to render in front of all 3d objects
-e.g.
-/say hello there! 
-/say -duration 10 hello
-/say -duration -2d hello   : render as 2d
-]], 
-	handler = function(cmd_name, cmd_text, cmd_params, fromEntity)
-		local playerEntity, hasInputName;
-		playerEntity, cmd_text, hasInputName = CmdParser.ParsePlayer(cmd_text);
-		
-		playerEntity = playerEntity or (not hasInputName and fromEntity);
+function ParseOption(cmd_text)
+	local value, cmd_text_remain = cmd_text:match("^%s*%-([%w_]+%S+)%s*(.*)$");
+	if(value) then
+		return value, cmd_text_remain;
+	end
+	return nil, cmd_text;
+end
 
-		local duration;
-		local option = "";
-		local bAbove3D;
-		while (option) do
-			option, cmd_text = CmdParser.ParseOption(cmd_text);
-			if(option == "duration") then
-				duration, cmd_text = CmdParser.ParseNumber(cmd_text);
-			elseif(option == "2d") then
-				bAbove3D = true
+function ParseOptions(cmd_text)
+	local options = {};
+	local option, cmd_text_remain = nil, cmd_text;
+	while(cmd_text_remain) do
+		option, cmd_text_remain = ParseOption(cmd_text_remain);
+		if(option) then
+			key, value = option:match("([%w_]+)=?(%S*)");
+			if (value == "true" or key == option) then 
+				options[key] = true;
+			elseif (value == "false") then 
+				options[key] = false;
+			else
+				options[key] = value;
 			end
+		else
+			break;
 		end
-		if(cmd_text and cmd_text~="") then
-			local bSucceed;
-			if(playerEntity and playerEntity.Say) then
-				-- show head on display
-				bSucceed = playerEntity:Say(cmd_text, duration, bAbove3D);
-			end
-			if(not bSucceed) then
-				-- report error to chat
-				GameLogic.AppendChat(cmd_text);
-			end
+	end
+	return options, cmd_text_remain;
+end
+
+function CommandManager:init()
+    GameLogic.GetFilters():add_filter("register_command", function()        
+
+Commands["openeditor"] = {
+	name="openeditor", 
+	quick_ref="/openeditor 19130 5 19216 -mode=blockly", 
+	desc="", 
+	handler = function(cmd_name, cmd_text, cmd_params)
+		local x, y, z, cmd_text = CmdParser.ParsePos(cmd_text);
+		echo(x)
+		echo(y)
+		echo(z)
+		echo(cmd_text)
+		if (not x or not y or not z) then return end
+		local options, cmd_text = ParseOptions(cmd_text);
+		echo(options)
+
+		local blocklyMode = false;
+		if options.mode and options.mode == "blockly" then
+			blocklyMode = true;
+		end	
+		
+		echo("blocklyMode")
+		echo(blocklyMode)
+		NPL.load("(gl)script/apps/Aries/Creator/Game/Code/CodeBlockWindow.lua");
+		local CodeBlockWindow = commonlib.gettable("MyCompany.Aries.Game.Code.CodeBlockWindow");
+		CodeBlockWindow.Show(true);
+		local codeEntity = CodeBlockWindow.GetCodeEntity(x, y, z);		
+		CodeBlockWindow.SetCodeEntity(codeEntity);
+				
+		if blocklyMode then 
+			codeEntity:SetBlocklyEditMode(true);
+			CodeBlockWindow.UpdateCodeEditorStatus();
+			CodeBlockWindow.OpenBlocklyEditor(true);
+		else			
+			-- CodeBlockWindow.UpdateCodeToEntity();
+			codeEntity:SetBlocklyEditMode(false);
+			CodeBlockWindow.UpdateCodeEditorStatus();
 		end
+		
 	end,
 };
+
 
     end);
 end
