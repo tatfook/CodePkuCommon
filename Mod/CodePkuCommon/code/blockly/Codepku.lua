@@ -808,8 +808,8 @@ funsSTE.signUpSTE(signUpDataSTE)
             {
                 name = "position",
                 type = "input_value",
-                shadow = {type = "input_value", value = "~1,~0,~0"},
-                text = "~1,~0,~0"
+                shadow = {type = "text", value = '"~1,~0,~0"'},
+                text = '"~1,~0,~0"'
             },
         },
         category = "Codepku",
@@ -830,7 +830,7 @@ funsSTE.signUpSTE(signUpDataSTE)
 --可以用绝对位置/相对位置
 --参数为字符串,用英文逗号连接xyz三个坐标
 groupTransmit("~1,~0,~0")
---groupTransmit("19217,4,19129")
+--groupTransmit("19140,17,19214")
 ]]
             }
         }
