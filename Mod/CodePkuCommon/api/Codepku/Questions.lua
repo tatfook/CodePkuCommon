@@ -27,7 +27,7 @@ function ApiService.getQuestions(ids,sync)
     return nil;
 end
 
-function ApiService.submitAnswers(courseware_id,question_id,answer,answer_time)
+function ApiService.submitAnswers(courseware_id,question_id,answer,answer_time,is_team,node,room_id)
     if answer then
         is_right = 1
     else
@@ -37,7 +37,10 @@ function ApiService.submitAnswers(courseware_id,question_id,answer,answer_time)
         is_right = is_right,
         courseware_id = tonumber(courseware_id),
         question_id = tonumber(question_id),
-        answer_duration = tonumber(answer_time)
+        answer_duration = tonumber(answer_time),
+        is_team = tonumber(is_team),
+        node = tonumber(node),
+        room_id = tonumber(room_id),
     }
     return request:post('/answers/',data,{sync = true})
 end
@@ -85,4 +88,12 @@ function ApiService.setBehaviors(courseware_id,behavior_action,behavior_type)
         ext_data= {}
     }
     return request:post('/behaviors' ,data,{sync = true});
+end
+
+function ApiService.submitPassData()
+    
+end
+
+function ApiService.getGroupRanking()
+    
 end

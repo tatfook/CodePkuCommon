@@ -23,6 +23,8 @@ local BlockEngine = commonlib.gettable("MyCompany.Aries.Game.BlockEngine")
 
 NPL.load("(gl)Mod/CodePku/cellar/Common/CommonFunc/CommonFunc.lua")
 local CommonFunc = commonlib.gettable("Mod.CodePku.Common.CommonFunc")
+NPL.load("(gl)Mod/CodePku/cellar/GUI/LiveLesson/Basic/LiveLessonBasic.lua")
+local LiveLessonBasic = commonlib.gettable("Mod.CodePku.Common.LiveLessonBasic")
 
 -- 获取课件id
 -- @return table
@@ -74,12 +76,15 @@ end
 -- 提交指定id的题目. 
 -- @param question_id: 题目id
 -- @param answer: 答案
--- @param answer: 回答时间
--- @return table
-function CodeApi.submitAnswer(question_id,answer,answer_time)
+-- @param answer_time: 回答时间
+-- @param is_team: 是否合作题
+-- @param node: 题号
+-- @return boolean
+function CodeApi.submitAnswer(question_id,answer,answer_time,is_team,node)
 
     local courseware_id = CodeApi.getCoursewareID()
-    local response = ApiService.submitAnswers(courseware_id,question_id,answer,answer_time)
+    local room_id = LiveLessonBasic:GetWorldInfo().id
+    local response = ApiService.submitAnswers(courseware_id,question_id,answer,answer_time,is_team,node,room_id)
     if response.status == 200 then
         return true
     else
@@ -373,4 +378,25 @@ end
 --@return 相关函数
 function CodeApi.getFunsSTE()
     return {getSubjectsDataSTE=CodeApi.getSubjectsDataSTE, getMaxRoundSTE=CodeApi.getMaxRoundSTE, saveMaxRoundSTE=CodeApi.saveMaxRoundSTE, signUpSTE=CodeApi.signUpSTE}
+end
+
+--沉浸式课堂-同组成员传送
+--@return
+function CodeApi.groupTransmit(position)
+    LiveLessonBasic:RunGGSCommand("movegroup",{position=position})
+end
+
+--沉浸式课堂-提交闯关成功数据
+--@return true or false
+function CodeApi.submitPassData(pass_time)
+    local courseware_id = CodeApi.getCoursewareID()
+    local room_id = LiveLessonBasic:GetWorldInfo().id
+    local group = LiveLessonBasic:GetStudentGroupByUserId(System.User.info.id)  --看是否需要
+    return ApiService.submitPassData(courseware_id,room_id,pass_time,group)
+end
+
+--沉浸式课堂-获取小组闯关排名
+--@return num or false
+function CodeApi.getGroupRanking()
+    return ApiService.getGroupRanking()
 end
