@@ -804,13 +804,19 @@ funsSTE.signUpSTE(signUpDataSTE)
     -- 沉浸式课堂-同组成员传送
     {
         type = "groupTransmit",
-        message0 = L "同组成员传送到 %1",
+        message0 = L "同组成员传送到 %1 [指定 %2 组]",
         arg0 = {
             {
                 name = "position",
                 type = "input_value",
                 shadow = {type = "text", value = '"~1,~0,~0"'},
                 text = '"~1,~0,~0"'
+            },
+            {
+                name = "group",
+                type = "input_value",
+                shadow = {type = "math_number", value = 1},
+                text = 1
             },
         },
         category = "Codepku",
@@ -819,9 +825,9 @@ funsSTE.signUpSTE(signUpDataSTE)
         previousStatement = true,
         nextStatement = true,
         funcName = "groupTransmit",
-        func_description = "groupTransmit(%s)",
+        func_description = "groupTransmit(%s,%s)",
         ToNPL = function(self)
-            return string.format("groupTransmit(%s)\n", self:getFieldValue("position"))
+            return string.format("groupTransmit(%s, %s)\n", self:getFieldValue("position"), self:getFieldValue("group"))
         end,
         examples = {
             {
@@ -830,8 +836,9 @@ funsSTE.signUpSTE(signUpDataSTE)
                 code = [[
 --可以用绝对位置/相对位置
 --参数为字符串,用英文逗号连接xyz三个坐标
-groupTransmit("~1,~0,~0")
---groupTransmit("19140,17,19214")
+-- group小组id, 不传则是调用者用户所在的小组, 传入则是指定的小组
+groupTransmit("~1,~0,~0", 1)
+--groupTransmit("19140,17,19214", 1)
 ]]
             }
         }
@@ -864,16 +871,24 @@ local response = submitPassData()
     -- 沉浸式课堂-获取小组闯关排名
     {
         type = "getGroupRanking",
-        message0 = L "获取小组闯关排名",
+        message0 = L "获取[指定 %1 ]小组闯关排名",
+        arg0 = {
+            {
+                name = "group",
+                type = "input_value",
+                shadow = {type = "math_number", value = 1},
+                text = 1
+            },
+        },
         category = "Codepku",
         helpUrl = "",
         canRun = false,
         previousStatement = true,
         nextStatement = true,
         funcName = "getGroupRanking",
-        func_description = "getGroupRanking()",
+        func_description = "getGroupRanking(%s)",
         ToNPL = function(self)
-            return string.format("getGroupRanking()\n")
+            return string.format("getGroupRanking(%s)\n", self:getFieldValue("group"))
         end,
         examples = {
             {
@@ -881,7 +896,8 @@ local response = submitPassData()
                 canRun = false,
                 code = [[
 -- 获取当前用户所在小组的排名
-local ranking = getGroupRanking()
+-- group小组id, 不传则是调用者用户所在的小组, 传入则是指定的小组
+local ranking = getGroupRanking(group)
 ]]
             }
         }

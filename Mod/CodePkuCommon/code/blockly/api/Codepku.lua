@@ -382,8 +382,8 @@ end
 
 --沉浸式课堂-同组成员传送
 --@return
-function CodeApi.groupTransmit(position)
-    LiveLessonBasic:RunGGSCommand("movegroup",{position=position})
+function CodeApi.groupTransmit(position, group)
+    LiveLessonBasic:RunGGSCommand("movegroup",{position=position,group=group})
 end
 
 --沉浸式课堂-提交闯关成功数据
@@ -395,7 +395,7 @@ end
 
 --沉浸式课堂-获取小组闯关排名
 --@return num or false
-function CodeApi.getGroupRanking()
+function CodeApi.getGroupRanking(group)
     local room_id = LiveLessonBasic:GetWorldInfo().id
-    return ApiService.getGroupRanking(room_id)
+    return ApiService.getGroupRanking(room_id, group)
 end

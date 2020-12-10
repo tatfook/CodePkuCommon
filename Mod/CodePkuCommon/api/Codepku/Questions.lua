@@ -96,7 +96,11 @@ function ApiService.submitPassData(room_id)
     return response.status == 200
 end
 
-function ApiService.getGroupRanking(room_id)
-    local response = request:get('/class-room/get-rank?room_id='..tostring(room_id) ,nil, {sync = true});
+function ApiService.getGroupRanking(room_id, group)
+    local url = "/class-room/get-rank?room_id="..tostring(room_id)
+    if group then
+        url = url.."&group="..tostring(group)
+    end
+    local response = request:get(url ,nil, {sync = true});
     return response.status == 200 and response.data.data.group_rank
 end
