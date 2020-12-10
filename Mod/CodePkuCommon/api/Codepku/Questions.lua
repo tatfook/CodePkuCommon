@@ -90,10 +90,11 @@ function ApiService.setBehaviors(courseware_id,behavior_action,behavior_type)
     return request:post('/behaviors' ,data,{sync = true});
 end
 
-function ApiService.submitPassData()
-    
+function ApiService.submitPassData(room_id)
+    local data = {room_id=room_id}
+    return request:post('/class-room/pass' ,data, {sync = true});
 end
 
 function ApiService.getGroupRanking()
-    
+    return request:get('/class-room/get-rank' ,nil, {sync = true});
 end

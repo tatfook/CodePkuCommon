@@ -116,7 +116,7 @@ knowledge = data.knowledge -- 涉及的知识点
     {
         type = "submitAnswer",
         message0 = L "提交题目 %1 答案 %2 ",
-        message1 = L "时间 %1 是否合作题 %2 题号 %3",
+        message1 = L "时间 %1 题序 %2 是否合作题 %3",
         arg0 = {
             {
                 name = "question_id",
@@ -139,16 +139,16 @@ knowledge = data.knowledge -- 涉及的知识点
                 text = 10
             },
             {
-                name = "is_team",
-                type = "input_value",
-                shadow = {type = "math_number", value = 0},
-                text = 0
-            },
-            {
                 name = "node",
                 type = "input_value",
                 shadow = {type = "math_number", value = 1},
                 text = 1
+            },
+            {
+                name = "is_team",
+                type = "input_value",
+                shadow = {type = "math_number", value = 0},
+                text = 0
             },
         },
         category = "Codepku",
@@ -164,17 +164,18 @@ knowledge = data.knowledge -- 涉及的知识点
                 self:getFieldValue("question_id"),
                 self:getFieldValue("answer"),
                 self:getFieldValue("answer_time"),
-                self:getFieldValue("is_team"),
-                self:getFieldValue("node")
+                self:getFieldValue("node"),
+                self:getFieldValue("is_team")
             )
         end,
         examples = {
             {
-                desc = L "提交题目1 答案true 时间10 是否合作题0 题号1",
+                desc = L "提交题目1 答案true 时间10 题序1 是否合作题0",
                 canRun = false,
                 code = [[
 -- 是否合作题: 0不是, 1是
-submitAnswer(1,true,10,0,1)
+-- 题目id 答案 时间 题序 是否合作题
+submitAnswer(1,true,10,1,0)
   ]]
             }
         }
@@ -838,24 +839,16 @@ groupTransmit("~1,~0,~0")
     -- 沉浸式课堂-提交闯关成功数据
     {
         type = "submitPassData",
-        message0 = L "提交闯关成功数据(闯关成功时间) %1",
-        arg0 = {
-            {
-                name = "pass_time",
-                type = "input_value",
-                shadow = {type = "math_number", value = 100},
-                text = 100
-            },
-        },
+        message0 = L "提交闯关成功数据",
         category = "Codepku",
         helpUrl = "",
         canRun = false,
         previousStatement = true,
         nextStatement = true,
         funcName = "submitPassData",
-        func_description = "submitPassData(%s)",
+        func_description = "submitPassData()",
         ToNPL = function(self)
-            return string.format("submitPassData(%s)\n", self:getFieldValue("pass_time"))
+            return string.format("submitPassData()\n")
         end,
         examples = {
             {
@@ -863,7 +856,7 @@ groupTransmit("~1,~0,~0")
                 canRun = false,
                 code = [[
 -- 某用户闯关成功,提交其所在小组闯关成功时间
-submitPassData(100)
+local response = submitPassData()
 ]]
             }
         }
@@ -887,8 +880,8 @@ submitPassData(100)
                 desc = L "沉浸式课堂-获取小组闯关排名",
                 canRun = false,
                 code = [[
--- 获取当前用户所在小组的排名,如果没有分组,返回false
-getGroupRanking()
+-- 获取当前用户所在小组的排名
+local ranking = getGroupRanking()
 ]]
             }
         }

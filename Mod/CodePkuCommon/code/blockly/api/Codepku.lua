@@ -388,11 +388,9 @@ end
 
 --沉浸式课堂-提交闯关成功数据
 --@return true or false
-function CodeApi.submitPassData(pass_time)
-    local courseware_id = CodeApi.getCoursewareID()
+function CodeApi.submitPassData()
     local room_id = LiveLessonBasic:GetWorldInfo().id
-    local group = LiveLessonBasic:GetStudentGroupByUserId(System.User.info.id)  --看是否需要
-    return ApiService.submitPassData(courseware_id,room_id,pass_time,group)
+    return ApiService.submitPassData(room_id)
 end
 
 --沉浸式课堂-获取小组闯关排名
