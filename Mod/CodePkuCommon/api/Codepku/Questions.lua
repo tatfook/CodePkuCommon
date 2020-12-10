@@ -92,9 +92,11 @@ end
 
 function ApiService.submitPassData(room_id)
     local data = {room_id=room_id}
-    return request:post('/class-room/pass' ,data, {sync = true});
+    local response = request:post('/class-room/pass' ,data, {sync = true});
+    return response.status == 200
 end
 
 function ApiService.getGroupRanking(room_id)
-    return request:get('/class-room/get-rank?room_id='..tostring(room_id) ,nil, {sync = true});
+    local response = request:get('/class-room/get-rank?room_id='..tostring(room_id) ,nil, {sync = true});
+    return response.status == 200 and response.data.data.group_rank
 end
