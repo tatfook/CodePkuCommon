@@ -396,5 +396,6 @@ end
 --沉浸式课堂-获取小组闯关排名
 --@return num or false
 function CodeApi.getGroupRanking()
-    return ApiService.getGroupRanking()
+    local room_id = LiveLessonBasic:GetWorldInfo().id
+    return ApiService.getGroupRanking(room_id)
 end

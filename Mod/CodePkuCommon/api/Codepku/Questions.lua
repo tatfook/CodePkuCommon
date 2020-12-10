@@ -95,6 +95,6 @@ function ApiService.submitPassData(room_id)
     return request:post('/class-room/pass' ,data, {sync = true});
 end
 
-function ApiService.getGroupRanking()
-    return request:get('/class-room/get-rank' ,nil, {sync = true});
+function ApiService.getGroupRanking(room_id)
+    return request:get('/class-room/get-rank?room_id='..tostring(room_id) ,nil, {sync = true});
 end
