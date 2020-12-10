@@ -855,7 +855,7 @@ groupTransmit("~1,~0,~0")
                 desc = L "沉浸式课堂-提交闯关成功数据",
                 canRun = false,
                 code = [[
--- 某用户闯关成功,提交其所在小组闯关成功数据
+-- 某用户闯关成功,提交闯关成功数据
 local response = submitPassData()
 ]]
             }
