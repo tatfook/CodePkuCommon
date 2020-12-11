@@ -80,7 +80,7 @@ end
 -- @param is_team: 是否合作题
 -- @param node: 题号
 -- @return boolean
-function CodeApi.submitAnswer(question_id,answer,answer_time,is_team,node)
+function CodeApi.submitAnswer(question_id,answer,answer_time,node,is_team)
 
     local courseware_id = CodeApi.getCoursewareID()
     local room_id = LiveLessonBasic:GetWorldInfo().id
