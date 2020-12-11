@@ -182,8 +182,12 @@ end
 -- @param total_node: 总结点
 -- @return table
 function CodeApi.setLearnRecords(category,current_node,total_node)
+    local room_id = nil
+    if LiveLessonBasic:IsInLiveLesson() then
+        room_id = LiveLessonBasic:GetWorldInfo().id
+    end
     local courseware_id = CodeApi.getCoursewareID()
-    local response = ApiService.setLearnRecords(courseware_id,category,current_node,total_node,true)
+    local response = ApiService.setLearnRecords(courseware_id,category,current_node,total_node,room_id)
     if response.status == 200 then
         -- 课程结束奖励结算
         -- category==2是结束, current_node==total_node是最后一个节点,or是因为可能可能有不规范的地方,满足任意一个都视为结束

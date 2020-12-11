@@ -54,7 +54,7 @@ function ApiService.getLearnRecords(courseware_id,sync)
     return request:get('/learn-records/last/' .. courseware_id,nil,{sync = sync});
 end
 
-function ApiService.setLearnRecords(courseware_id,category,current_node,total_node)
+function ApiService.setLearnRecords(courseware_id,category,current_node,total_node,room_id)
     if (current_node == total_node) then
         -- 触发任务系统计数
         local updateTask = {
@@ -75,6 +75,9 @@ function ApiService.setLearnRecords(courseware_id,category,current_node,total_no
         current_node = tonumber(current_node),
         total_node = tonumber(total_node),
     }
+    if room_id then
+        data["room_id"] = tonumber(room_id)
+    end
     return request:post('/learn-records/' ,data,{sync = true});
 end
 
