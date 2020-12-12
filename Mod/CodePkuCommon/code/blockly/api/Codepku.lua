@@ -193,7 +193,12 @@ function CodeApi.setLearnRecords(category,current_node,total_node)
         -- category==2是结束, current_node==total_node是最后一个节点,or是因为可能可能有不规范的地方,满足任意一个都视为结束
         if category == 2 or current_node == total_node then 
             local GameLogic = commonlib.gettable("MyCompany.Aries.Game.GameLogic")
-            GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data, true);
+
+            NPL.load("(gl)Mod/CodePku/cellar/GUI/LiveLesson/Basic/LiveLessonBasic.lua")
+            local LiveLessonBasic = commonlib.gettable("Mod.CodePku.Common.LiveLessonBasic")
+            if not LiveLessonBasic:IsInLiveLesson() then  -- 沉浸式课堂不提示结算
+                GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data, true);
+            end
         end
         return true
     end
@@ -268,7 +273,11 @@ function CodeApi.awardUser(sort)
         -- 课程节点奖励消息至系统消息栏
         GameLogic.GetFilters():apply_filters("codepkuAwardUser", data);
         -- 课程节点奖励消息tip提示
-        GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data);
+        NPL.load("(gl)Mod/CodePku/cellar/GUI/LiveLesson/Basic/LiveLessonBasic.lua")
+        local LiveLessonBasic = commonlib.gettable("Mod.CodePku.Common.LiveLessonBasic")
+        if not LiveLessonBasic:IsInLiveLesson() then    -- 沉浸式课堂不提示结算
+            GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data);
+        end
 
         -- 刷新本地金币
         if data.props and next(data.props) then
