@@ -27,7 +27,7 @@ function ApiService.getQuestions(ids,sync)
     return nil;
 end
 
-function ApiService.submitAnswers(courseware_id,question_id,answer,answer_time)
+function ApiService.submitAnswers(courseware_id,question_id,answer,answer_time,is_team,node,room_id)
     if answer then
         is_right = 1
     else
@@ -37,7 +37,10 @@ function ApiService.submitAnswers(courseware_id,question_id,answer,answer_time)
         is_right = is_right,
         courseware_id = tonumber(courseware_id),
         question_id = tonumber(question_id),
-        answer_duration = tonumber(answer_time)
+        answer_duration = tonumber(answer_time),
+        is_team = tonumber(is_team),
+        node = tonumber(node),
+        room_id = tonumber(room_id),
     }
     return request:post('/answers/',data,{sync = true})
 end
@@ -51,7 +54,7 @@ function ApiService.getLearnRecords(courseware_id,sync)
     return request:get('/learn-records/last/' .. courseware_id,nil,{sync = sync});
 end
 
-function ApiService.setLearnRecords(courseware_id,category,current_node,total_node)
+function ApiService.setLearnRecords(courseware_id,category,current_node,total_node,room_id)
     if (current_node == total_node) then
         -- 触发任务系统计数
         local updateTask = {
@@ -72,6 +75,9 @@ function ApiService.setLearnRecords(courseware_id,category,current_node,total_no
         current_node = tonumber(current_node),
         total_node = tonumber(total_node),
     }
+    if room_id then
+        data["room_id"] = tonumber(room_id)
+    end
     return request:post('/learn-records/' ,data,{sync = true});
 end
 
@@ -85,4 +91,19 @@ function ApiService.setBehaviors(courseware_id,behavior_action,behavior_type)
         ext_data= {}
     }
     return request:post('/behaviors' ,data,{sync = true});
+end
+
+function ApiService.submitPassData(room_id)
+    local data = {room_id=room_id}
+    local response = request:post('/class-room/pass' ,data, {sync = true});
+    return response.status == 200
+end
+
+function ApiService.getGroupRanking(room_id, group)
+    local url = "/class-room/get-rank?room_id="..tostring(room_id)
+    if group then
+        url = url.."&group="..tostring(group)
+    end
+    local response = request:get(url ,nil, {sync = true});
+    return response.status == 200 and response.data.data.group_rank
 end

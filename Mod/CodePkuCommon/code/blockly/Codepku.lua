@@ -116,7 +116,7 @@ knowledge = data.knowledge -- 涉及的知识点
     {
         type = "submitAnswer",
         message0 = L "提交题目 %1 答案 %2 ",
-        message1 = L "时间 %1",
+        message1 = L "时间 %1 题序 %2 是否合作题 %3",
         arg0 = {
             {
                 name = "question_id",
@@ -137,7 +137,19 @@ knowledge = data.knowledge -- 涉及的知识点
                 type = "input_value",
                 shadow = {type = "math_number", value = 10},
                 text = 10
-            }
+            },
+            {
+                name = "node",
+                type = "input_value",
+                shadow = {type = "math_number", value = 1},
+                text = 1
+            },
+            {
+                name = "is_team",
+                type = "input_value",
+                shadow = {type = "math_number", value = 0},
+                text = 0
+            },
         },
         category = "Codepku",
         helpUrl = "",
@@ -145,21 +157,25 @@ knowledge = data.knowledge -- 涉及的知识点
         previousStatement = true,
         nextStatement = true,
         funcName = "submitAnswer",
-        func_description = "submitAnswer(%d,%s,%d)",
+        func_description = "submitAnswer(%d,%s,%d,%d,%d)",
         ToNPL = function(self)
             return string.format(
-                "submitAnswer(%d,%s,%d)\n",
+                "submitAnswer(%d,%s,%d,%d,%d)\n",
                 self:getFieldValue("question_id"),
                 self:getFieldValue("answer"),
-                self:getFieldValue("answer_time")
+                self:getFieldValue("answer_time"),
+                self:getFieldValue("node"),
+                self:getFieldValue("is_team")
             )
         end,
         examples = {
             {
-                desc = L "提交题目1 答案true 时间10",
-                canRun = true,
+                desc = L "提交题目1 答案true 时间10 题序1 是否合作题0",
+                canRun = false,
                 code = [[
-submitAnswer(1,true,10)
+-- 是否合作题: 0不是, 1是
+-- 题目id 答案 时间 题序 是否合作题
+submitAnswer(1,true,10,1,0)
   ]]
             }
         }
@@ -781,6 +797,107 @@ funsSTE.getMaxRoundSTE(maxRoundDataSTE)
 --<站到最后>报名
 signUpDataSTE = {}
 funsSTE.signUpSTE(signUpDataSTE)
+]]
+            }
+        }
+    },
+    -- 沉浸式课堂-同组成员传送
+    {
+        type = "groupTransmit",
+        message0 = L "同组成员传送到 %1 [指定 %2 组]",
+        arg0 = {
+            {
+                name = "position",
+                type = "input_value",
+                shadow = {type = "text", value = '"~1,~0,~0"'},
+                text = '"~1,~0,~0"'
+            },
+            {
+                name = "group",
+                type = "input_value",
+                shadow = {type = "math_number", value = 1},
+                text = 1
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "groupTransmit",
+        func_description = "groupTransmit(%s,%s)",
+        ToNPL = function(self)
+            return string.format("groupTransmit(%s, %s)\n", self:getFieldValue("position"), self:getFieldValue("group"))
+        end,
+        examples = {
+            {
+                desc = L "沉浸式课堂-同组成员传送",
+                canRun = false,
+                code = [[
+--可以用绝对位置/相对位置
+--参数为字符串,用英文逗号连接xyz三个坐标
+-- group小组id, 不传则是调用者用户所在的小组, 传入则是指定的小组
+groupTransmit("~1,~0,~0", 1)
+--groupTransmit("19140,17,19214", 1)
+]]
+            }
+        }
+    },
+    -- 沉浸式课堂-提交闯关成功数据
+    {
+        type = "submitPassData",
+        message0 = L "提交闯关成功数据",
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "submitPassData",
+        func_description = "submitPassData()",
+        ToNPL = function(self)
+            return string.format("submitPassData()\n")
+        end,
+        examples = {
+            {
+                desc = L "沉浸式课堂-提交闯关成功数据",
+                canRun = false,
+                code = [[
+-- 某用户闯关成功,提交闯关成功数据
+local response = submitPassData()
+]]
+            }
+        }
+    },
+    -- 沉浸式课堂-获取小组闯关排名
+    {
+        type = "getGroupRanking",
+        message0 = L "获取[指定 %1 ]小组闯关排名",
+        arg0 = {
+            {
+                name = "group",
+                type = "input_value",
+                shadow = {type = "math_number", value = 1},
+                text = 1
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "getGroupRanking",
+        func_description = "getGroupRanking(%s)",
+        ToNPL = function(self)
+            return string.format("getGroupRanking(%s)\n", self:getFieldValue("group"))
+        end,
+        examples = {
+            {
+                desc = L "沉浸式课堂-获取小组闯关排名",
+                canRun = false,
+                code = [[
+-- 获取当前用户所在小组的排名
+-- group小组id, 不传则是调用者用户所在的小组, 传入则是指定的小组
+local ranking = getGroupRanking(group)
 ]]
             }
         }

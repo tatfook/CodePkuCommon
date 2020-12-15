@@ -23,6 +23,8 @@ local BlockEngine = commonlib.gettable("MyCompany.Aries.Game.BlockEngine")
 
 NPL.load("(gl)Mod/CodePku/cellar/Common/CommonFunc/CommonFunc.lua")
 local CommonFunc = commonlib.gettable("Mod.CodePku.Common.CommonFunc")
+NPL.load("(gl)Mod/CodePku/cellar/GUI/LiveLesson/Basic/LiveLessonBasic.lua")
+local LiveLessonBasic = commonlib.gettable("Mod.CodePku.Common.LiveLessonBasic")
 
 -- 获取课件id
 -- @return table
@@ -74,12 +76,15 @@ end
 -- 提交指定id的题目. 
 -- @param question_id: 题目id
 -- @param answer: 答案
--- @param answer: 回答时间
--- @return table
-function CodeApi.submitAnswer(question_id,answer,answer_time)
+-- @param answer_time: 回答时间
+-- @param is_team: 是否合作题
+-- @param node: 题号
+-- @return boolean
+function CodeApi.submitAnswer(question_id,answer,answer_time,node,is_team)
 
     local courseware_id = CodeApi.getCoursewareID()
-    local response = ApiService.submitAnswers(courseware_id,question_id,answer,answer_time)
+    local room_id = LiveLessonBasic:GetWorldInfo().id
+    local response = ApiService.submitAnswers(courseware_id,question_id,answer,answer_time,is_team,node,room_id)
     if response.status == 200 then
         return true
     else
@@ -177,14 +182,23 @@ end
 -- @param total_node: 总结点
 -- @return table
 function CodeApi.setLearnRecords(category,current_node,total_node)
+    local room_id = nil
+    if LiveLessonBasic:IsInLiveLesson() then
+        room_id = LiveLessonBasic:GetWorldInfo().id
+    end
     local courseware_id = CodeApi.getCoursewareID()
-    local response = ApiService.setLearnRecords(courseware_id,category,current_node,total_node,true)
+    local response = ApiService.setLearnRecords(courseware_id,category,current_node,total_node,room_id)
     if response.status == 200 then
         -- 课程结束奖励结算
         -- category==2是结束, current_node==total_node是最后一个节点,or是因为可能可能有不规范的地方,满足任意一个都视为结束
         if category == 2 or current_node == total_node then 
             local GameLogic = commonlib.gettable("MyCompany.Aries.Game.GameLogic")
-            GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data, true);
+
+            NPL.load("(gl)Mod/CodePku/cellar/GUI/LiveLesson/Basic/LiveLessonBasic.lua")
+            local LiveLessonBasic = commonlib.gettable("Mod.CodePku.Common.LiveLessonBasic")
+            if not LiveLessonBasic:IsInLiveLesson() then  -- 沉浸式课堂不提示结算
+                GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data, true);
+            end
         end
         return true
     end
@@ -259,7 +273,11 @@ function CodeApi.awardUser(sort)
         -- 课程节点奖励消息至系统消息栏
         GameLogic.GetFilters():apply_filters("codepkuAwardUser", data);
         -- 课程节点奖励消息tip提示
-        GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data);
+        NPL.load("(gl)Mod/CodePku/cellar/GUI/LiveLesson/Basic/LiveLessonBasic.lua")
+        local LiveLessonBasic = commonlib.gettable("Mod.CodePku.Common.LiveLessonBasic")
+        if not LiveLessonBasic:IsInLiveLesson() then    -- 沉浸式课堂不提示结算
+            GameLogic.GetFilters():apply_filters("codepkuTaskSettlement", data);
+        end
 
         -- 刷新本地金币
         if data.props and next(data.props) then
@@ -373,4 +391,24 @@ end
 --@return 相关函数
 function CodeApi.getFunsSTE()
     return {getSubjectsDataSTE=CodeApi.getSubjectsDataSTE, getMaxRoundSTE=CodeApi.getMaxRoundSTE, saveMaxRoundSTE=CodeApi.saveMaxRoundSTE, signUpSTE=CodeApi.signUpSTE}
+end
+
+--沉浸式课堂-同组成员传送
+--@return
+function CodeApi.groupTransmit(position, group)
+    LiveLessonBasic:RunGGSCommand("movegroup",{position=position,group=group})
+end
+
+--沉浸式课堂-提交闯关成功数据
+--@return true or false
+function CodeApi.submitPassData()
+    local room_id = LiveLessonBasic:GetWorldInfo().id
+    return ApiService.submitPassData(room_id)
+end
+
+--沉浸式课堂-获取小组闯关排名
+--@return num or false
+function CodeApi.getGroupRanking(group)
+    local room_id = LiveLessonBasic:GetWorldInfo().id
+    return ApiService.getGroupRanking(room_id, group)
 end
