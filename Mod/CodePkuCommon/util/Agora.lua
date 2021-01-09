@@ -6,13 +6,17 @@ Desc: 与Android或者iOS层sdk进行通讯
 Example:
 ------------------------------------------------------------
     local Agora = NPL.load("(gl)Mod/CodePkuCommon/util/Agora.lua");
+-- 初始化AgoraEngine
 -- 加入聊天组
 -- 离开聊天组
+-- 摧毁AgoraEngine
 -- 开启静音
 -- 取消静音
 -- 翻转摄像头
 -- 打开摄像头
 -- 关闭摄像头
+-- 显示视频窗口
+-- 隐藏视频窗口
 -------------------------------------------------------
 ]]
 
@@ -43,10 +47,16 @@ function Agora:videoChat(agoraType, options, callback)
             NPL.call("LuaJavaBridge.cpp", {});
         end
         if LuaJavaBridge then
-            if agoraType == "joinVideoChat"  then
+            if agoraType == "videoWindowCoordinates"  then
+                LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "videoWindowCoordinates", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", options);
+            elseif agoraType == "initializeAgoraEngine"  then
+                LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "initializeAgoraEngine", "(Ljava/lang/String;)V", options);
+            elseif agoraType == "joinVideoChat"  then
                 LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "joinVideoChat", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", options);
             elseif agoraType == "leaveVideoChat" then
                 LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "leaveVideoChat", "()V",{});
+            elseif agoraType == "destroyAgoraEngine" then
+                LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "destroyAgoraEngine", "()V",{});
             elseif agoraType == "openMuteAudio" then
                 LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "openMuteAudio", "()V",{});
             elseif agoraType == "cancelMuteAudio" then
@@ -57,6 +67,10 @@ function Agora:videoChat(agoraType, options, callback)
                 LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "enableVideoChat", "()V",{});
             elseif agoraType == "disableVideoChat" then
                 LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "disableVideoChat", "()V",{});
+            elseif agoraType == "showEasyFloat" then
+                LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "showEasyFloat", "()V",{});
+            elseif agoraType == "hideEasyFloat" then
+                LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "hideEasyFloat", "()V",{});
             end
         end
 	elseif isIOS then
