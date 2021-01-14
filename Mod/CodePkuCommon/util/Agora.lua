@@ -78,12 +78,20 @@ function Agora:videoChat(agoraType, options, callback)
             NPL.call("LuaObjcBridge.cpp", {});
         end
         if LuaObjcBridge then
+
             local args = { luaPath = "(gl)Mod/CodePkuCommon/util/Agora.lua" };
             local ok, ret = LuaObjcBridge.callStaticMethod("AgoraVideo", "registerLuaCall", args);
-            if agoraType == "joinVideoChat"  then
+
+            if agoraType == "videoWindowCoordinates"  then
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "videoWindowCoordinates", options);
+            elseif agoraType == "initializeAgoraEngine"  then
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "initializeAgoraEngine", options);
+            elseif agoraType == "joinVideoChat"  then
                 LuaObjcBridge.callStaticMethod("AgoraVideo", "joinVideoChat", options);
             elseif agoraType == "leaveVideoChat" then
                 LuaObjcBridge.callStaticMethod("AgoraVideo", "leaveVideoChat", options);
+            elseif agoraType == "destroyAgoraEngine" then
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "destroyAgoraEngine", options);
             elseif agoraType == "openMuteAudio" then
                 LuaObjcBridge.callStaticMethod("AgoraVideo", "openMuteAudio", options);
             elseif agoraType == "cancelMuteAudio" then
@@ -94,7 +102,12 @@ function Agora:videoChat(agoraType, options, callback)
                 LuaObjcBridge.callStaticMethod("AgoraVideo", "enableVideoChat", options);
             elseif agoraType == "disableVideoChat" then
                 LuaObjcBridge.callStaticMethod("AgoraVideo", "disableVideoChat", options);
+            elseif agoraType == "showEasyFloat" then
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "showEasyFloat", options);
+            elseif agoraType == "hideEasyFloat" then
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "hideEasyFloat", options);
             end
+
         end
 	end
 end
