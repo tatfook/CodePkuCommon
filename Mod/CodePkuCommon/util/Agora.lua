@@ -89,23 +89,23 @@ function Agora:videoChat(agoraType, options, callback)
             elseif agoraType == "joinVideoChat"  then
                 LuaObjcBridge.callStaticMethod("AgoraVideo", "joinVideoChat", options);
             elseif agoraType == "leaveVideoChat" then
-                LuaObjcBridge.callStaticMethod("AgoraVideo", "leaveVideoChat", options);
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "leaveVideoChat", {});
             elseif agoraType == "destroyAgoraEngine" then
-                LuaObjcBridge.callStaticMethod("AgoraVideo", "destroyAgoraEngine", options);
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "destroyAgoraEngine", {});
             elseif agoraType == "openMuteAudio" then
-                LuaObjcBridge.callStaticMethod("AgoraVideo", "openMuteAudio", options);
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "openMuteAudio", {});
             elseif agoraType == "cancelMuteAudio" then
-                LuaObjcBridge.callStaticMethod("AgoraVideo", "cancelMuteAudio", options);
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "cancelMuteAudio", {});
             elseif agoraType == "onSwitchCamera" then
-                LuaObjcBridge.callStaticMethod("AgoraVideo", "onSwitchCamera", options);
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "onSwitchCamera", {});
             elseif agoraType == "enableVideoChat" then
-                LuaObjcBridge.callStaticMethod("AgoraVideo", "enableVideoChat", options);
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "enableVideoChat", {});
             elseif agoraType == "disableVideoChat" then
-                LuaObjcBridge.callStaticMethod("AgoraVideo", "disableVideoChat", options);
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "disableVideoChat", {});
             elseif agoraType == "showEasyFloat" then
-                LuaObjcBridge.callStaticMethod("AgoraVideo", "showEasyFloat", options);
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "showEasyFloat", {});
             elseif agoraType == "hideEasyFloat" then
-                LuaObjcBridge.callStaticMethod("AgoraVideo", "hideEasyFloat", options);
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "hideEasyFloat", {});
             end
 
         end
