@@ -10,6 +10,9 @@ Example:
 -- 加入聊天组
 -- 离开聊天组
 -- 摧毁AgoraEngine
+-- 音量调节
+-- 扩音
+-- 听筒
 -- 开启静音
 -- 取消静音
 -- 翻转摄像头
@@ -57,6 +60,12 @@ function Agora:videoChat(agoraType, options, callback)
                 LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "leaveVideoChat", "()V",{});
             elseif agoraType == "destroyAgoraEngine" then
                 LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "destroyAgoraEngine", "()V",{});
+            elseif agoraType == "adjustSignalVolume"  then
+                LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "adjustSignalVolume", "(Ljava/lang/String;)V", options);
+            elseif agoraType == "openSpeakerphone" then
+                LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "openSpeakerphone", "()V",{});
+            elseif agoraType == "cancelSpeakerphone" then
+                LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "cancelSpeakerphone", "()V",{});
             elseif agoraType == "openMuteAudio" then
                 LuaJavaBridge.callJavaStaticMethod("plugin.agora.AgoraVideo", "openMuteAudio", "()V",{});
             elseif agoraType == "cancelMuteAudio" then
@@ -92,6 +101,12 @@ function Agora:videoChat(agoraType, options, callback)
                 LuaObjcBridge.callStaticMethod("AgoraVideo", "leaveVideoChat", {});
             elseif agoraType == "destroyAgoraEngine" then
                 LuaObjcBridge.callStaticMethod("AgoraVideo", "destroyAgoraEngine", {});
+            elseif agoraType == "adjustSignalVolume"  then
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "adjustSignalVolume", options);
+            elseif agoraType == "openSpeakerphone" then
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "openSpeakerphone", {});
+            elseif agoraType == "cancelSpeakerphone" then
+                LuaObjcBridge.callStaticMethod("AgoraVideo", "cancelSpeakerphone", {});
             elseif agoraType == "openMuteAudio" then
                 LuaObjcBridge.callStaticMethod("AgoraVideo", "openMuteAudio", {});
             elseif agoraType == "cancelMuteAudio" then
