@@ -412,3 +412,13 @@ function CodeApi.getGroupRanking(group)
     local room_id = LiveLessonBasic:GetWorldInfo().id
     return ApiService.getGroupRanking(room_id, group)
 end
+
+--上传留资数据
+--@return true or false
+function CodeApi.retained(mobile, age, username)
+    mobile = mobile and tostring(mobile)
+    age =  age and tostring(age) or "0"
+    username = username or ""
+    local resp = ApiService.retained(mobile, age, username)
+    return resp.status == 200
+end
