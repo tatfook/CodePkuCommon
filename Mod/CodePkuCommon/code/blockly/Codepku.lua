@@ -901,6 +901,53 @@ local ranking = getGroupRanking(group)
 ]]
             }
         }
+    },
+    -- 世界留资
+    {
+        type = "retained",
+        message0 = L "上传留资数据(手机:%1 年龄:%2 名字:%3)",
+        arg0 = {
+            {
+                name = "mobile",
+                type = "input_value",
+                shadow = {type = "text", value = '"13200132000"'},
+                text = '"13200132000"'
+            },
+            {
+                name = "age",
+                type = "input_value",
+                shadow = {type = "math_number", value = 0},
+                text = 0
+            },
+            {
+                name = "username",
+                type = "input_value",
+                shadow = {type = "text", value = '"测试名字"'},
+                text = '"测试名字"'
+            },
+        },
+        category = "Codepku",
+        helpUrl = "",
+        canRun = false,
+        previousStatement = true,
+        nextStatement = true,
+        funcName = "retained",
+        func_description = "retained(%s,%s,%s)",
+        ToNPL = function(self)
+            return string.format("retained(%s,%s,%s)\n", self:getFieldValue("mobile"), self:getFieldValue("age"), self:getFieldValue("username"))
+        end,
+        examples = {
+            {
+                desc = L "上传留资数据",
+                canRun = false,
+                code = [[
+-- 上传留资数据
+-- 手机号为必填项
+-- result为true表示上传成功
+local result = retained("13200132000",0,"测试名字")
+]]
+            }
+        }
     }
 }
 function Codepku.GetCmds()

@@ -50,3 +50,12 @@ function ApiService.Profile(token)
         headers = headers
     });
 end
+
+function ApiService.retained(mobile, age, username)
+    local data = {
+        mobile=mobile,
+        age=age,
+        username=username,
+    }
+    return request:post("/retained-logs",data,{sync = true})
+end
