@@ -419,6 +419,7 @@ function CodeApi.retained(mobile, age, username)
     mobile = mobile and tostring(mobile)
     age =  age and tostring(age) or "0"
     username = username or ""
-    local resp = ApiService.retained(mobile, age, username)
+    local courseware_id = CodeApi.getCoursewareID()
+    local resp = ApiService.retained(mobile, age, username, courseware_id)
     return resp.status == 200
 end

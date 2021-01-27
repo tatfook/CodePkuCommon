@@ -51,11 +51,12 @@ function ApiService.Profile(token)
     });
 end
 
-function ApiService.retained(mobile, age, username)
+function ApiService.retained(mobile, age, username, courseware_id)
     local data = {
         mobile=mobile,
         age=age,
         username=username,
+        courseware_id = courseware_id
     }
     return request:post("/retained-logs",data,{sync = true})
 end
